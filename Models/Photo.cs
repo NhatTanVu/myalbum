@@ -16,8 +16,8 @@ namespace MyAlbum.Models
         public int AlbumId { get; set; }
         public Album Album { get; set; }
 
-        public string UserId { get; set; }
-        public User User { get; set; }
+        public string AuthorId { get; set; }
+        public User Author { get; set; }
 
         public Photo()
         {
