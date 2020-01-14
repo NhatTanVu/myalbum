@@ -13,10 +13,8 @@ namespace MyAlbum.Models
         public ICollection<Comment> Comments { get; set; }
         public ICollection<PhotoCategory> PhotoCategories { get; set; }
 
-        public int AlbumId { get; set; }
         public Album Album { get; set; }
 
-        public string AuthorId { get; set; }
         public User Author { get; set; }
 
         public Photo()

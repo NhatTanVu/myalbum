@@ -86,7 +86,7 @@ namespace MyAlbum.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AlbumId")
+                    b.Property<int?>("AlbumId")
                         .HasColumnType("int");
 
                     b.Property<string>("AuthorId")
@@ -163,9 +163,7 @@ namespace MyAlbum.Migrations
                 {
                     b.HasOne("MyAlbum.Models.Album", "Album")
                         .WithMany("Photos")
-                        .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AlbumId");
 
                     b.HasOne("MyAlbum.Models.User", "Author")
                         .WithMany("Photos")
