@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MyAlbum.Controllers.Resources
 {
-    public class PhotoResource
+    public class PhotoResource: IEquatable<PhotoResource>
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -21,6 +23,13 @@ namespace MyAlbum.Controllers.Resources
         {
             Comments = new Collection<CommentResource>();
             PhotoCategories = new Collection<CategoryResource>();
-        }        
+        }
+
+        public bool Equals([AllowNull] PhotoResource other)
+        {
+            return (this.Id == other.Id);
+        }
+
+        public override int GetHashCode() => Id;
     }
 }
