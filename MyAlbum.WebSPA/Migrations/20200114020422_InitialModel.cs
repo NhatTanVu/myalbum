@@ -40,14 +40,14 @@ namespace MyAlbum.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true)
+                    AuthorId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Albums", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Albums_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Albums_Users_AuthorId",
+                        column: x => x.AuthorId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -61,8 +61,8 @@ namespace MyAlbum.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
                     FilePath = table.Column<string>(nullable: true),
-                    AlbumId = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: true)
+                    AlbumId = table.Column<int>(nullable: true),
+                    AuthorId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -72,10 +72,10 @@ namespace MyAlbum.Migrations
                         column: x => x.AlbumId,
                         principalTable: "Albums",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Photos_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Photos_Users_AuthorId",
+                        column: x => x.AuthorId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -88,22 +88,22 @@ namespace MyAlbum.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(nullable: true),
-                    PhotoId = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: true)
+                    PhotoId = table.Column<int>(nullable: true),
+                    AuthorId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Comments_Users_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Comments_Photos_PhotoId",
                         column: x => x.PhotoId,
                         principalTable: "Photos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Comments_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -133,19 +133,19 @@ namespace MyAlbum.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Albums_UserId",
+                name: "IX_Albums_AuthorId",
                 table: "Albums",
-                column: "UserId");
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_AuthorId",
+                table: "Comments",
+                column: "AuthorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_PhotoId",
                 table: "Comments",
                 column: "PhotoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_UserId",
-                table: "Comments",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PhotoCategories_CategoryId",
@@ -158,9 +158,9 @@ namespace MyAlbum.Migrations
                 column: "AlbumId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photos_UserId",
+                name: "IX_Photos_AuthorId",
                 table: "Photos",
-                column: "UserId");
+                column: "AuthorId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

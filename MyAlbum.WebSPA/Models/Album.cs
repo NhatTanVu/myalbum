@@ -9,8 +9,7 @@ namespace MyAlbum.Models
         public string Name { get; set; }
         public ICollection<Photo> Photos { get; set; }
 
-        public string UserId { get; set; }
-        public User User { get; set; }
+        public User Author { get; set; }
 
         public Album()
         {
