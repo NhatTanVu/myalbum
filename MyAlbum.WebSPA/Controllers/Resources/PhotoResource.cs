@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Http;
 
-namespace MyAlbum.Controllers.Resources
+namespace MyAlbum.WebSPA.Controllers.Resources
 {
     public class PhotoResource: IEquatable<PhotoResource>
     {
@@ -11,6 +12,8 @@ namespace MyAlbum.Controllers.Resources
         public string Name { get; set; }
 
         public string FilePath { get; set; }
+
+        public IFormFile FileToUpload { get; set; }
 
         public ICollection<CommentResource> Comments { get; set; }
         public ICollection<CategoryResource> PhotoCategories { get; set; }

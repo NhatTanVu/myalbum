@@ -1,4 +1,4 @@
-namespace MyAlbum.Controllers.Resources
+namespace MyAlbum.WebSPA.Controllers.Resources
 {
     public class CategoryResource
     {

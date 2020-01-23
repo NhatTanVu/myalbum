@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace MyAlbum.Controllers
+namespace MyAlbum.WebSPA.Controllers
 {
     [ApiController]
     [Route("[controller]")]

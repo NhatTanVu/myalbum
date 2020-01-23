@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using MyAlbum.Models;
+using MyAlbum.Core.Models;
 
 namespace MyAlbum.Persistence
 {
