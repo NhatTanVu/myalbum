@@ -3,12 +3,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using MyAlbum.Controllers;
-using MyAlbum.Controllers.Resources;
-using MyAlbum.Mapping;
-using MyAlbum.Models;
+using MyAlbum.WebSPA.Controllers;
+using MyAlbum.WebSPA.Controllers.Resources;
+using MyAlbum.WebSPA.Mapping;
+using MyAlbum.Core.Models;
 using MyAlbum.Persistence;
 using Xunit;
+using MyAlbum.Core;
+using Moq;
+using Microsoft.AspNetCore.Hosting;
 
 namespace MyAlbum.Tests.Controllers
 {
@@ -59,7 +62,11 @@ namespace MyAlbum.Tests.Controllers
             var seededPhotoResources = this._mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(seededPhotos);
             using (var context = new MyAlbumDbContext(options))
             {
-                PhotosController controller = new PhotosController(context, this._mapper);
+                var repository = new PhotoRepository(context);
+                var unitOfWork = new UnitOfWork(context);
+                var photoUploadService = new PhotoUploadService(new FileSystemPhotoStorage());
+                var mockHost = new Mock<IWebHostEnvironment>();
+                PhotosController controller = new PhotosController(this._mapper, repository, unitOfWork, photoUploadService, mockHost.Object);
                 // Act
                 var photos = await controller.GetPhotos();
                 // Assert

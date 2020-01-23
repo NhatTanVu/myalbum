@@ -1,0 +1,18 @@
+<h1>New Photo</h1>
+<p>
+    {{ photo | json }}
+  </p>
+<form #f="ngForm" (ngSubmit)="submit()">
+    <div class="form-group">
+        <label for="photoName">Name:</label>
+        <input id="photoName" name="photoName" type="text" class="form-control col-4" [(ngModel)]="photo.name" />
+    </div>
+    <div class="form-group">
+        <label for="photoFile">File:</label>
+        <input type="file" class="form-control-file" id="photoFile" name="photoFile" #photoFile />
+    </div>
+    <p>
+        <button class="btn btn-primary">Save</button>&nbsp;&nbsp;
+        <button class="btn btn-danger" type="button">Delete</button>
+      </p>    
+</form>

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyAlbum.Persistence;
+using MyAlbum.Core;
 
 namespace MyAlbum
 {
@@ -33,6 +34,11 @@ namespace MyAlbum
         {
             services.AddAutoMapper(typeof(Startup));
             services.AddDbContext<MyAlbumDbContext>(options => options.UseSqlServer(_config.GetConnectionString("Default")));
+            
+            services.AddScoped<IPhotoRepository, PhotoRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IPhotoUploadService, PhotoUploadService>();
+            services.AddScoped<IPhotoStorage, FileSystemPhotoStorage>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory

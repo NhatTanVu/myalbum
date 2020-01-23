@@ -1,8 +1,8 @@
 using AutoMapper;
-using MyAlbum.Controllers.Resources;
-using MyAlbum.Models;
+using MyAlbum.WebSPA.Controllers.Resources;
+using MyAlbum.Core.Models;
 
-namespace MyAlbum.Mapping
+namespace MyAlbum.WebSPA.Mapping
 {
     public class MappingProfile: Profile
     {
@@ -13,6 +13,8 @@ namespace MyAlbum.Mapping
             CreateMap<PhotoCategory, CategoryResource>(); // TODO: Need manual map
             CreateMap<Album, AlbumResource>();
             CreateMap<User, UserResource>();
+
+            CreateMap<PhotoResource, Photo>();
         }
     }
 }
