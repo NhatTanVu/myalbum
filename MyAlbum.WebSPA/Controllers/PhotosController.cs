@@ -37,10 +37,10 @@ namespace MyAlbum.WebSPA.Controllers
             var photos = await this.photoRepository.GetPhotos();
             return mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(photos);
         }
-
+        
         [HttpPost("/api/Photo")]
         public async Task<IActionResult> CreatePhoto([FromForm] PhotoResource photoResource)
-        {
+        {            
             var photo = this.mapper.Map<PhotoResource, Photo>(photoResource);
             if (photoResource.FileToUpload != null)
             {
@@ -57,6 +57,7 @@ namespace MyAlbum.WebSPA.Controllers
 
         private async Task<(int Height, int Width)> GetImageDimensions(IFormFile file)
         {
+            // Based on https://stackoverflow.com/questions/50377114/how-to-get-the-image-width-height-when-doing-upload-in-asp-net-core
             if (file != null)
             {
                 List<string> AcceptableImageExtentions = new List<string> { ".jpg", ".jpeg", ".png", ".bmp" };
