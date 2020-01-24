@@ -2,7 +2,7 @@ import { SavePhoto } from './../../models/SavePhoto';
 import { PhotoService } from './../../services/photo.service';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastyService } from 'ng2-toasty';
+import { ToastyService, ToastData } from 'ng2-toasty';
 
 @Component({
   selector: 'app-photo-form',
@@ -29,6 +29,7 @@ export class PhotoFormComponent implements OnInit {
     nativeElement.value = "";
 
     var result$ =  this.photoService.create(this.photo, photoFile);
+    var router = this.router;
     result$.subscribe(
       photo => {
         this.toasty.success({
@@ -36,13 +37,15 @@ export class PhotoFormComponent implements OnInit {
           msg: "Data was successfully saved.",
           theme: "bootstrap",
           showClose: true,
-          timeout: 5000
+          timeout: 1500,
+          onRemove: function(toast: ToastData) {
+            router.navigate(['/']);
+          }
         });
-        this.router.navigate(['/']);
       },
       err => {
         console.log(err);
       }
     );
-  }  
+  }
 }
