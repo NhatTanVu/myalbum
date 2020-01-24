@@ -8,10 +8,11 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
   photos: any[];
 
-  constructor(private photoService: PhotoService) { }
-
-  ngOnInit() {
+  constructor(private photoService: PhotoService) { 
     this.photoService.getAll()
       .subscribe(photos => this.photos = photos);
+  }
+
+  ngOnInit() {
   }
 }
