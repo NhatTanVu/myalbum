@@ -1,3 +1,4 @@
+import { Photo } from './../../models/photo';
 import { PhotoService } from './../../services/photo.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -6,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-  photos: any[];
+  photos: Photo[];
 
   constructor(private photoService: PhotoService) { 
     this.photoService.getAll()

@@ -1,4 +1,4 @@
-import { SavePhoto } from './../../models/SavePhoto';
+import { SavePhoto } from '../../models/photo';
 import { PhotoService } from './../../services/photo.service';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';

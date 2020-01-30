@@ -1,0 +1,9 @@
+<div *ngIf=" photo.id > 0 ">
+    <h1>{{ photo.name }}</h1>
+    <p>
+        <img src="/uploads/{{ photo.filePath }}" class="img-thumbnail">
+    </p>
+    <p>
+        <a class="btn btn-secondary" [routerLink]="['/']">View All Photos</a>
+      </p>    
+</div>
