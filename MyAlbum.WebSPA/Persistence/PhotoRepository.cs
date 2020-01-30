@@ -19,6 +19,19 @@ namespace MyAlbum.Persistence
             this.context.Add(photo);
         }
 
+        public async Task<Photo> GetAsync(int id, bool includeRelated = true)
+        {
+            if (!includeRelated)
+                return await context.Photos.FindAsync(id);
+            else
+                return await context.Photos
+                    .Include(v => v.Author)
+                    .Include(v => v.Album)
+                    .Include(v => v.Comments)
+                    .Include(v => v.PhotoCategories)
+                    .FirstOrDefaultAsync(v => v.Id == id);
+        }
+
         public async Task<IEnumerable<Photo>> GetPhotos()
         {
             var photos = await this.context.Photos.Include(p => p.Comments).Include(p => p.PhotoCategories).ToListAsync();

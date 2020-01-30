@@ -11,6 +11,7 @@ using System.IO;
 
 namespace MyAlbum.WebSPA.Controllers
 {
+    [Route("/api/photos")]
     public class PhotosController : Controller
     {
         private readonly IMapper mapper;
@@ -31,14 +32,14 @@ namespace MyAlbum.WebSPA.Controllers
             this.uploadsFolderPath = Path.Combine(host.WebRootPath, "uploads");
         }
 
-        [HttpGet("/api/Photos")]
+        [HttpGet]
         public async Task<IEnumerable<PhotoResource>> GetPhotos()
         {
             var photos = await this.photoRepository.GetPhotos();
             return mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(photos);
         }
         
-        [HttpPost("/api/Photo")]
+        [HttpPost]
         public async Task<IActionResult> CreatePhoto([FromForm] PhotoResource photoResource)
         {            
             var photo = this.mapper.Map<PhotoResource, Photo>(photoResource);
@@ -53,6 +54,19 @@ namespace MyAlbum.WebSPA.Controllers
             this.photoRepository.Add(photo);
             await this.unitOfWork.CompleteAsync();
             return Ok(mapper.Map<Photo, PhotoResource>(photo));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPhoto(int id)
+        {
+            var photo = await photoRepository.GetAsync(id);
+
+            if (photo == null)
+                return NotFound();
+
+            var photoResource = mapper.Map<Photo, PhotoResource>(photo);
+
+            return Ok(photoResource);
         }
 
         private async Task<(int Height, int Width)> GetImageDimensions(IFormFile file)

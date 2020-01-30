@@ -15,16 +15,7 @@ code {
   border-color: #1861ac;
 }
 
-.explore-gallery .img-frame {
-  border: 1px solid #CCC;
-  border-radius: 5px;
-  padding: 5px;
-  display: inline-block;
-  margin-right: 5px;
-  margin-bottom: 5px;
-}
-
-.explore-gallery .img-frame img {
+.explore-gallery img.img-thumbnail {
   max-height: 300px;
   min-height: 300px;
 }
