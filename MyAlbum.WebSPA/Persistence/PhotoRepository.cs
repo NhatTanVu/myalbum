@@ -29,6 +29,7 @@ namespace MyAlbum.Persistence
                     .Include(v => v.Album)
                     .Include(v => v.Comments)
                     .Include(v => v.PhotoCategories)
+                        .ThenInclude(pc => pc.Category)
                     .FirstOrDefaultAsync(v => v.Id == id);
         }
 

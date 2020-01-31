@@ -1,9 +1,10 @@
 <div *ngIf=" photo.id > 0 ">
     <h1>{{ photo.name }}</h1>
     <p>
-        <img src="/uploads/{{ photo.filePath }}" class="img-thumbnail">
+        <img src="{{ photo.filePath }}" class="img-thumbnail">
     </p>
+    <h2>Related Tags</h2>
     <p>
-        <a class="btn btn-secondary" [routerLink]="['/']">View All Photos</a>
-      </p>    
+        <a *ngFor="let cat of photo.photoCategories" class="btn btn-outline-secondary mr-2" [routerLink]="['/']">{{cat.name}}</a>
+    </p>
 </div>

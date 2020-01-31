@@ -8,6 +8,8 @@ using MyAlbum.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using MyAlbum.WebSPA.Core.ObjectDetection;
+using System.Linq;
 
 namespace MyAlbum.WebSPA.Controllers
 {
@@ -16,32 +18,48 @@ namespace MyAlbum.WebSPA.Controllers
     {
         private readonly IMapper mapper;
         private readonly IPhotoRepository photoRepository;
+        private readonly ICategoryRepository categoryRepository;
+        private readonly IUserRepository userRepository;
         private readonly IUnitOfWork unitOfWork;
         private readonly IPhotoUploadService photoUploadService;
         private readonly IWebHostEnvironment host;
         private readonly string uploadsFolderPath;
+        private readonly string uploadsFolderUrl;
+        public IObjectDetectionService objectDetectionService { get; }
 
-        public PhotosController(IMapper mapper, IPhotoRepository photoRepository,
-            IUnitOfWork unitOfWork, IPhotoUploadService photoUploadService, IWebHostEnvironment host)
+        public PhotosController(IMapper mapper, 
+            IPhotoRepository photoRepository, ICategoryRepository categoryRepository, IUserRepository userRepository,
+            IUnitOfWork unitOfWork, IPhotoUploadService photoUploadService,
+            IWebHostEnvironment host, IObjectDetectionService objectDetectionService)
         {
+            this.objectDetectionService = objectDetectionService;
             this.host = host;
             this.photoUploadService = photoUploadService;
             this.unitOfWork = unitOfWork;
             this.photoRepository = photoRepository;
+            this.categoryRepository = categoryRepository;
+            this.userRepository = userRepository;
             this.mapper = mapper;
             this.uploadsFolderPath = Path.Combine(host.WebRootPath, "uploads");
+            this.uploadsFolderUrl = "/uploads";
         }
 
         [HttpGet]
         public async Task<IEnumerable<PhotoResource>> GetPhotos()
         {
             var photos = await this.photoRepository.GetPhotos();
-            return mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(photos);
+            var photoResources = mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(photos);
+            photoResources = photoResources.Select(res =>  {
+                res.FilePath = this.uploadsFolderUrl + "/" + res.FilePath;
+                return res;
+            });
+
+            return photoResources;
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> CreatePhoto([FromForm] PhotoResource photoResource)
-        {            
+        {
             var photo = this.mapper.Map<PhotoResource, Photo>(photoResource);
             if (photoResource.FileToUpload != null)
             {
@@ -50,9 +68,21 @@ namespace MyAlbum.WebSPA.Controllers
                 var dimensions = await GetImageDimensions(fileToUpload);
                 photo.Height = dimensions.Height;
                 photo.Width = dimensions.Width;
+                string imageFilePath = Path.Combine(this.uploadsFolderPath, photo.FilePath);
+                var boxDicts = this.objectDetectionService.DetectObjectsFromImages(new List<string>(){ imageFilePath }, this.uploadsFolderPath);
+                var labels = boxDicts[imageFilePath].Select(b => b.Label);
+                if (labels.Any()) {
+                    var categories = this.categoryRepository.GetByNames(labels);
+                    photo.PhotoCategories = categories.Select(cat => new PhotoCategory(){
+                        Category = cat,
+                        Photo = photo
+                    }).ToList();
+                }
+                photo.Author = await this.userRepository.GetAsync(MyAlbum.Core.Models.User.AnonymousUser.Id); // TODO: Set correct user
             }
             this.photoRepository.Add(photo);
             await this.unitOfWork.CompleteAsync();
+
             return Ok(mapper.Map<Photo, PhotoResource>(photo));
         }
 
@@ -65,6 +95,7 @@ namespace MyAlbum.WebSPA.Controllers
                 return NotFound();
 
             var photoResource = mapper.Map<Photo, PhotoResource>(photo);
+            photoResource.FilePath = this.uploadsFolderUrl + "/" + photoResource.FilePath;
 
             return Ok(photoResource);
         }
@@ -113,7 +144,8 @@ namespace MyAlbum.WebSPA.Controllers
                     }
                 }
             }
+
             return (0, 0);
-        }        
+        }
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyAlbum.Persistence;
 using MyAlbum.Core;
+using MyAlbum.WebSPA.Core.ObjectDetection;
 
 namespace MyAlbum
 {
@@ -36,9 +37,12 @@ namespace MyAlbum
             services.AddDbContext<MyAlbumDbContext>(options => options.UseSqlServer(_config.GetConnectionString("Default")));
             
             services.AddScoped<IPhotoRepository, PhotoRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPhotoUploadService, PhotoUploadService>();
             services.AddScoped<IPhotoStorage, FileSystemPhotoStorage>();
+            services.AddScoped<IObjectDetectionService, ObjectDetectionService>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory

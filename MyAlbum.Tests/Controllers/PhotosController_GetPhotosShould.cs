@@ -12,6 +12,7 @@ using Xunit;
 using MyAlbum.Core;
 using Moq;
 using Microsoft.AspNetCore.Hosting;
+using MyAlbum.WebSPA.Core.ObjectDetection;
 
 namespace MyAlbum.Tests.Controllers
 {
@@ -52,7 +53,7 @@ namespace MyAlbum.Tests.Controllers
         }
 
         [Fact]
-        public async Task GetPhotos_ReturnPhotos()
+        public async Task GetPhotos()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<MyAlbumDbContext>()
@@ -62,11 +63,15 @@ namespace MyAlbum.Tests.Controllers
             var seededPhotoResources = this._mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(seededPhotos);
             using (var context = new MyAlbumDbContext(options))
             {
-                var repository = new PhotoRepository(context);
+                var photoRepository = new PhotoRepository(context);
+                var categoryRepository = new CategoryRepository(context);
+                var userRepository = new UserRepository(context);
                 var unitOfWork = new UnitOfWork(context);
                 var photoUploadService = new PhotoUploadService(new FileSystemPhotoStorage());
                 var mockHost = new Mock<IWebHostEnvironment>();
-                PhotosController controller = new PhotosController(this._mapper, repository, unitOfWork, photoUploadService, mockHost.Object);
+                mockHost.SetupGet(m => m.WebRootPath).Returns(string.Empty);
+                var mockObjectDetectionService = new Mock<IObjectDetectionService>();
+                PhotosController controller = new PhotosController(this._mapper, photoRepository, categoryRepository, userRepository, unitOfWork, photoUploadService, mockHost.Object, mockObjectDetectionService.Object);
                 // Act
                 var photos = await controller.GetPhotos();
                 // Assert
