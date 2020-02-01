@@ -5,6 +5,6 @@
     </p>
     <h2>Related Tags</h2>
     <p>
-        <a *ngFor="let cat of photo.photoCategories" class="btn btn-outline-secondary mr-2" [routerLink]="['/']">{{cat.name}}</a>
+        <a *ngFor="let cat of photo.photoCategories" class="btn btn-outline-secondary mr-2" [routerLink]="['/']" [queryParams]="{'catId': cat.id}">{{cat.name}}</a>
     </p>
 </div>

@@ -13,10 +13,19 @@ namespace MyAlbum.WebSPA.Core.ObjectDetection
 {
     public class ObjectDetectionService : IObjectDetectionService
     {
-        private static readonly string assetsPath = @"C:\_code\MyAlbum\MyAlbum.WebSPA\Core\ObjectDetection\assets";
-        private static readonly string modelFilePath = Path.Combine(assetsPath, "Model", @"tiny_yolov2\Model.onnx");
+        private readonly string webRootPath;
+        private readonly string assetsPath;
+        private readonly string modelFilePath;
 
-        public IDictionary<string, IList<YoloBoundingBox>> DetectObjectsFromImages(List<string> imageFilePaths, string uploadFolderPath, string outputFolderPath)
+        public ObjectDetectionService(string webRootPath)
+        {
+            this.webRootPath = webRootPath;
+            this.assetsPath = Path.Combine(Directory.GetParent(this.webRootPath).FullName, @"Core\ObjectDetection\assets");
+            this.modelFilePath = Path.Combine(assetsPath, "Model", @"tiny_yolov2\Model.onnx");
+        }
+
+        public IDictionary<string, IList<YoloBoundingBox>> DetectObjectsFromImages(List<string> imageFilePaths, 
+            string uploadFolderPath, string outputFolderPath)
         {
             MLContext mlContext = new MLContext();
             IDictionary<string, IList<YoloBoundingBox>> detectedObjectsDict = new Dictionary<string, IList<YoloBoundingBox>>();
@@ -25,7 +34,7 @@ namespace MyAlbum.WebSPA.Core.ObjectDetection
             {
                 IEnumerable<ImageNetData> images = ImageNetData.ReadFromFiles(imageFilePaths);
                 IDataView imageDataView = mlContext.Data.LoadFromEnumerable(images);
-                var modelScorer = new OnnxModelScorer(modelFilePath, mlContext);
+                var modelScorer = new OnnxModelScorer(this.modelFilePath, mlContext);
 
                 YoloOutputParser parser = new YoloOutputParser();
                 IEnumerable<float[]> probabilities = modelScorer.Score(imageDataView); // Use model to score data

@@ -10,10 +10,20 @@ export class PhotoService {
   private readonly photosEndpoint = "/api/photos";
   constructor(private http: HttpClient) { }
 
-  getAll() {
-    return this.http.get(this.photosEndpoint)
+  getAll(filter) {
+    return this.http.get(this.photosEndpoint + '?' + this.toQueryString(filter))
       .pipe(map(res => <Photo[]>res));
   }
+
+  toQueryString(obj) {
+    var parts = [];
+    for (var prop in obj) {
+      var value = obj[prop];
+      if (value != null && value != undefined)
+        parts.push(encodeURIComponent(prop) + "=" + encodeURIComponent(value));
+    }
+    return parts.join("&");
+  }  
 
   create(photo: SavePhoto, file) {
     var formData = new FormData();

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MyAlbum.Core.Models;
 using MyAlbum.Core;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace MyAlbum.Persistence
 {
@@ -33,9 +34,15 @@ namespace MyAlbum.Persistence
                     .FirstOrDefaultAsync(v => v.Id == id);
         }
 
-        public async Task<IEnumerable<Photo>> GetPhotos()
+        public async Task<IEnumerable<Photo>> GetPhotos(PhotoQuery filter)
         {
-            var photos = await this.context.Photos.Include(p => p.Comments).Include(p => p.PhotoCategories).ToListAsync();
+            IQueryable<Photo> query = this.context.Photos
+                .Include(p => p.Comments)
+                .Include(p => p.PhotoCategories)
+                .AsQueryable();
+            if (filter.CategoryId.HasValue)
+                query = query.Where(p => p.PhotoCategories.Select(pc => pc.CategoryId).Any(id => id == filter.CategoryId));
+            var photos = await query.ToListAsync();
             return photos;
         }
     }

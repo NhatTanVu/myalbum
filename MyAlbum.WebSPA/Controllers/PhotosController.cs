@@ -50,9 +50,10 @@ namespace MyAlbum.WebSPA.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<PhotoResource>> GetPhotos()
+        public async Task<IEnumerable<PhotoResource>> GetPhotos(PhotoQueryResource filterResource)
         {
-            var photos = await this.photoRepository.GetPhotos();
+            var filter = mapper.Map<PhotoQueryResource, PhotoQuery>(filterResource);
+            var photos = await this.photoRepository.GetPhotos(filter);
             var photoResources = mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(photos);
             photoResources = photoResources.Select(res =>  {
                 string orgFilePath = res.FilePath;
