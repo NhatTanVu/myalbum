@@ -5,6 +5,6 @@ namespace MyAlbum.WebSPA.Core.ObjectDetection
 {
     public interface IObjectDetectionService
     {
-        IDictionary<string, IList<YoloBoundingBox>> DetectObjectsFromImages(List<string> imageFilePaths, string uploadFolderPath);
+        IDictionary<string, IList<YoloBoundingBox>> DetectObjectsFromImages(List<string> imageFilePaths, string uploadFolderPath, string outputFolderPath);
     }
 }

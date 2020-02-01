@@ -13,11 +13,13 @@ export class ViewPhotoComponent implements OnInit {
     id: 0,
     name: "",
     filePath: "",
+    boundingBoxFilePath: "",
     width: 0,
     height: 0,
     photoCategories: []
   };
-  photoId: number; 
+  photoId: number;
+  isShownBoundingBox: boolean = false;
 
   constructor(
     private photoService: PhotoService,
@@ -32,5 +34,4 @@ export class ViewPhotoComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }

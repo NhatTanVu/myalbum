@@ -19,3 +19,7 @@ code {
   max-height: 300px;
   min-height: 300px;
 }
+
+#view-photo a:hover {
+  cursor: pointer;
+}
