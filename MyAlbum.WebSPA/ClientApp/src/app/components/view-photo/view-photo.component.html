@@ -1,7 +1,7 @@
-<div *ngIf=" photo.id > 0 ">
+<div id="view-photo" *ngIf=" photo.id > 0 ">
     <h1>{{ photo.name }}</h1>
     <p>
-        <img src="{{ photo.filePath }}" class="img-thumbnail">
+        <a (click)="isShownBoundingBox = !isShownBoundingBox"><img src="{{ isShownBoundingBox ? photo.boundingBoxFilePath : photo.filePath }}" class="img-thumbnail"></a>
     </p>
     <h2>Related Tags</h2>
     <p>

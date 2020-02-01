@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using MyAlbum.WebSPA.Core.ObjectDetection;
 using System.Linq;
+using System;
 
 namespace MyAlbum.WebSPA.Controllers
 {
@@ -25,6 +26,8 @@ namespace MyAlbum.WebSPA.Controllers
         private readonly IWebHostEnvironment host;
         private readonly string uploadsFolderPath;
         private readonly string uploadsFolderUrl;
+        private readonly string outputFolderPath;
+        private readonly string outputFolderUrl;        
         public IObjectDetectionService objectDetectionService { get; }
 
         public PhotosController(IMapper mapper, 
@@ -42,6 +45,8 @@ namespace MyAlbum.WebSPA.Controllers
             this.mapper = mapper;
             this.uploadsFolderPath = Path.Combine(host.WebRootPath, "uploads");
             this.uploadsFolderUrl = "/uploads";
+            this.outputFolderPath = Path.Combine(host.WebRootPath, "uploads", "output");
+            this.outputFolderUrl = "/uploads/output";
         }
 
         [HttpGet]
@@ -50,7 +55,9 @@ namespace MyAlbum.WebSPA.Controllers
             var photos = await this.photoRepository.GetPhotos();
             var photoResources = mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(photos);
             photoResources = photoResources.Select(res =>  {
-                res.FilePath = this.uploadsFolderUrl + "/" + res.FilePath;
+                string orgFilePath = res.FilePath;
+                res.FilePath = Path.Combine(this.uploadsFolderUrl, orgFilePath);
+                res.BoundingBoxFilePath = string.Format("{0}/{1}", this.outputFolderUrl, orgFilePath);
                 return res;
             });
 
@@ -69,7 +76,7 @@ namespace MyAlbum.WebSPA.Controllers
                 photo.Height = dimensions.Height;
                 photo.Width = dimensions.Width;
                 string imageFilePath = Path.Combine(this.uploadsFolderPath, photo.FilePath);
-                var boxDicts = this.objectDetectionService.DetectObjectsFromImages(new List<string>(){ imageFilePath }, this.uploadsFolderPath);
+                var boxDicts = this.objectDetectionService.DetectObjectsFromImages(new List<string>(){ imageFilePath }, this.uploadsFolderPath, this.outputFolderPath);
                 var labels = boxDicts[imageFilePath].Select(b => b.Label);
                 if (labels.Any()) {
                     var categories = this.categoryRepository.GetByNames(labels);
@@ -95,7 +102,9 @@ namespace MyAlbum.WebSPA.Controllers
                 return NotFound();
 
             var photoResource = mapper.Map<Photo, PhotoResource>(photo);
-            photoResource.FilePath = this.uploadsFolderUrl + "/" + photoResource.FilePath;
+            string orgFilePath = photoResource.FilePath;
+            photoResource.FilePath = Path.Combine(this.uploadsFolderUrl,  orgFilePath);
+            photoResource.BoundingBoxFilePath = string.Format("{0}/{1}", this.outputFolderUrl, orgFilePath);
 
             return Ok(photoResource);
         }

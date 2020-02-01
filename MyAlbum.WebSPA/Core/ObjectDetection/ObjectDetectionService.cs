@@ -16,11 +16,10 @@ namespace MyAlbum.WebSPA.Core.ObjectDetection
         private static readonly string assetsPath = @"C:\_code\MyAlbum\MyAlbum.WebSPA\Core\ObjectDetection\assets";
         private static readonly string modelFilePath = Path.Combine(assetsPath, "Model", @"tiny_yolov2\Model.onnx");
 
-        public IDictionary<string, IList<YoloBoundingBox>> DetectObjectsFromImages(List<string> imageFilePaths, string uploadFolderPath)
+        public IDictionary<string, IList<YoloBoundingBox>> DetectObjectsFromImages(List<string> imageFilePaths, string uploadFolderPath, string outputFolderPath)
         {
             MLContext mlContext = new MLContext();
             IDictionary<string, IList<YoloBoundingBox>> detectedObjectsDict = new Dictionary<string, IList<YoloBoundingBox>>();
-            string outputFolder = Path.Combine(uploadFolderPath, "output");
 
             try
             {
@@ -41,7 +40,7 @@ namespace MyAlbum.WebSPA.Core.ObjectDetection
                     string imageFilePath = images.ElementAt(i).ImagePath;
                     IList<YoloBoundingBox> detectedObjects = boundingBoxes.ElementAt(i);
                     detectedObjectsDict.Add(imageFilePath, detectedObjects);
-                    DrawBoundingBox(imageFilePath, outputFolder, imageFileName, detectedObjects);
+                    DrawBoundingBox(imageFilePath, outputFolderPath, imageFileName, detectedObjects);
                 }
 
                 return detectedObjectsDict;

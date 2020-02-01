@@ -13,14 +13,11 @@ namespace MyAlbum.WebSPA.Controllers.Resources
         public int Width { get; set; }
         public int Height { get; set; }
         public string FilePath { get; set; }
-
+        public string BoundingBoxFilePath { get; set; }
         public IFormFile FileToUpload { get; set; }
-
         public ICollection<CommentResource> Comments { get; set; }
         public ICollection<CategoryResource> PhotoCategories { get; set; }
-
         public AlbumResource Album { get; set; }
-
         public UserResource Author { get; set; }
 
         public PhotoResource()

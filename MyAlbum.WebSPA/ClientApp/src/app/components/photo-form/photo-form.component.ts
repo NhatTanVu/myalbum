@@ -26,7 +26,7 @@ export class PhotoFormComponent implements OnInit {
   submit() {
     var nativeElement: HTMLInputElement = this.fileInput.nativeElement;
     var photoFile = nativeElement.files[0];
-    nativeElement.value = "";
+    //nativeElement.value = "";
 
     var result$ =  this.photoService.create(this.photo, photoFile);
     var router = this.router;
