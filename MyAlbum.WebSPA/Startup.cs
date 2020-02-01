@@ -42,7 +42,7 @@ namespace MyAlbum
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPhotoUploadService, PhotoUploadService>();
             services.AddScoped<IPhotoStorage, FileSystemPhotoStorage>();
-            services.AddScoped<IObjectDetectionService, ObjectDetectionService>();
+            services.AddScoped<IObjectDetectionService, ObjectDetectionService>(s => new ObjectDetectionService(this._env.WebRootPath));
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory

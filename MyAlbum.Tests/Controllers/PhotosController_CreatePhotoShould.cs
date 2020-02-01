@@ -72,8 +72,9 @@ namespace MyAlbum.Tests.Controllers
                 mockHost.SetupGet(m => m.WebRootPath).Returns(string.Empty);
                 var mockObjectDetectionService = new Mock<IObjectDetectionService>();
                 PhotosController controller = new PhotosController(this._mapper, photoRepository, categoryRepository, userRepository, unitOfWork, photoUploadService, mockHost.Object, mockObjectDetectionService.Object);
+                var filterResource = new PhotoQueryResource();
                 // Act
-                var photos = await controller.GetPhotos();
+                var photos = await controller.GetPhotos(filterResource);
                 // Assert
                 Assert.True(seededPhotoResources.SequenceEqual(photos));
             }
