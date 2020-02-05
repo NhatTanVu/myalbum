@@ -6,7 +6,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <div class="flip-container" (click)="isShownBoundingBox = !isShownBoundingBox" [class.flip]="isShownBoundingBox" >
+            <div class="flip-container" (click)="isShownBoundingBox = !isShownBoundingBox" [class.flip]="isShownBoundingBox" [class.portrait]="photo.width < photo.height" >
                 <div class="flipper">
                     <div class="front">
                         <!-- front content -->
