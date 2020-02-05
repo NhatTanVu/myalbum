@@ -1,10 +1,29 @@
-<div id="view-photo" *ngIf=" photo.id > 0 ">
-    <h1>{{ photo.name }}</h1>
-    <p>
-        <a (click)="isShownBoundingBox = !isShownBoundingBox"><img src="{{ isShownBoundingBox ? photo.boundingBoxFilePath : photo.filePath }}" class="img-thumbnail"></a>
-    </p>
-    <h2>Related Tags</h2>
-    <p>
-        <a *ngFor="let cat of photo.photoCategories" class="btn btn-outline-secondary mr-2" [routerLink]="['/']" [queryParams]="{'catId': cat.id}">{{cat.name}}</a>
-    </p>
+<div id="view-photo" *ngIf="photo.id > 0">
+    <div class="row">
+        <div class="col">
+            <h3>{{ photo.name }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="flip-container" (click)="isShownBoundingBox = !isShownBoundingBox" [class.flip]="isShownBoundingBox" >
+                <div class="flipper">
+                    <div class="front">
+                        <!-- front content -->
+                        <img src="{{ photo.filePath }}" class="img-thumbnail">
+                    </div>
+                    <div class="back">
+                        <!-- back content -->
+                        <img src="{{ photo.boundingBoxFilePath }}" class="img-thumbnail">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <h3>Related Tags</h3>
+            <p>
+                <a *ngFor="let cat of photo.photoCategories" class="btn btn-outline-secondary mr-2" [routerLink]="['/']" [queryParams]="{'catId': cat.id}">{{cat.name}}</a>
+            </p>
+        </div>
+    </div>
 </div>
