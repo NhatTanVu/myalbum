@@ -35,7 +35,12 @@ code {
   }
   
   .flip-container, .flip-container .front, .flip-container .back, .flip-container .flipper .img-thumbnail {
-    width: 540px;
+    width: 480px;
+    height: 360px;
+  }
+
+  .flip-container.portrait, .flip-container.portrait .front, .flip-container.portrait .back, .flip-container.portrait .flipper .img-thumbnail {
+    width: 270px;
     height: 360px;
   }
 
