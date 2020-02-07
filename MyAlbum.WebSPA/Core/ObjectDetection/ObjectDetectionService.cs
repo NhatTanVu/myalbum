@@ -20,8 +20,8 @@ namespace MyAlbum.WebSPA.Core.ObjectDetection
         public ObjectDetectionService(string webRootPath)
         {
             this.webRootPath = webRootPath;
-            this.assetsPath = Path.Combine(Directory.GetParent(this.webRootPath).FullName, @"Core\ObjectDetection\assets");
-            this.modelFilePath = Path.Combine(assetsPath, "Model", @"tiny_yolov2\Model.onnx");
+            this.assetsPath = Path.Combine(Directory.GetParent(this.webRootPath).FullName, "Core", "ObjectDetection", "assets").Replace(@"\", @"/");
+            this.modelFilePath = Path.Combine(assetsPath, "Model", "tiny_yolov2", "Model.onnx").Replace(@"\", @"/");
         }
 
         public IDictionary<string, IList<YoloBoundingBox>> DetectObjectsFromImages(List<string> imageFilePaths, 
