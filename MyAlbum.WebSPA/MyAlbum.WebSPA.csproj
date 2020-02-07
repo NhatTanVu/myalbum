@@ -62,4 +62,14 @@
     </ItemGroup>
   </Target>
 
+  <ItemGroup>
+    <Content Update="wwwroot/uploads/**" CopyToPublishDirectory="Never" />
+    <ResolvedFileToPublish Include="Core\ObjectDetection\assets\Model\tiny_yolov2\Model.onnx">
+      <RelativePath>Core\ObjectDetection\assets\Model\tiny_yolov2\Model.onnx</RelativePath>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </ResolvedFileToPublish>    
+  </ItemGroup>
+
+  
+
 </Project>
