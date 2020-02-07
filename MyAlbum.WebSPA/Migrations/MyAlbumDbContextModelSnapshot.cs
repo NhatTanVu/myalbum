@@ -19,7 +19,7 @@ namespace MyAlbum.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("MyAlbum.Models.Album", b =>
+            modelBuilder.Entity("MyAlbum.Core.Models.Album", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -39,7 +39,7 @@ namespace MyAlbum.Migrations
                     b.ToTable("Albums");
                 });
 
-            modelBuilder.Entity("MyAlbum.Models.Category", b =>
+            modelBuilder.Entity("MyAlbum.Core.Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,7 +54,7 @@ namespace MyAlbum.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("MyAlbum.Models.Comment", b =>
+            modelBuilder.Entity("MyAlbum.Core.Models.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -79,7 +79,7 @@ namespace MyAlbum.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("MyAlbum.Models.Photo", b =>
+            modelBuilder.Entity("MyAlbum.Core.Models.Photo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -113,7 +113,7 @@ namespace MyAlbum.Migrations
                     b.ToTable("Photos");
                 });
 
-            modelBuilder.Entity("MyAlbum.Models.PhotoCategory", b =>
+            modelBuilder.Entity("MyAlbum.Core.Models.PhotoCategory", b =>
                 {
                     b.Property<int>("PhotoId")
                         .HasColumnType("int");
@@ -128,7 +128,7 @@ namespace MyAlbum.Migrations
                     b.ToTable("PhotoCategories");
                 });
 
-            modelBuilder.Entity("MyAlbum.Models.User", b =>
+            modelBuilder.Entity("MyAlbum.Core.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -147,44 +147,44 @@ namespace MyAlbum.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("MyAlbum.Models.Album", b =>
+            modelBuilder.Entity("MyAlbum.Core.Models.Album", b =>
                 {
-                    b.HasOne("MyAlbum.Models.User", "Author")
+                    b.HasOne("MyAlbum.Core.Models.User", "Author")
                         .WithMany("Albums")
                         .HasForeignKey("AuthorId");
                 });
 
-            modelBuilder.Entity("MyAlbum.Models.Comment", b =>
+            modelBuilder.Entity("MyAlbum.Core.Models.Comment", b =>
                 {
-                    b.HasOne("MyAlbum.Models.User", "Author")
+                    b.HasOne("MyAlbum.Core.Models.User", "Author")
                         .WithMany("Comments")
                         .HasForeignKey("AuthorId");
 
-                    b.HasOne("MyAlbum.Models.Photo", "Photo")
+                    b.HasOne("MyAlbum.Core.Models.Photo", "Photo")
                         .WithMany("Comments")
                         .HasForeignKey("PhotoId");
                 });
 
-            modelBuilder.Entity("MyAlbum.Models.Photo", b =>
+            modelBuilder.Entity("MyAlbum.Core.Models.Photo", b =>
                 {
-                    b.HasOne("MyAlbum.Models.Album", "Album")
+                    b.HasOne("MyAlbum.Core.Models.Album", "Album")
                         .WithMany("Photos")
                         .HasForeignKey("AlbumId");
 
-                    b.HasOne("MyAlbum.Models.User", "Author")
+                    b.HasOne("MyAlbum.Core.Models.User", "Author")
                         .WithMany("Photos")
                         .HasForeignKey("AuthorId");
                 });
 
-            modelBuilder.Entity("MyAlbum.Models.PhotoCategory", b =>
+            modelBuilder.Entity("MyAlbum.Core.Models.PhotoCategory", b =>
                 {
-                    b.HasOne("MyAlbum.Models.Category", "Category")
+                    b.HasOne("MyAlbum.Core.Models.Category", "Category")
                         .WithMany("PhotoCategories")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyAlbum.Models.Photo", "Photo")
+                    b.HasOne("MyAlbum.Core.Models.Photo", "Photo")
                         .WithMany("PhotoCategories")
                         .HasForeignKey("PhotoId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -10,11 +10,13 @@ namespace MyAlbum.WebSPA.Mapping
         {
             CreateMap<Photo, PhotoResource>();
             CreateMap<Comment, CommentResource>();
-            CreateMap<PhotoCategory, CategoryResource>(); // TODO: Need manual map
+            CreateMap<PhotoCategory, CategoryResource>()
+                .ForMember(res => res.Name, opt => opt.MapFrom(cat => cat.Category.Name))
+                .ForMember(res => res.Id, opt => opt.MapFrom(cat => cat.Category.Id));
             CreateMap<Album, AlbumResource>();
             CreateMap<User, UserResource>();
-
             CreateMap<PhotoResource, Photo>();
+            CreateMap<PhotoQueryResource, PhotoQuery>();
         }
     }
 }

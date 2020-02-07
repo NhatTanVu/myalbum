@@ -1,4 +1,4 @@
-import { SavePhoto } from './../models/SavePhoto';
+import { SavePhoto, Photo } from '../models/photo';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, switchMap } from 'rxjs/operators';
@@ -7,13 +7,23 @@ import { map, switchMap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class PhotoService {
-
+  private readonly photosEndpoint = "/api/photos";
   constructor(private http: HttpClient) { }
 
-  getAll() {
-    return this.http.get('/api/photos')
-      .pipe(map(res => <Object[]>res));
+  getAll(filter) {
+    return this.http.get(this.photosEndpoint + '?' + this.toQueryString(filter))
+      .pipe(map(res => <Photo[]>res));
   }
+
+  toQueryString(obj) {
+    var parts = [];
+    for (var prop in obj) {
+      var value = obj[prop];
+      if (value != null && value != undefined)
+        parts.push(encodeURIComponent(prop) + "=" + encodeURIComponent(value));
+    }
+    return parts.join("&");
+  }  
 
   create(photo: SavePhoto, file) {
     var formData = new FormData();
@@ -21,6 +31,11 @@ export class PhotoService {
     formData.append('Id', photo.id.toString());
     formData.append('Name', photo.name);
 
-    return this.http.post('/api/photo', formData).pipe(map(res => <SavePhoto>res));
+    return this.http.post(this.photosEndpoint, formData).pipe(map(res => <SavePhoto>res));
+  }
+
+  getPhoto(id) {
+    return this.http.get(this.photosEndpoint + '/' + id)
+    .pipe(map(res => <Photo>res));
   }
 }

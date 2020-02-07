@@ -14,3 +14,61 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.explore-gallery img.img-thumbnail {
+  max-height: 300px;
+  min-height: 300px;
+}
+
+#view-photo a:hover {
+  cursor: pointer;
+}
+
+/* entire container, keeps perspective */
+.flip-container {
+  perspective: 4000px;
+  cursor: pointer;
+}
+	/* flip the pane when hovered */
+	.flip-container.flip .flipper {
+		transform: rotateY(180deg);
+  }
+  
+  .flip-container, .flip-container .front, .flip-container .back, .flip-container .flipper .img-thumbnail {
+    width: 480px;
+    height: 360px;
+  }
+
+  .flip-container.portrait, .flip-container.portrait .front, .flip-container.portrait .back, .flip-container.portrait .flipper .img-thumbnail {
+    width: 270px;
+    height: 360px;
+  }
+
+  /* flip speed goes here */
+  .flip-container .flipper {
+    transition: 0.6s;
+    transform-style: preserve-3d;
+
+    position: relative;
+  }
+
+  /* hide back of pane during swap */
+  .flip-container .front, .flip-container .back {
+    backface-visibility: hidden;
+    
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  /* front pane, placed above back */
+  .flip-container .front {
+    z-index: 2;
+    /* for firefox 31 */
+    transform: rotateY(0deg);
+  }
+
+  /* back, initially hidden pane */
+  .flip-container .back {
+    transform: rotateY(180deg);
+  }
