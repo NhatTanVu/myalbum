@@ -10,9 +10,35 @@
     <div class="form-group">
         <label for="photoFile">File:</label>
         <input type="file" class="form-control-file" id="photoFile" name="photoFile" #photoFile />
+        <div class="row">
+            <label class="col-sm-2 col-form-label col-form-label-sm"><i>Please choose photos with these objects:</i></label>
+            <div class="col-sm-10">
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">aeroplane</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">bicycle</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">bird</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">boat</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">bottle</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">bus</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">car</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">cat</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">chair</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">cow</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">dinningtable</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">dog</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">horse</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">motorbike</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">person</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">pottedplant</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">sheep</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">sofa</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">train</span>
+                <span class="btn btn-outline-secondary mr-1 mt-1 btn-sm">tvmonitor</span>
+            </div>
+        </div>
+
     </div>
     <p>
-        <button class="btn btn-primary">Save</button>&nbsp;&nbsp;
-        <button class="btn btn-danger" type="button">Delete</button>
+        <button class="btn btn-primary" type="submit">Save</button>&nbsp;&nbsp;
+        <button class="btn btn-secondary" type="button" (click)="cancel()">Cancel</button>
       </p>    
 </form>
