@@ -44,5 +44,9 @@ export class PhotoFormComponent implements OnInit {
         console.log(err);
       }
     );
-  }  
+  }
+
+  cancel() {
+    this.router.navigate(['/']);
+  }
 }
