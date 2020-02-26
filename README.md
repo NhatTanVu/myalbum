@@ -14,7 +14,7 @@ Website to share albums and photos
 2. **View Photo**\
 ![View Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/view_photo.JPG?raw=true)
 
-3. **View Photo with Object Detection** (click on the image)
+3. **View Photo with Object Detection** (click on the photo)
 ![View Photo with Object Detection](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/view_photo_object_detection.JPG?raw=true)
 
 4. **New Photo**\
