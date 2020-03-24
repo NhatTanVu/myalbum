@@ -25,6 +25,17 @@ export class PhotoFormComponent implements OnInit {
 
   submit() {
     var nativeElement: HTMLInputElement = this.fileInput.nativeElement;
+    if (!nativeElement.files || nativeElement.files.length == 0) {
+      this.toasty.error({
+        title: "Error",
+        msg: "Photo is required.",
+        theme: "bootstrap",
+        showClose: true,
+        timeout: 1500
+      });
+      return;
+    }
+
     var photoFile = nativeElement.files[0];
     //nativeElement.value = "";
 
