@@ -47,7 +47,7 @@ export class PhotoService {
     formData.append('Id', photo.id.toString());
     formData.append('Name', photo.name);
 
-    return this.http.post(this.photosEndpoint, formData, this.httpOptions)
+    return this.http.post(this.photosEndpoint, formData)
       .pipe(map(res => <SavePhoto>res));
   }
 
