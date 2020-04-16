@@ -87,11 +87,14 @@ namespace MyAlbum.WebSPA.Controllers
                     }).ToList();
                 }
                 photo.Author = await this.userRepository.GetAsync(MyAlbum.Core.Models.User.AnonymousUser.Id); // TODO: Set correct user
-            }
-            this.photoRepository.Add(photo);
-            await this.unitOfWork.CompleteAsync();
 
-            return Ok(mapper.Map<Photo, PhotoResource>(photo));
+                this.photoRepository.Add(photo);
+                await this.unitOfWork.CompleteAsync();
+
+                return Ok(mapper.Map<Photo, PhotoResource>(photo));
+            }
+            else
+                return NoContent();
         }
 
         [HttpGet("{id}")]
