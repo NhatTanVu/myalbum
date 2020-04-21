@@ -1,11 +1,11 @@
-<div id="view-photo" *ngIf="photo.id > 0">
+<div id="view-photo">
     <div class="row">
         <div class="col">
             <h3>{{ photo.name }}</h3>
         </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-lg-6">
             <div class="flip-container" (click)="isShownBoundingBox = !isShownBoundingBox" [class.flip]="isShownBoundingBox" [class.portrait]="photo.width < photo.height" >
                 <div class="flipper">
                     <div class="front">
@@ -19,11 +19,29 @@
                 </div>
             </div>
         </div>
-        <div class="col">
-            <h3>Related Tags</h3>
-            <p>
-                <a *ngFor="let cat of photo.photoCategories" class="btn btn-outline-secondary mr-2" [routerLink]="['/']" [queryParams]="{'catId': cat.id}">{{cat.name}}</a>
-            </p>
+        <div class="col-lg-6">
+            <div class="row">
+                <div class="col">
+                    <h4>Tags</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <a *ngFor="let cat of photo.photoCategories" class="btn btn-outline-secondary mr-2 mb-2" [routerLink]="['/']" [queryParams]="{'catId': cat.id}">{{cat.name}}</a>
+                </div>
+            </div>
+            <div [ngStyle]="(hasMap === false || hasMap === null) && {'display': 'none'}">
+                <div class="row">
+                    <div class="col">
+                        <h4>Map</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div id="gmap" #gmap></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

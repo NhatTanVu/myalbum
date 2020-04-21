@@ -33,15 +33,24 @@ code {
 	.flip-container.flip .flipper {
 		transform: rotateY(180deg);
   }
-  
-  .flip-container, .flip-container .front, .flip-container .back, .flip-container .flipper .img-thumbnail {
-    width: 480px;
-    height: 360px;
+
+  @media(min-width:512px){  
+    .flip-container, .flip-container .front, .flip-container .back, .flip-container .flipper .img-thumbnail {
+      width: 480px;
+      height: 360px;
+    }
+  }
+
+  @media(max-width:511px){
+    .flip-container, .flip-container .front, .flip-container .back, .flip-container .flipper .img-thumbnail {
+      width: auto;
+      height: 360px;
+    }
   }
 
   .flip-container.portrait, .flip-container.portrait .front, .flip-container.portrait .back, .flip-container.portrait .flipper .img-thumbnail {
-    width: 270px;
-    height: 360px;
+    width: 360px;
+    height: 450px;
   }
 
   /* flip speed goes here */
@@ -71,4 +80,13 @@ code {
   /* back, initially hidden pane */
   .flip-container .back {
     transform: rotateY(180deg);
+  }
+
+  /* Add-Photo map */
+  #gmap {
+    height: 400px;
+  }
+
+  #gmapSearchBox {
+    text-overflow: ellipsis;
   }
