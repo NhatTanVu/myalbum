@@ -1,5 +1,5 @@
 # My Album
-Website to share albums and photos
+Website to share albums, photos with Google Maps locations
 # Deploy to Azure
 1. Create 1 Azure App Service and 1 Azure SQL database
 2. Add 2 app settings: "**ASPNETCORE_ENVIRONMENT**" and "**ConnectionStrings:Default**" to Azure App Service as below:
