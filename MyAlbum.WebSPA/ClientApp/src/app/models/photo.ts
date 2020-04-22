@@ -6,9 +6,24 @@ export interface Photo {
     width: number;
     height: number;
     photoCategories: string[];
+    locLat: number;
+    locLng: number;
+    centerLat: number;
+    centerLng: number;
+    mapZoom: number;    
 }
 
 export interface SavePhoto {
     id: number;
     name: string;
+    locLat: number;
+    locLng: number;
+    centerLat: number;
+    centerLng: number;
+    mapZoom: number;
+}
+
+export interface PositionModel {
+    latitude: number;
+    longitude: number;
 }
