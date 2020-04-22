@@ -15,6 +15,12 @@ namespace MyAlbum.WebSPA.Controllers.Resources
         public string FilePath { get; set; }
         public string BoundingBoxFilePath { get; set; }
         public IFormFile FileToUpload { get; set; }
+        public double? LocLng { get; set; }
+        public double? LocLat { get; set; }
+        public double? CenterLng { get; set; }
+        public double? CenterLat { get; set; }
+        public int? MapZoom { get; set; }
+        public string MapFilePath { get; set; }        
         public ICollection<CommentResource> Comments { get; set; }
         public ICollection<CategoryResource> PhotoCategories { get; set; }
         public AlbumResource Album { get; set; }

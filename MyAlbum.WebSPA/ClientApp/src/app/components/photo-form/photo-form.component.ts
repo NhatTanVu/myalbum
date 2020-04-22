@@ -1,5 +1,8 @@
-import { SavePhoto } from '../../models/photo';
+/// <reference types="@types/googlemaps" />
+
+import { SavePhoto, PositionModel } from '../../models/photo';
 import { PhotoService } from './../../services/photo.service';
+import { LocationService } from './../../services/location.service';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastyService, ToastData } from 'ng2-toasty';
@@ -13,14 +16,100 @@ export class PhotoFormComponent implements OnInit {
   @ViewChild("photoFile", {static: false}) fileInput: ElementRef;
   photo: SavePhoto = {
     id: 0,
-    name: ""
-  }
+    name: null,
+    locLat: null,
+    locLng: null,
+    centerLat: null,
+    centerLng: null,
+    mapZoom: null
+  };
+  position: PositionModel = null;
+
+  @ViewChild('gmap', {static: false}) gmapElement: any;
+  map: google.maps.Map;
+  @ViewChild('gmapSearchBox', {static: false}) gmapSearchBox: any;
+  searchBox: google.maps.places.SearchBox;
+  marker: google.maps.Marker;
 
   constructor(private photoService: PhotoService,
+    private locationService: LocationService,
     private toasty: ToastyService,
     private router: Router) { }
 
-  ngOnInit() {
+  ngOnInit() { 
+  }
+
+  ngAfterViewInit() {
+    // Create map
+    var mapProp = {
+      center: new google.maps.LatLng(3.140853, 101.693207), // KUL
+      zoom: 12,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
+
+    // Set map to current location
+    this.locationService.getLocation().subscribe(loc => {
+      var gPosition = new google.maps.LatLng(loc.coords.latitude, loc.coords.longitude);
+      this.map.setCenter(gPosition);
+    });
+
+    var that = this;
+    // Listen to map's click event
+    this.map.addListener('click', function(e) {
+      that.placeMarkerAndPanTo(e.latLng);
+    });
+
+    // Create the search box and link it to the UI element.
+    this.searchBox = new google.maps.places.SearchBox(this.gmapSearchBox.nativeElement);
+
+    // Bias the SearchBox results towards current map's viewport.
+    this.map.addListener('bounds_changed', function() {
+      that.searchBox.setBounds(that.map.getBounds());
+    });
+
+    // var markers = [];
+    // Listen for the event fired when the user selects a prediction and retrieve
+    // more details for that place.
+    this.searchBox.addListener('places_changed', function() {
+      var places = that.searchBox.getPlaces();
+
+      if (places.length == 0) {
+        return;
+      }
+
+      // For each place, get the icon, name and location.
+      var bounds = new google.maps.LatLngBounds();
+      places.forEach(function(place) {
+        if (!place.geometry) {
+          console.log("Returned place contains no geometry");
+          return;
+        }
+
+        if (place.geometry.viewport) {
+          // Only geocodes have viewport.
+          bounds.union(place.geometry.viewport);
+        } else {
+          bounds.extend(place.geometry.location);
+        }
+      });
+
+      that.map.fitBounds(bounds);
+    });
+  }
+
+  placeMarkerAndPanTo(latLng: google.maps.LatLng) {
+    this.position = {
+      latitude: latLng.lat(),
+      longitude: latLng.lng()
+    };
+    if (this.marker)
+      this.marker.setMap(null);
+    this.marker = new google.maps.Marker({
+      position: latLng,
+      map: this.map
+    });
+    this.map.panTo(latLng);
   }
 
   submit() {
@@ -37,7 +126,13 @@ export class PhotoFormComponent implements OnInit {
     }
 
     var photoFile = nativeElement.files[0];
-    //nativeElement.value = "";
+    if (this.position) {
+      this.photo.locLat = this.position.latitude;
+      this.photo.locLng = this.position.longitude;
+      this.photo.centerLat = this.map.getCenter().lat();
+      this.photo.centerLng = this.map.getCenter().lng();
+      this.photo.mapZoom = this.map.getZoom();
+    }
 
     var result$ =  this.photoService.create(this.photo, photoFile);
     var router = this.router;

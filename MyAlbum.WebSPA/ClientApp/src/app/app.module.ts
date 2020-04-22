@@ -13,6 +13,8 @@ import { PhotoFormComponent } from './components/photo-form/photo-form.component
 import { PhotoService } from './services/photo.service';
 import { ToastyModule } from 'ng2-toasty';
 import { ViewPhotoComponent } from './components/view-photo/view-photo.component';
+import { LocationService } from './services/location.service';
+import { WindowRef } from './models/WindowRef';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { ViewPhotoComponent } from './components/view-photo/view-photo.component
     ToastyModule.forRoot()
   ],
   providers: [
-    PhotoService
+    PhotoService,
+    WindowRef,
+    LocationService
   ],
   bootstrap: [AppComponent]
 })
