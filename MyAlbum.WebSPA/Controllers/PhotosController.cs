@@ -49,8 +49,11 @@ namespace MyAlbum.WebSPA.Controllers
             this.outputFolderUrl = "/uploads/output";
         }
 
+        /// <summary>
+        /// Get a list of photos by filter
+        /// </summary>
         [HttpGet]
-        public async Task<IEnumerable<PhotoResource>> GetPhotos(PhotoQueryResource filterResource)
+        public async Task<IEnumerable<PhotoResource>> GetPhotos([FromQuery] PhotoQueryResource filterResource)
         {
             var filter = mapper.Map<PhotoQueryResource, PhotoQuery>(filterResource);
             var photos = await this.photoRepository.GetPhotos(filter);
@@ -65,6 +68,9 @@ namespace MyAlbum.WebSPA.Controllers
             return photoResources;
         }
 
+        /// <summary>
+        /// Create a new photo
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> CreatePhoto([FromForm] PhotoResource photoResource)
         {
@@ -97,8 +103,11 @@ namespace MyAlbum.WebSPA.Controllers
                 return NoContent();
         }
 
+        /// <summary>
+        /// Get a photo by id
+        /// </summary>
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPhoto(int id)
+        public async Task<IActionResult> GetPhoto([FromRoute] int id)
         {
             var photo = await photoRepository.GetAsync(id);
 

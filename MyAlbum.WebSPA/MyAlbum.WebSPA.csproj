@@ -24,7 +24,8 @@
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
     <PackageReference Include="Microsoft.ML" Version="1.4.0" />
     <PackageReference Include="Microsoft.ML.ImageAnalytics" Version="1.4.0" />
-    <PackageReference Include="Microsoft.ML.OnnxTransformer" Version="1.4.0" />    
+    <PackageReference Include="Microsoft.ML.OnnxTransformer" Version="1.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.3" />    
   </ItemGroup>
 
   <ItemGroup>
@@ -70,6 +71,9 @@
     </ResolvedFileToPublish>    
   </ItemGroup>
 
-  
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
 
 </Project>
