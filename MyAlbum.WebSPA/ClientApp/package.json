@@ -23,6 +23,8 @@
     "@angular/router": "8.0.0",
     "@fortawesome/fontawesome-free": "^5.12.0",
     "@nguniversal/module-map-ngfactory-loader": "8.0.0-rc.1",
+    "@ngx-loading-bar/core": "^4.2.0",
+    "@ngx-loading-bar/http-client": "^4.2.0",
     "@types/googlemaps": "^3.39.3",
     "aspnet-prerendering": "^3.0.1",
     "bootstrap": "^4.3.1",
