@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { retryWithBackoff } from './retryWithBackoff.operator';
 import { EMPTY } from 'rxjs';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 
 @Injectable({
   providedIn: 'root'
@@ -18,17 +19,22 @@ export class PhotoService {
     })
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private loadingBar: LoadingBarService) { }
 
   getAll(filter) {
+    this.loadingBar.start();
     return this.http.get(this.photosEndpoint + '?' + this.toQueryString(filter), this.httpOptions)
       .pipe(
         retryWithBackoff(1000, 5, 10000),
         catchError(error => {
+          this.loadingBar.stop();
           console.error(error);
           return EMPTY;
         }),
-        map(res => <Photo[]>res));
+        map(res => {
+          this.loadingBar.stop();
+          return <Photo[]>res;
+        }));
   }
 
   toQueryString(obj) {
