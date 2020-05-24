@@ -84,8 +84,8 @@ export class ViewPhotoComponent implements OnInit {
 
   resetNewComment() {
     this.newComment = {
-      id: this.photoId,
-      photoId: 0,
+      id: 0,
+      photoId: this.photoId,
       content: "",
       author: {
         userName: "",
