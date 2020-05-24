@@ -22,14 +22,19 @@ export class PhotoService {
   constructor(private http: HttpClient) { }
 
   getAll(filter) {
+    this.loadingBar.start();
     return this.http.get(this.photosEndpoint + '?' + this.toQueryString(filter), this.httpOptions)
       .pipe(
         retryWithBackoff(1000, 5, 10000),
         catchError(error => {
+          this.loadingBar.stop();
           console.error(error);
           return EMPTY;
         }),
-        map(res => <Photo[]>res));
+        map(res => {
+          this.loadingBar.stop();
+          return <Photo[]>res;
+        }));
   }
 
   toQueryString(obj) {

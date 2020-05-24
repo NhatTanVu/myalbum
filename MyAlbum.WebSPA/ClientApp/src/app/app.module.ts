@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { LoadingBarModule } from '@ngx-loading-bar/core';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
@@ -34,7 +35,8 @@ import { CommentService } from './services/comment.service';
       { path: 'photos/:id', component: ViewPhotoComponent }
     ]),
     ToastyModule.forRoot(),
-    LoadingBarHttpClientModule // for HttpClient use
+    LoadingBarHttpClientModule, // for HttpClient use
+    LoadingBarModule
   ],
   providers: [
     PhotoService,
