@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using MyAlbum.Core;
 using MyAlbum.Core.Models;
+using System.Linq;
 
 namespace MyAlbum.Persistence
 {
@@ -17,10 +18,15 @@ namespace MyAlbum.Persistence
             return await this.context.Users.FindAsync(id);
         }
 
-        public async Task<User> GetOrAdd(User user)
+        public User GetByUserNameAsync(string userName)
         {
-            string id = user.Id;
-            User existingUser = await GetAsync(id);
+            return this.context.Users.FirstOrDefault(u => u.UserName == userName);
+        }
+
+        public User GetOrAdd(User user)
+        {
+            string userName = user.UserName;
+            User existingUser = GetByUserNameAsync(userName);
             if (existingUser != null)
                 return existingUser;
             else
