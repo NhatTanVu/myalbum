@@ -5,6 +5,7 @@ import { map, catchError } from 'rxjs/operators';
 import { retryWithBackoff } from './retryWithBackoff.operator';
 import { EMPTY } from 'rxjs';
 import { setDisplayName } from '../models/comment';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class PhotoService {
     })
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private loadingBar: LoadingBarService) { }
 
   getAll(filter) {
     this.loadingBar.start();
