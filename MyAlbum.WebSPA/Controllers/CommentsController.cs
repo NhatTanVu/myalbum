@@ -37,7 +37,7 @@ namespace MyAlbum.WebSPA.Controllers
             if (photo != null)
             {
                 var comment = this.mapper.Map<CommentResource, Comment>(commentResource);
-                comment.Author = await this.userRepository.GetOrAdd(comment.Author);
+                comment.Author = this.userRepository.GetOrAdd(comment.Author);
                 comment.Photo = photo;
                 this.commentRepository.Add(comment);
                 await this.unitOfWork.CompleteAsync();
