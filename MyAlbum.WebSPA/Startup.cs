@@ -43,6 +43,7 @@ namespace MyAlbum
             services.AddScoped<IPhotoRepository, PhotoRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPhotoUploadService, PhotoUploadService>();
             services.AddScoped<IPhotoStorage, FileSystemPhotoStorage>();

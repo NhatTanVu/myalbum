@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { retryWithBackoff } from './retryWithBackoff.operator';
 import { EMPTY } from 'rxjs';
+import { setDisplayName } from '../models/comment';
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +59,12 @@ export class PhotoService {
 
   getPhoto(id) {
     return this.http.get(this.photosEndpoint + '/' + id, this.httpOptions)
-      .pipe(map(res => <Photo>res));
+      .pipe(map(res => {
+        var photo = <Photo>res;
+        photo.comments.forEach(comment => {
+          setDisplayName(comment.author);
+        });
+        return photo;
+      }));
   }
 }

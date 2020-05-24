@@ -1,3 +1,5 @@
+import { Comment } from './comment';
+
 export interface Photo {
     id: number;
     name: string;
@@ -10,7 +12,8 @@ export interface Photo {
     locLng: number;
     centerLat: number;
     centerLng: number;
-    mapZoom: number;    
+    mapZoom: number;   
+    comments: Comment[];
 }
 
 export interface SavePhoto {

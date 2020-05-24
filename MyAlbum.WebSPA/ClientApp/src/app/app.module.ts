@@ -14,6 +14,7 @@ import { ToastyModule } from 'ng2-toasty';
 import { ViewPhotoComponent } from './components/view-photo/view-photo.component';
 import { LocationService } from './services/location.service';
 import { WindowRef } from './models/WindowRef';
+import { CommentService } from './services/comment.service';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { WindowRef } from './models/WindowRef';
   ],
   providers: [
     PhotoService,
+    CommentService,
     WindowRef,
     LocationService
   ],

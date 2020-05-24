@@ -24,3 +24,8 @@ html {
 #gmap {
   height: 400px;
 }
+
+.required:after {
+  content:" *";
+  color: red;
+}

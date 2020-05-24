@@ -1,8 +1,10 @@
-import { Observable, of } from 'rxjs';
 import { Photo } from './../../models/photo';
 import { PhotoService } from './../../services/photo.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Comment, User } from './../../models/comment';
+import { CommentService } from 'src/app/services/comment.service';
+import { ToastyService } from 'ng2-toasty';
 
 @Component({
   selector: 'app-view-photo',
@@ -22,7 +24,19 @@ export class ViewPhotoComponent implements OnInit {
     locLng: null,
     centerLat: null,
     centerLng: null,
-    mapZoom: null
+    mapZoom: null,
+    comments: []
+  };
+  newComment: Comment = {
+    id: 0,
+    photoId: 0,
+    content: "",
+    author: {
+      userName: "",
+      firstName: "",
+      lastName: "",
+      displayName: ""
+    }
   };
   photoId: number;
   isShownBoundingBox: boolean = false;
@@ -33,10 +47,13 @@ export class ViewPhotoComponent implements OnInit {
 
   constructor(
     private photoService: PhotoService,
-    private route: ActivatedRoute
+    private commentService: CommentService,
+    private route: ActivatedRoute,
+    private toasty: ToastyService
   ) { 
-    route.params.subscribe(p => {
+    this.route.params.subscribe(p => {
       this.photoId = +p['id'];
+      this.newComment.photoId = this.photoId;
       this.photoService.getPhoto(this.photoId)
         .subscribe(photo => {
           this.photo = photo;
@@ -63,5 +80,39 @@ export class ViewPhotoComponent implements OnInit {
         map: this.map
       });
     }
+  }
+
+  resetNewComment() {
+    this.newComment = {
+      id: 0,
+      photoId: 0,
+      content: "",
+      author: {
+        userName: "",
+        firstName: "",
+        lastName: "",
+        displayName: ""
+      }
+    };
+  }
+
+  submitComment() {
+    var result$ =  this.commentService.create(this.newComment);
+    result$.subscribe(
+      comment => {
+        this.toasty.success({
+          title: "Success",
+          msg: "Comment was successfully posted.",
+          theme: "bootstrap",
+          showClose: true,
+          timeout: 1500
+        });
+        this.photo.comments.push(comment);
+        this.resetNewComment();
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 }
