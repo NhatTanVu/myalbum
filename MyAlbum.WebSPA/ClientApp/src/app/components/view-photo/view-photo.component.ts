@@ -38,7 +38,7 @@ export class ViewPhotoComponent implements OnInit {
       displayName: ""
     }
   };
-  photoId: number;
+  photoId: number = 0;
   isShownBoundingBox: boolean = false;
   hasMap: boolean = null;
 
@@ -84,7 +84,7 @@ export class ViewPhotoComponent implements OnInit {
 
   resetNewComment() {
     this.newComment = {
-      id: 0,
+      id: this.photoId,
       photoId: 0,
       content: "",
       author: {
