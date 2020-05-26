@@ -3,37 +3,39 @@
     {{ photo | json }}
   </p> -->
 <form #f="ngForm" (ngSubmit)="submit()">
-    <div class="form-group">
-        <label for="photoName">Name:</label>
-        <input id="photoName" name="photoName" type="text" class="form-control col-4" [(ngModel)]="photo.name" />
+  <div class="form-group">
+    <label for="photoName">Name:</label>
+    <input id="photoName" name="photoName" type="text" class="form-control col-4" [(ngModel)]="photo.name" />
+  </div>
+  <div class="form-group">
+    <label for="photoFile">Photo:</label>
+    <input type="file" class="form-control-file" id="photoFile" name="photoFile" #photoFile />
+    <div class="row">
+      <div class="col-sm-2 col-form-label-sm"><i>Please choose photos having these objects:</i></div>
+      <div class="col-sm-6 text-justify col-form-label-sm">
+        <i>aeroplane, bicycle, bird, boat, bottle, bus, car, cat, chair, cow, dinningtable, dog, horse, motorbike,
+          person, pottedplant, sheep, sofa, train, tvmonitor</i>
+      </div>
     </div>
-    <div class="form-group">
-        <label for="photoFile">Photo:</label>
-        <input type="file" class="form-control-file" id="photoFile" name="photoFile" #photoFile />
-        <div class="row">
-            <div class="col-sm-2 col-form-label-sm"><i>Please choose photos having these objects:</i></div>
-            <div class="col-sm-6 text-justify col-form-label-sm">
-                <i>aeroplane, bicycle, bird, boat, bottle, bus, car, cat, chair, cow, dinningtable, dog, horse, motorbike, person, pottedplant, sheep, sofa, train, tvmonitor</i>
-            </div>
-        </div>
+  </div>
+  <div class="form-group">
+    <div class="row">
+      <label class="col-sm-2 col-form-label col-form-label-sm" for="gmapSearchBox">Photo Location:</label>
+      <div class="col-sm-6">
+        <input id="gmapSearchBox" class="form-control" type="text" placeholder="Type location here..." #gmapSearchBox
+          (keydown.enter)="$event.preventDefault()">
+      </div>
     </div>
-    <div class="form-group">
-        <div class="row">
-            <label class="col-sm-2 col-form-label col-form-label-sm" for="gmapSearchBox">Photo Location:</label>
-            <div class="col-sm-6">
-                <input id="gmapSearchBox" class="form-control" type="text" placeholder="Type location here..." #gmapSearchBox (keydown.enter)="$event.preventDefault()">
-            </div>
-        </div>
+  </div>
+  <div class="form-group">
+    <div class="row">
+      <div class="col-sm-8">
+        <div id="gmap" #gmap></div>
+      </div>
     </div>
-    <div class="form-group">
-        <div class="row">
-            <div class="col-sm-8">  
-                <div id="gmap" #gmap></div>
-            </div>
-        </div>
-    </div>
-    <p>
-        <button class="btn btn-primary" type="submit">Save</button>&nbsp;&nbsp;
-        <button class="btn btn-secondary" type="button" (click)="cancel()">Cancel</button>
-    </p>    
+  </div>
+  <p>
+    <button class="btn btn-primary" type="submit">Save</button>&nbsp;&nbsp;
+    <button class="btn btn-secondary" type="button" (click)="cancel()">Cancel</button>
+  </p>
 </form>

@@ -3,6 +3,8 @@ export interface Comment {
     photoId: number;
     content: string;
     author: User;
+    connectionId: string;
+    isNew: boolean;
 }
 
 export interface User {

@@ -6,5 +6,6 @@ namespace MyAlbum.WebSPA.Controllers.Resources
         public int PhotoId { get; set; }
         public string Content { get; set; }
         public UserResource Author { get; set; }
+        public string ConnectionId { get; set; }
     }
 }

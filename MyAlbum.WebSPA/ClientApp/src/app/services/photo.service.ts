@@ -69,6 +69,7 @@ export class PhotoService {
         var photo = <Photo>res;
         photo.comments.forEach(comment => {
           setDisplayName(comment.author);
+          comment.isNew = false;
         });
         return photo;
       }));

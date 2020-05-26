@@ -1,9 +1,11 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using MyAlbum.Core;
 using MyAlbum.Core.Models;
 using MyAlbum.WebSPA.Controllers.Resources;
+using MyAlbum.WebSPA.Hubs;
 
 namespace MyAlbum.WebSPA.Controllers
 {
@@ -11,20 +13,22 @@ namespace MyAlbum.WebSPA.Controllers
     public class CommentsController : Controller
     {
         private readonly IMapper mapper;
+        private readonly IHubContext<CommentHub> commentHub;
         private readonly ICommentRepository commentRepository;
         private readonly IUserRepository userRepository;
         private readonly IUnitOfWork unitOfWork;
         private readonly IPhotoRepository photoRepository;
 
-        public CommentsController(IMapper mapper, ICommentRepository commentRepository,
-
-        IUserRepository userRepository, IPhotoRepository photoRepository, IUnitOfWork unitOfWork)
+        public CommentsController(IMapper mapper, IHubContext<CommentHub> commentHub,
+            ICommentRepository commentRepository,
+            IUserRepository userRepository, IPhotoRepository photoRepository, IUnitOfWork unitOfWork)
         {
             this.photoRepository = photoRepository;
             this.userRepository = userRepository;
             this.unitOfWork = unitOfWork;
             this.commentRepository = commentRepository;
             this.mapper = mapper;
+            this.commentHub = commentHub;
         }
 
         /// <summary>
@@ -41,8 +45,11 @@ namespace MyAlbum.WebSPA.Controllers
                 comment.Photo = photo;
                 this.commentRepository.Add(comment);
                 await this.unitOfWork.CompleteAsync();
+                CommentResource resourceResult = mapper.Map<Comment, CommentResource>(comment);
+                resourceResult.ConnectionId = commentResource.ConnectionId;
+                this.commentHub.Clients.All.SendAsync("commentAdded", resourceResult);
 
-                return Ok(mapper.Map<Comment, CommentResource>(comment));
+                return Ok(resourceResult);
             }
             else
                 return NoContent();
