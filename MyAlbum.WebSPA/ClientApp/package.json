@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "8.0.0",
     "@angular/platform-server": "8.0.0",
     "@angular/router": "8.0.0",
+    "@aspnet/signalr": "^1.1.4",
     "@fortawesome/fontawesome-free": "^5.12.0",
     "@nguniversal/module-map-ngfactory-loader": "8.0.0-rc.1",
     "@ngx-loading-bar/core": "^4.2.0",

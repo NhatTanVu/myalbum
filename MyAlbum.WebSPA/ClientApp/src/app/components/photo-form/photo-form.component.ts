@@ -13,7 +13,7 @@ import { ToastyService, ToastData } from 'ng2-toasty';
   styleUrls: ['./photo-form.component.css']
 })
 export class PhotoFormComponent implements OnInit {
-  @ViewChild("photoFile", {static: false}) fileInput: ElementRef;
+  @ViewChild("photoFile", { static: false }) fileInput: ElementRef;
   photo: SavePhoto = {
     id: 0,
     name: null,
@@ -25,9 +25,9 @@ export class PhotoFormComponent implements OnInit {
   };
   position: PositionModel = null;
 
-  @ViewChild('gmap', {static: false}) gmapElement: any;
+  @ViewChild('gmap', { static: false }) gmapElement: any;
   map: google.maps.Map;
-  @ViewChild('gmapSearchBox', {static: false}) gmapSearchBox: any;
+  @ViewChild('gmapSearchBox', { static: false }) gmapSearchBox: any;
   searchBox: google.maps.places.SearchBox;
   marker: google.maps.Marker;
 
@@ -36,7 +36,7 @@ export class PhotoFormComponent implements OnInit {
     private toasty: ToastyService,
     private router: Router) { }
 
-  ngOnInit() { 
+  ngOnInit() {
   }
 
   ngAfterViewInit() {
@@ -56,7 +56,7 @@ export class PhotoFormComponent implements OnInit {
 
     var that = this;
     // Listen to map's click event
-    this.map.addListener('click', function(e) {
+    this.map.addListener('click', function (e) {
       that.placeMarkerAndPanTo(e.latLng);
     });
 
@@ -64,14 +64,14 @@ export class PhotoFormComponent implements OnInit {
     this.searchBox = new google.maps.places.SearchBox(this.gmapSearchBox.nativeElement);
 
     // Bias the SearchBox results towards current map's viewport.
-    this.map.addListener('bounds_changed', function() {
+    this.map.addListener('bounds_changed', function () {
       that.searchBox.setBounds(that.map.getBounds());
     });
 
     // var markers = [];
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
-    this.searchBox.addListener('places_changed', function() {
+    this.searchBox.addListener('places_changed', function () {
       var places = that.searchBox.getPlaces();
 
       if (places.length == 0) {
@@ -80,7 +80,7 @@ export class PhotoFormComponent implements OnInit {
 
       // For each place, get the icon, name and location.
       var bounds = new google.maps.LatLngBounds();
-      places.forEach(function(place) {
+      places.forEach(function (place) {
         if (!place.geometry) {
           console.log("Returned place contains no geometry");
           return;
@@ -117,7 +117,7 @@ export class PhotoFormComponent implements OnInit {
     if (!nativeElement.files || nativeElement.files.length == 0) {
       this.toasty.error({
         title: "Error",
-        msg: "Photo is required.",
+        msg: "Photo required.",
         theme: "bootstrap",
         showClose: true,
         timeout: 1500
@@ -134,17 +134,17 @@ export class PhotoFormComponent implements OnInit {
       this.photo.mapZoom = this.map.getZoom();
     }
 
-    var result$ =  this.photoService.create(this.photo, photoFile);
+    var result$ = this.photoService.create(this.photo, photoFile);
     var router = this.router;
     result$.subscribe(
       photo => {
         this.toasty.success({
           title: "Success",
-          msg: "Data was successfully saved.",
+          msg: "Saved successfully.",
           theme: "bootstrap",
           showClose: true,
           timeout: 1500,
-          onRemove: function(toast: ToastData) {
+          onRemove: function (toast: ToastData) {
             router.navigate(['/']);
           }
         });
@@ -154,7 +154,7 @@ export class PhotoFormComponent implements OnInit {
       }
     );
   }
-  
+
   cancel() {
     this.router.navigate(['/']);
   }

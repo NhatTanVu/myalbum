@@ -36,13 +36,15 @@ export class ViewPhotoComponent implements OnInit {
       firstName: "",
       lastName: "",
       displayName: ""
-    }
+    },
+    connectionId: "",
+    isNew: true
   };
   photoId: number = 0;
   isShownBoundingBox: boolean = false;
   hasMap: boolean = null;
 
-  @ViewChild('gmap', {static: false}) gmapElement: any;
+  @ViewChild('gmap', { static: false }) gmapElement: any;
   map: google.maps.Map;
 
   constructor(
@@ -50,7 +52,7 @@ export class ViewPhotoComponent implements OnInit {
     private commentService: CommentService,
     private route: ActivatedRoute,
     private toasty: ToastyService
-  ) { 
+  ) {
     this.route.params.subscribe(p => {
       this.photoId = +p['id'];
       this.newComment.photoId = this.photoId;
@@ -61,9 +63,29 @@ export class ViewPhotoComponent implements OnInit {
           this.initializeMap();
         });
     });
+
+    this.commentService.addedComment$.subscribe(newComment => this.addedCommentSubscriber(newComment));
   }
 
   ngOnInit() {
+  }
+
+  addedCommentSubscriber(newComment: Comment) {
+    if (newComment.photoId == this.photoId) {
+      console.log('addedCommentSubscriber - ' + JSON.stringify(newComment));
+      this.toasty.info({
+        title: "Info",
+        msg: "New comment added.",
+        theme: "bootstrap",
+        showClose: true,
+        timeout: 10000
+      });
+
+      let newLength = this.photo.comments.push(newComment);
+      setTimeout(() => {
+        (<Comment>this.photo.comments[newLength - 1]).isNew = false;
+      }, 30000);
+    }
   }
 
   initializeMap() {
@@ -92,17 +114,19 @@ export class ViewPhotoComponent implements OnInit {
         firstName: "",
         lastName: "",
         displayName: ""
-      }
+      },
+      connectionId: "",
+      isNew: true
     };
   }
 
   submitComment() {
-    var result$ =  this.commentService.create(this.newComment);
+    var result$ = this.commentService.create(this.newComment);
     result$.subscribe(
       comment => {
         this.toasty.success({
           title: "Success",
-          msg: "Comment was successfully posted.",
+          msg: "Posted successfully.",
           theme: "bootstrap",
           showClose: true,
           timeout: 1500

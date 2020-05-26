@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.IO;
 using System;
+using MyAlbum.WebSPA.Hubs;
 
 namespace MyAlbum
 {
@@ -64,6 +65,8 @@ namespace MyAlbum
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,6 +107,7 @@ namespace MyAlbum
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapHub<CommentHub>("/commentHub");
             });
 
             app.UseSpa(spa =>
