@@ -16,6 +16,8 @@ import { ViewPhotoComponent } from './components/view-photo/view-photo.component
 import { LocationService } from './services/location.service';
 import { WindowRef } from './models/WindowRef';
 import { CommentService } from './services/comment.service';
+import { ReplyFormComponent } from './components/_partials/reply-form/reply-form.component';
+import { ReplyListComponent } from './components/_partials/reply-list/reply-list.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { CommentService } from './services/comment.service';
     NavMenuComponent,
     HomeComponent,
     PhotoFormComponent,
-    ViewPhotoComponent
+    ViewPhotoComponent,
+    ReplyFormComponent,
+    ReplyListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

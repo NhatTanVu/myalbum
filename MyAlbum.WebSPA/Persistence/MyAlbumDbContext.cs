@@ -29,6 +29,11 @@ namespace MyAlbum.Persistence
                 .HasOne(pc => pc.Category)
                 .WithMany(c => c.PhotoCategories)
                 .HasForeignKey(pc => pc.CategoryId);
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(p => p.Parent)
+                .WithMany(p => p.Replies)
+                .HasForeignKey(p => p.ParentId);
         }
     }
 }

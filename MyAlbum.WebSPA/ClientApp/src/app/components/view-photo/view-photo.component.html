@@ -101,11 +101,7 @@
         <hr />
       </div>
       <div>
-        <div *ngFor="let comment of photo.comments" class="mb-2">
-          <div><b>{{comment.author.displayName}}</b><i *ngIf="comment.isNew"
-              class="fas fa-comment-medical ml-2 text-info"></i></div>
-          <div>{{comment.content}}</div>
-        </div>
+        <app-reply-list [replies]="photo.comments"></app-reply-list>
       </div>
     </div>
   </div>

@@ -1,8 +1,8 @@
 import { Photo } from './../../models/photo';
 import { PhotoService } from './../../services/photo.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Comment, User } from './../../models/comment';
+import { ActivatedRoute } from '@angular/router';
+import { Comment } from './../../models/comment';
 import { CommentService } from 'src/app/services/comment.service';
 import { ToastyService } from 'ng2-toasty';
 
@@ -30,6 +30,7 @@ export class ViewPhotoComponent implements OnInit {
   newComment: Comment = {
     id: 0,
     photoId: 0,
+    parentId: null,
     content: "",
     author: {
       userName: "",
@@ -38,7 +39,12 @@ export class ViewPhotoComponent implements OnInit {
       displayName: ""
     },
     connectionId: "",
-    isNew: true
+    isNew: true,
+    isReplying: false,
+    isViewing: false,
+    areRepliesLoaded: false,
+    numOfReplies: 0,
+    replies: []
   };
   photoId: number = 0;
   isShownBoundingBox: boolean = false;
@@ -108,6 +114,7 @@ export class ViewPhotoComponent implements OnInit {
     this.newComment = {
       id: 0,
       photoId: this.photoId,
+      parentId: null,
       content: "",
       author: {
         userName: "",
@@ -116,7 +123,12 @@ export class ViewPhotoComponent implements OnInit {
         displayName: ""
       },
       connectionId: "",
-      isNew: true
+      isNew: true,
+      isReplying: false,
+      isViewing: false,
+      areRepliesLoaded: false,
+      numOfReplies: 0,
+      replies: []
     };
   }
 

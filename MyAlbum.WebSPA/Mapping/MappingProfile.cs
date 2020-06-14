@@ -9,7 +9,8 @@ namespace MyAlbum.WebSPA.Mapping
         public MappingProfile()
         {
             CreateMap<Photo, PhotoResource>();
-            CreateMap<Comment, CommentResource>();
+            CreateMap<Comment, CommentResource>()
+                .ForMember(dest => dest.PhotoId, opt => opt.MapFrom(src => src.Photo.Id));
             CreateMap<PhotoCategory, CategoryResource>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Category.Name))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Category.Id));
