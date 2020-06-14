@@ -25,3 +25,6 @@ Website to share albums, photos with Google Maps locations
 
 6. **View Photo >> Update New Comment (real-time)**
 ![View Photo >> Update New Comment (real-time)](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/update_new_comment_real_time.JPG?raw=true)
+
+7. **View Photo >> Add & View Reply**
+![View Photo >> Add & View Reply](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/view_add_reply.JPG?raw=true)
