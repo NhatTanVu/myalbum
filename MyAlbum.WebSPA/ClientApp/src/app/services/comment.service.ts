@@ -66,4 +66,16 @@ export class CommentService {
         return comment;
       }));
   }
+
+  getReplies(commentId: number) {
+    return this.http.get(this.commentsEndpoint + "/" + commentId, this.httpOptions)
+      .pipe(map(res => {
+        var comments = <Comment[]>res;
+        comments.forEach(function (comment) {
+          setDisplayName(comment.author);
+          comment.replies = [];
+        });
+        return comments;
+      }));
+  }
 }

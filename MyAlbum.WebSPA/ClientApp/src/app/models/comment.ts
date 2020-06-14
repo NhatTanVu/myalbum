@@ -1,10 +1,16 @@
 export interface Comment {
     id: number;
     photoId: number;
+    parentId: number;
     content: string;
     author: User;
     connectionId: string;
     isNew: boolean;
+    isReplying: boolean;
+    isViewing: boolean;
+    areRepliesLoaded: boolean;
+    numOfReplies: number;
+    replies: Comment[];
 }
 
 export interface User {

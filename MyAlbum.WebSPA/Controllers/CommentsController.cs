@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -47,12 +48,23 @@ namespace MyAlbum.WebSPA.Controllers
                 await this.unitOfWork.CompleteAsync();
                 CommentResource resourceResult = mapper.Map<Comment, CommentResource>(comment);
                 resourceResult.ConnectionId = commentResource.ConnectionId;
-                this.commentHub.Clients.All.SendAsync("commentAdded", resourceResult);
+                await this.commentHub.Clients.All.SendAsync("commentAdded", resourceResult);
 
                 return Ok(resourceResult);
             }
             else
                 return NoContent();
+        }
+    
+        /// <summary>
+        /// Get all replies for a comment
+        /// </summary>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetReplies([FromRoute] int id)
+        {
+            IEnumerable<Comment> replies = await this.commentRepository.GetRepliesAsync(id);
+            var replyResources = mapper.Map<IEnumerable<Comment>, IEnumerable<CommentResource>>(replies);
+            return Ok(replyResources);
         }
     }
 }

@@ -6,9 +6,9 @@ namespace MyAlbum.Core.Models
     public class PhotoCategory
     {
         public int PhotoId { get; set; }
-        public Photo Photo { get; set; }
+        public virtual Photo Photo { get; set; }
 
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
     }
 }
