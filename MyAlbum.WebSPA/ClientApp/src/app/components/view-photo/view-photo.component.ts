@@ -2,9 +2,10 @@ import { Photo } from './../../models/photo';
 import { PhotoService } from './../../services/photo.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Comment } from './../../models/comment';
+import { Comment, findReplyInComment } from './../../models/comment';
 import { CommentService } from 'src/app/services/comment.service';
 import { ToastyService } from 'ng2-toasty';
+import { CommentAdded } from 'src/app/models/commentAdded';
 
 @Component({
   selector: 'app-view-photo',
@@ -76,8 +77,8 @@ export class ViewPhotoComponent implements OnInit {
   ngOnInit() {
   }
 
-  addedCommentSubscriber(newComment: Comment) {
-    if (newComment.photoId == this.photoId) {
+  addedCommentSubscriber(newComment: CommentAdded) {
+    if (newComment.ancestorOrSelf.photoId == this.photoId) {
       console.log('addedCommentSubscriber - ' + JSON.stringify(newComment));
       this.toasty.info({
         title: "Info",
@@ -87,9 +88,30 @@ export class ViewPhotoComponent implements OnInit {
         timeout: 10000
       });
 
-      let newLength = this.photo.comments.push(newComment);
+      let index = this.photo.comments.findIndex((element, index, array) => {
+        return (element.id == newComment.ancestorOrSelf.id);
+      });
+      if (index >= 0) { // Add reply and expand ancestor
+        this.photo.comments[index] = newComment.ancestorOrSelf;
+      }
+      else // Add comment
+        this.photo.comments.push(newComment.ancestorOrSelf);
+
+      let commentId: number = newComment.id;
       setTimeout(() => {
-        (<Comment>this.photo.comments[newLength - 1]).isNew = false;
+        let comment: Comment = this.photo.comments.find(c => c.id == commentId);
+        if (comment)
+          comment.isNew = false;
+        else {
+          let reply: Comment;
+          for (var i = 0; i < this.photo.comments.length; i++) {
+            reply = findReplyInComment(commentId, this.photo.comments[i]);
+            if (reply != null) {
+              reply.isNew = false;
+              break;
+            }
+          }
+        }
       }, 30000);
     }
   }

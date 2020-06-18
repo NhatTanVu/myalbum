@@ -7,6 +7,8 @@ using MyAlbum.Core;
 using MyAlbum.Core.Models;
 using MyAlbum.WebSPA.Controllers.Resources;
 using MyAlbum.WebSPA.Hubs;
+using System.Linq;
+using System;
 
 namespace MyAlbum.WebSPA.Controllers
 {
@@ -48,21 +50,39 @@ namespace MyAlbum.WebSPA.Controllers
                 await this.unitOfWork.CompleteAsync();
                 CommentResource resourceResult = mapper.Map<Comment, CommentResource>(comment);
                 resourceResult.ConnectionId = commentResource.ConnectionId;
-                await this.commentHub.Clients.All.SendAsync("commentAdded", resourceResult);
+                NotifyCommentAdded(comment.Id, commentResource.ConnectionId);
 
                 return Ok(resourceResult);
             }
             else
                 return NoContent();
         }
-    
+
+        private async void NotifyCommentAdded(int id, string connectionId)
+        {
+            IEnumerable<Comment> replies = this.commentRepository.GetSelfAndAncestors(id);
+            List<CommentResource> replyResources = mapper.Map<IEnumerable<Comment>, IEnumerable<CommentResource>>(replies).ToList();
+            foreach (var resource in replyResources)
+            {
+                resource.ConnectionId = connectionId;
+            }
+            for (int i = 0; i < replyResources.Count - 1; i++)
+            {
+                var child = replyResources[i];
+                var parent = replyResources[i + 1];
+                parent.Replies[Array.FindIndex(parent.Replies, r => r.Id == child.Id)] = child;
+            }
+            var comment = replyResources[replyResources.Count - 1];
+            await this.commentHub.Clients.All.SendAsync("commentAdded", comment);
+        }
+
         /// <summary>
         /// Get all replies for a comment
         /// </summary>
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetReplies([FromRoute] int id)
+        public IActionResult GetReplies([FromRoute] int id)
         {
-            IEnumerable<Comment> replies = await this.commentRepository.GetRepliesAsync(id);
+            IEnumerable<Comment> replies = this.commentRepository.GetReplies(id);
             var replyResources = mapper.Map<IEnumerable<Comment>, IEnumerable<CommentResource>>(replies);
             return Ok(replyResources);
         }

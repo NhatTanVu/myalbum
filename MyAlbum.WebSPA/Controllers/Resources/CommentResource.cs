@@ -9,5 +9,6 @@ namespace MyAlbum.WebSPA.Controllers.Resources
         public UserResource Author { get; set; }
         public string ConnectionId { get; set; }
         public int NumOfReplies { get; set; }
+        public CommentResource[] Replies { get; set; }
     }
 }

@@ -1,3 +1,4 @@
+import { CommentAdded } from './../models/commentAdded';
 import { Comment, User, setDisplayName } from '../models/comment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -10,30 +11,30 @@ import { Observable, Subscriber } from 'rxjs';
 })
 export class CommentService {
   private readonly commentsEndpoint = "/api/comments";
-  
+
   private readonly httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type':  'application/json',
+      'Content-Type': 'application/json',
       'Accept': 'application/json'
     })
   };
 
   private hubConnection: signalR.HubConnection;
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     this.startConnection();
     this.addCommentAddedListener();
   }
 
   private startConnection = () => {
     this.hubConnection = new signalR.HubConnectionBuilder()
-                            .withUrl('/commentHub')
-                            .build();
+      .withUrl('/commentHub')
+      .build();
 
     this.hubConnection
       .start()
       .then(() => {
-        this.hubConnection.invoke("GetConnectionId").then((connectionId) =>{
+        this.hubConnection.invoke("GetConnectionId").then((connectionId) => {
           console.log("ConnectionId: " + connectionId);
           this.connectionId = connectionId;
         });
@@ -42,18 +43,39 @@ export class CommentService {
       .catch(err => console.log('Error while starting connection: ' + err))
   }
 
-  public addedComment$: Observable<Comment> = new Observable<Comment>(e => this.emitter = e);
-  private emitter: Subscriber<Comment>;
+  public addedComment$: Observable<CommentAdded> = new Observable<CommentAdded>(e => this.emitter = e);
+  private emitter: Subscriber<CommentAdded>;
   private connectionId: string;
   private addCommentAddedListener = () => {
     this.hubConnection.on('commentAdded', (result) => {
-      var comment = <Comment>result;
-      console.log('commentAdded - ' + JSON.stringify(comment));
+      let comment = <Comment>result;
       if (comment.connectionId != this.connectionId) {
-        setDisplayName(comment.author);
-        comment.isNew = true;
-        this.emitter.next(comment);
+        let temp = comment;
+        while (temp.replies && temp.replies.length > 0) {
+          setDisplayName(temp.author);  
+          temp.isViewing = true;
+          temp.areRepliesLoaded = true;
+          let index = 0;
+          for(var i = 0; i < temp.replies.length; i++){
+            let c = temp.replies[i];
+            setDisplayName(c.author);
+            if (c.connectionId == temp.connectionId)
+              index = i;
+          }
+          temp = temp.replies[index];
+        }
+        temp.isNew = true;
+        setDisplayName(temp.author);
+        temp.isViewing = true;
+        temp.areRepliesLoaded = true;
+
+        let output: CommentAdded = {
+          id: temp.id,
+          ancestorOrSelf: comment
+        };
+        this.emitter.next(output);
       }
+      console.log('commentAdded - ' + JSON.stringify(comment));
     });
   }
 
@@ -71,7 +93,7 @@ export class CommentService {
     return this.http.get(this.commentsEndpoint + "/" + commentId, this.httpOptions)
       .pipe(map(res => {
         var comments = <Comment[]>res;
-        comments.forEach(function (comment) {
+        comments.forEach((comment) => {
           setDisplayName(comment.author);
           comment.replies = [];
         });
