@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyAlbum.Core;
 using MyAlbum.Core.Models;
-using MyAlbum.WebSPA.Controllers.Resources;
 
 namespace MyAlbum.Persistence
 {
@@ -35,13 +34,13 @@ namespace MyAlbum.Persistence
                     .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<IEnumerable<Comment>> GetRepliesAsync(int id)
+        public IEnumerable<Comment> GetReplies(int id)
         {
-            IEnumerable<Comment> replies = await context.Comments
+            IEnumerable<Comment> replies = context.Comments
                     .Where(c => c.ParentId == id)
                     .Include(c => c.Author)
                     .Include(c => c.Photo)
-                    .ToListAsync();
+                    .ToList();
 
             var tempReplies = (from c1 in context.Comments
                                where (c1.ParentId == id)
@@ -60,6 +59,29 @@ namespace MyAlbum.Persistence
                 if (tempReplies.Any(r => r.ID == reply.Id))
                     reply.NumOfReplies = tempReplies.First(r => r.ID == reply.Id).NumOfReplies;
             return replies;
+        }
+
+        public IEnumerable<Comment> GetSelfAndAncestors(int id)
+        {
+            List<Comment> result = new List<Comment>();
+
+            var comment = this.context.Comments.Find(id);
+            if (comment != null)
+                result.Add(comment);
+
+            while (comment != null && comment.ParentId != null)
+            {
+                int parentId = comment.ParentId.Value;
+                comment = this.context.Comments.Find(parentId);
+                if (comment != null)
+                {
+                    comment.Replies = (ICollection<Comment>)this.GetReplies(parentId);
+                    comment.NumOfReplies = comment.Replies.Count;
+                    result.Add(comment);
+                }
+            }
+
+            return result;
         }
     }
 }

@@ -1,6 +1,7 @@
 using AutoMapper;
 using MyAlbum.WebSPA.Controllers.Resources;
 using MyAlbum.Core.Models;
+using System.Linq;
 
 namespace MyAlbum.WebSPA.Mapping
 {
@@ -10,7 +11,15 @@ namespace MyAlbum.WebSPA.Mapping
         {
             CreateMap<Photo, PhotoResource>();
             CreateMap<Comment, CommentResource>()
-                .ForMember(dest => dest.PhotoId, opt => opt.MapFrom(src => src.Photo.Id));
+                .ForMember(dest => dest.PhotoId, opt => opt.MapFrom(src => src.Photo.Id))
+                .ForMember(dest => dest.Replies, opt => opt.MapFrom(src => src.Replies.Select(comment => new Comment() {
+                    Author = comment.Author,
+                    Content = comment.Content,
+                    Id = comment.Id,
+                    NumOfReplies = comment.NumOfReplies,
+                    ParentId = comment.ParentId,
+                    Photo = comment.Photo
+                })));
             CreateMap<PhotoCategory, CategoryResource>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Category.Name))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Category.Id));

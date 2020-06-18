@@ -8,6 +8,7 @@ namespace MyAlbum.Core
     {
         void Add(Comment comment);
         Task<Comment> GetAsync(int id, bool includeRelated = true);
-        Task<IEnumerable<Comment>> GetRepliesAsync(int id);
+        IEnumerable<Comment> GetReplies(int id);
+        IEnumerable<Comment> GetSelfAndAncestors(int id);
     }
 }
