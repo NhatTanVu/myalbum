@@ -54,25 +54,24 @@ export class PhotoFormComponent implements OnInit {
       this.map.setCenter(gPosition);
     });
 
-    var that = this;
     // Listen to map's click event
-    this.map.addListener('click', function (e) {
-      that.placeMarkerAndPanTo(e.latLng);
+    this.map.addListener('click', (e) => {
+      this.placeMarkerAndPanTo(e.latLng);
     });
 
     // Create the search box and link it to the UI element.
     this.searchBox = new google.maps.places.SearchBox(this.gmapSearchBox.nativeElement);
 
     // Bias the SearchBox results towards current map's viewport.
-    this.map.addListener('bounds_changed', function () {
-      that.searchBox.setBounds(that.map.getBounds());
+    this.map.addListener('bounds_changed', (e) => {
+      this.searchBox.setBounds(this.map.getBounds());
     });
 
     // var markers = [];
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
-    this.searchBox.addListener('places_changed', function () {
-      var places = that.searchBox.getPlaces();
+    this.searchBox.addListener('places_changed', (e) => {
+      var places = this.searchBox.getPlaces();
 
       if (places.length == 0) {
         return;
@@ -94,7 +93,8 @@ export class PhotoFormComponent implements OnInit {
         }
       });
 
-      that.map.fitBounds(bounds);
+      this.map.fitBounds(bounds);
+      this.placeMarkerAndPanTo(this.map.getCenter());
     });
   }
 
@@ -110,6 +110,11 @@ export class PhotoFormComponent implements OnInit {
       map: this.map
     });
     this.map.panTo(latLng);
+
+    this.marker.addListener('click', (e) => {
+      this.marker.setMap(null);
+      this.position = null;
+    });
   }
 
   submit() {
