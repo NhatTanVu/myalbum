@@ -13,7 +13,7 @@ export interface Comment {
   replies: Comment[];
 }
 
-export function findReplyInComment(id: number, comment: Comment) {
+export const findReplyInComment = (id: number, comment: Comment): Comment => {
   if (!comment || !comment.replies)
     return null;
 
@@ -29,6 +29,43 @@ export function findReplyInComment(id: number, comment: Comment) {
     }
     return null;
   }
+}
+
+export const mergeNewComment = (orgComment: Comment, newComment: Comment): Comment => {
+  if (orgComment.id == newComment.id) {
+    var isNew = orgComment.isNew;
+    var isReplying = orgComment.isReplying;
+    var isViewing = orgComment.isViewing;
+    var areRepliesLoaded = orgComment.areRepliesLoaded;
+    var numOfReplies = orgComment.numOfReplies;
+    var replies = orgComment.replies.slice();
+    if (newComment.isNew)
+      isNew = true;
+    if (newComment.isViewing)
+      isViewing = true;
+
+    orgComment = newComment;
+
+    orgComment.isNew = isNew;
+    orgComment.isReplying = isReplying;
+    orgComment.isViewing = isViewing;
+
+    if (areRepliesLoaded) {
+      if (newComment.areRepliesLoaded) {
+        orgComment.replies.forEach(newReply => {
+          let orgReply = replies.find(r => r.id == newReply.id);
+          if (orgReply)
+            newReply = mergeNewComment(orgReply, newReply);
+        });
+      }
+      else {
+        orgComment.numOfReplies = numOfReplies;
+        orgComment.replies = replies;
+      }
+    }
+  }
+
+  return orgComment;
 }
 
 export interface User {
