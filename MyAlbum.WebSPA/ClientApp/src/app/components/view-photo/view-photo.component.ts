@@ -2,7 +2,7 @@ import { Photo } from './../../models/photo';
 import { PhotoService } from './../../services/photo.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Comment, findReplyInComment } from './../../models/comment';
+import { Comment, findReplyInComment, mergeNewComment } from './../../models/comment';
 import { CommentService } from 'src/app/services/comment.service';
 import { ToastyService } from 'ng2-toasty';
 import { CommentAdded } from 'src/app/models/commentAdded';
@@ -79,7 +79,7 @@ export class ViewPhotoComponent implements OnInit {
 
   addedCommentSubscriber(newComment: CommentAdded) {
     if (newComment.ancestorOrSelf.photoId == this.photoId) {
-      console.log('addedCommentSubscriber - ' + JSON.stringify(newComment));
+      //console.log('addedCommentSubscriber - ' + JSON.stringify(newComment));
       this.toasty.info({
         title: "Info",
         msg: "New comment added.",
@@ -91,9 +91,8 @@ export class ViewPhotoComponent implements OnInit {
       let index = this.photo.comments.findIndex((element, index, array) => {
         return (element.id == newComment.ancestorOrSelf.id);
       });
-      if (index >= 0) { // Add reply and expand ancestor
-        this.photo.comments[index] = newComment.ancestorOrSelf;
-      }
+      if (index >= 0) // Add reply and expand ancestor
+        this.photo.comments[index] = mergeNewComment(this.photo.comments[index], newComment.ancestorOrSelf);
       else // Add comment
         this.photo.comments.push(newComment.ancestorOrSelf);
 

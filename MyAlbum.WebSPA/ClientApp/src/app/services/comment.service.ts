@@ -75,7 +75,7 @@ export class CommentService {
         };
         this.emitter.next(output);
       }
-      console.log('commentAdded - ' + JSON.stringify(comment));
+      //console.log('commentAdded - ' + JSON.stringify(comment));
     });
   }
 
