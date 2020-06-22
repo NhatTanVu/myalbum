@@ -1,5 +1,6 @@
 import { CommentAdded } from './../models/commentAdded';
-import { Comment, User, setDisplayName } from '../models/comment';
+import { Comment } from '../models/comment';
+import { setDisplayName } from '../models/user';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
@@ -52,11 +53,11 @@ export class CommentService {
       if (comment.connectionId != this.connectionId) {
         let temp = comment;
         while (temp.replies && temp.replies.length > 0) {
-          setDisplayName(temp.author);  
+          setDisplayName(temp.author);
           temp.isViewing = true;
           temp.areRepliesLoaded = true;
           let index = 0;
-          for(var i = 0; i < temp.replies.length; i++){
+          for (var i = 0; i < temp.replies.length; i++) {
             let c = temp.replies[i];
             setDisplayName(c.author);
             if (c.connectionId == temp.connectionId)

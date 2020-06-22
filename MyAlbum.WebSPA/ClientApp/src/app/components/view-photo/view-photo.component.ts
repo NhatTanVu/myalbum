@@ -26,7 +26,9 @@ export class ViewPhotoComponent implements OnInit {
     centerLat: null,
     centerLng: null,
     mapZoom: null,
-    comments: []
+    comments: [],
+    createdDate: null,
+    modifiedDate: null
   };
   newComment: Comment = {
     id: 0,
@@ -37,7 +39,9 @@ export class ViewPhotoComponent implements OnInit {
       userName: "",
       firstName: "",
       lastName: "",
-      displayName: ""
+      displayName: "",
+      createdDate: null,
+      modifiedDate: null
     },
     connectionId: "",
     isNew: true,
@@ -45,7 +49,9 @@ export class ViewPhotoComponent implements OnInit {
     isViewing: false,
     areRepliesLoaded: false,
     numOfReplies: 0,
-    replies: []
+    replies: [],
+    createdDate: null,
+    modifiedDate: null
   };
   photoId: number = 0;
   isShownBoundingBox: boolean = false;
@@ -141,7 +147,9 @@ export class ViewPhotoComponent implements OnInit {
         userName: "",
         firstName: "",
         lastName: "",
-        displayName: ""
+        displayName: "",
+        createdDate: null,
+        modifiedDate: null
       },
       connectionId: "",
       isNew: true,
@@ -149,7 +157,9 @@ export class ViewPhotoComponent implements OnInit {
       isViewing: false,
       areRepliesLoaded: false,
       numOfReplies: 0,
-      replies: []
+      replies: [],
+      createdDate: null,
+      modifiedDate: null
     };
   }
 

@@ -1,3 +1,5 @@
+using System;
+
 namespace MyAlbum.WebSPA.Controllers.Resources
 {
     public class CommentResource
@@ -10,5 +12,7 @@ namespace MyAlbum.WebSPA.Controllers.Resources
         public string ConnectionId { get; set; }
         public int NumOfReplies { get; set; }
         public CommentResource[] Replies { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
     }
 }

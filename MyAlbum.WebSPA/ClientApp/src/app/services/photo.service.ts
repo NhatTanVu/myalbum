@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { retryWithBackoff } from './retryWithBackoff.operator';
 import { EMPTY } from 'rxjs';
-import { setDisplayName } from '../models/comment';
+import { setDisplayName } from '../models/user';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 
 @Injectable({
@@ -12,10 +12,10 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
 })
 export class PhotoService {
   private readonly photosEndpoint = "/api/photos";
-  
+
   private readonly httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type':  'application/json',
+      'Content-Type': 'application/json',
       'Accept': 'application/json'
     })
   };
@@ -46,7 +46,7 @@ export class PhotoService {
         parts.push(encodeURIComponent(prop) + "=" + encodeURIComponent(value));
     }
     return parts.join("&");
-  }  
+  }
 
   create(photo: SavePhoto, file) {
     var formData = new FormData();
@@ -56,7 +56,7 @@ export class PhotoService {
     formData.append('LocLat', photo.locLat ? photo.locLat.toString() : null);
     formData.append('LocLng', photo.locLng ? photo.locLng.toString() : null);
     formData.append('CenterLat', photo.centerLat ? photo.centerLat.toString() : null);
-    formData.append('CenterLng', photo.centerLng ? photo.centerLng.toString() : null);    
+    formData.append('CenterLng', photo.centerLng ? photo.centerLng.toString() : null);
     formData.append('MapZoom', photo.mapZoom ? photo.mapZoom.toString() : null);
 
     return this.http.post(this.photosEndpoint, formData)
