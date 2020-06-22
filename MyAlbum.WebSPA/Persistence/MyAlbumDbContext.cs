@@ -5,10 +5,10 @@ namespace MyAlbum.Persistence
 {
     public class MyAlbumDbContext : DbContext
     {
-        public MyAlbumDbContext(DbContextOptions<MyAlbumDbContext> options): base(options)
+        public MyAlbumDbContext(DbContextOptions<MyAlbumDbContext> options) : base(options)
         {
         }
-             
+
         public DbSet<Album> Albums { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -34,6 +34,27 @@ namespace MyAlbum.Persistence
                 .HasOne(p => p.Parent)
                 .WithMany(p => p.Replies)
                 .HasForeignKey(p => p.ParentId);
+
+            ConfigureCreatedDateColumn(modelBuilder);
+        }
+
+        private void ConfigureCreatedDateColumn(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Album>()
+                .Property(b => b.CreatedDate)
+                .HasDefaultValueSql("getutcdate()");
+
+            modelBuilder.Entity<Comment>()
+                .Property(b => b.CreatedDate)
+                .HasDefaultValueSql("getutcdate()");
+
+            modelBuilder.Entity<Photo>()
+                .Property(b => b.CreatedDate)
+                .HasDefaultValueSql("getutcdate()");
+
+            modelBuilder.Entity<User>()
+                .Property(b => b.CreatedDate)
+                .HasDefaultValueSql("getutcdate()");
         }
     }
 }

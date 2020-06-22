@@ -1,4 +1,4 @@
-
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,9 +12,13 @@ namespace MyAlbum.Core.Models
         public Photo Photo { get; set; }
         public User Author { get; set; }
         public virtual ICollection<Comment> Replies { get; set; }
-        
+
         [NotMapped]
         public int NumOfReplies { get; set; }
         public virtual Comment Parent { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
     }
 }

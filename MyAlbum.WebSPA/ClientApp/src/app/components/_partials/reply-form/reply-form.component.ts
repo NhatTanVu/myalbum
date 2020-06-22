@@ -19,7 +19,9 @@ export class ReplyFormComponent implements OnInit {
       userName: "",
       firstName: "",
       lastName: "",
-      displayName: ""
+      displayName: "",
+      createdDate: null,
+      modifiedDate: null
     },
     connectionId: "",
     isNew: true,
@@ -27,7 +29,9 @@ export class ReplyFormComponent implements OnInit {
     isViewing: false,
     areRepliesLoaded: false,
     numOfReplies: 0,
-    replies: []
+    replies: [],
+    createdDate: null,
+    modifiedDate: null
   };
 
   @Input()
@@ -56,7 +60,9 @@ export class ReplyFormComponent implements OnInit {
         userName: "",
         firstName: "",
         lastName: "",
-        displayName: ""
+        displayName: "",
+        createdDate: null,
+        modifiedDate: null
       },
       connectionId: "",
       isNew: true,
@@ -64,7 +70,9 @@ export class ReplyFormComponent implements OnInit {
       isViewing: false,
       areRepliesLoaded: false,
       numOfReplies: 0,
-      replies: []
+      replies: [],
+      createdDate: null,
+      modifiedDate: null
     };
   }
 

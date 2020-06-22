@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace MyAlbum.Core.Models
 {
-    public class Photo: IEquatable<Photo>
+    public class Photo : IEquatable<Photo>
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -24,6 +24,10 @@ namespace MyAlbum.Core.Models
         public Album Album { get; set; }
 
         public User Author { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
 
         public Photo()
         {

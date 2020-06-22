@@ -12,8 +12,10 @@ export interface Photo {
     locLng: number;
     centerLat: number;
     centerLng: number;
-    mapZoom: number;   
+    mapZoom: number;
     comments: Comment[];
+    createdDate: Date;
+    modifiedDate: Date;
 }
 
 export interface SavePhoto {

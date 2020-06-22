@@ -1,18 +1,21 @@
 <div *ngFor="let reply of replies" class="mb-2 pl-2 reply-list">
-    <div><b>{{reply.author.displayName}}</b><i *ngIf="reply.isNew"
-        class="fas fa-comment-medical ml-2 text-info"></i></div>
-    <div>{{reply.content}}</div>
-    <div>
-      <a [routerLink]="" (click)="toggleReplies(reply)" *ngIf="reply.numOfReplies > 0">
-        <span *ngIf="!reply.isViewing">View</span>
-        <span *ngIf="reply.isViewing">Hide</span>
-        {{reply.numOfReplies}} replies</a>
-      <span *ngIf="reply.numOfReplies > 0">&nbsp;|&nbsp;</span>
-      <a [routerLink]="" (click)="reply.isReplying = !reply.isReplying">
-        <span *ngIf="!reply.isReplying">Reply</span>
-        <span *ngIf="reply.isReplying">Close</span>
-      </a>
-      <app-reply-form *ngIf="reply.isReplying" [parent]="reply"></app-reply-form>
-      <app-reply-list *ngIf="reply.isViewing" [replies]="reply.replies"></app-reply-list>
-    </div>
+  <div>
+    <b>{{reply.author.displayName}}</b>
+    <span>&nbsp;- {{reply.createdDate | date : "HH:mm d/MMM/yy"}}</span>
+    <span *ngIf="reply.isNew"><i class="fas fa-comment-medical ml-2 text-info"></i></span>
   </div>
+  <div>{{reply.content}}</div>
+  <div>
+    <a [routerLink]="" (click)="toggleReplies(reply)" *ngIf="reply.numOfReplies > 0">
+      <span *ngIf="!reply.isViewing">View</span>
+      <span *ngIf="reply.isViewing">Hide</span>
+      {{reply.numOfReplies}} replies</a>
+    <span *ngIf="reply.numOfReplies > 0">&nbsp;|&nbsp;</span>
+    <a [routerLink]="" (click)="reply.isReplying = !reply.isReplying">
+      <span *ngIf="!reply.isReplying">Reply</span>
+      <span *ngIf="reply.isReplying">Close</span>
+    </a>
+    <app-reply-form *ngIf="reply.isReplying" [parent]="reply"></app-reply-form>
+    <app-reply-list *ngIf="reply.isViewing" [replies]="reply.replies"></app-reply-list>
+  </div>
+</div>

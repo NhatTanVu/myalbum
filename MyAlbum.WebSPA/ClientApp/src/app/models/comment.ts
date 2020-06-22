@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export interface Comment {
   id: number;
   photoId: number;
@@ -11,6 +13,8 @@ export interface Comment {
   areRepliesLoaded: boolean;
   numOfReplies: number;
   replies: Comment[];
+  createdDate: Date;
+  modifiedDate: Date;
 }
 
 export const findReplyInComment = (id: number, comment: Comment): Comment => {
@@ -66,22 +70,4 @@ export const mergeNewComment = (orgComment: Comment, newComment: Comment): Comme
   }
 
   return orgComment;
-}
-
-export interface User {
-  userName: string;
-  firstName: string;
-  lastName: string;
-  displayName: string;
-}
-
-export function setDisplayName(user: User) {
-  if (user.firstName && user.lastName)
-    user.displayName = user.firstName + " " + user.lastName;
-  else if (user.firstName)
-    user.displayName = user.firstName;
-  else if (user.lastName)
-    user.displayName = user.lastName;
-  else
-    user.displayName = user.userName;
 }

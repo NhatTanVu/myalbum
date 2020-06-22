@@ -15,6 +15,7 @@ using System.Reflection;
 using System.IO;
 using System;
 using MyAlbum.WebSPA.Hubs;
+using MyAlbum.WebSPA.Core.Utilities;
 
 namespace MyAlbum
 {
@@ -40,7 +41,7 @@ namespace MyAlbum
         {
             services.AddAutoMapper(typeof(Startup));
             services.AddDbContext<MyAlbumDbContext>(options => options.UseSqlServer(_config.GetConnectionString("Default")));
-            
+
             services.AddScoped<IPhotoRepository, PhotoRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -50,7 +51,11 @@ namespace MyAlbum
             services.AddScoped<IPhotoStorage, FileSystemPhotoStorage>();
             services.AddScoped<IObjectDetectionService, ObjectDetectionService>(s => new ObjectDetectionService(this._env.WebRootPath));
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
+            });
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -66,7 +71,10 @@ namespace MyAlbum
                 c.IncludeXmlComments(xmlPath);
             });
 
-            services.AddSignalR();
+            services.AddSignalR().AddJsonProtocol(options =>
+            {
+                options.PayloadSerializerOptions.Converters.Add(new DateTimeNullableConverter());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

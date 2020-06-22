@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace MyAlbum.WebSPA.Controllers.Resources
 {
-    public class PhotoResource: IEquatable<PhotoResource>
+    public class PhotoResource : IEquatable<PhotoResource>
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -20,11 +20,13 @@ namespace MyAlbum.WebSPA.Controllers.Resources
         public double? CenterLng { get; set; }
         public double? CenterLat { get; set; }
         public int? MapZoom { get; set; }
-        public string MapFilePath { get; set; }        
+        public string MapFilePath { get; set; }
         public ICollection<CommentResource> Comments { get; set; }
         public ICollection<CategoryResource> PhotoCategories { get; set; }
         public AlbumResource Album { get; set; }
         public UserResource Author { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
 
         public PhotoResource()
         {
