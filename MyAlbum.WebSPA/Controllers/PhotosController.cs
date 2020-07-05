@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using MyAlbum.WebSPA.Core.ObjectDetection;
 using System.Linq;
-using System;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace MyAlbum.WebSPA.Controllers
 {
@@ -72,6 +73,7 @@ namespace MyAlbum.WebSPA.Controllers
         /// Create a new photo
         /// </summary>
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreatePhoto([FromForm] PhotoResource photoResource)
         {
             var photo = this.mapper.Map<PhotoResource, Photo>(photoResource);
@@ -92,7 +94,10 @@ namespace MyAlbum.WebSPA.Controllers
                         Photo = photo
                     }).ToList();
                 }
-                photo.Author = await this.userRepository.GetAsync(MyAlbum.Core.Models.User.AnonymousUser.Id); // TODO: Set correct user
+                var currentUser = new User() {
+                    UserName = User.FindFirstValue(ClaimTypes.Name)
+                };
+                photo.Author = this.userRepository.GetOrAdd(currentUser);
 
                 this.photoRepository.Add(photo);
                 await this.unitOfWork.CompleteAsync();

@@ -1,7 +1,7 @@
 <div *ngFor="let reply of replies" class="mb-2 pl-2 reply-list">
   <div>
     <b>{{reply.author.displayName}}</b>
-    <span>&nbsp;- {{reply.createdDate | date : "HH:mm d/MMM/yy"}}</span>
+    <span>&nbsp;- {{reply.createdDate | date : "HH:mm dd/MMM/yy"}}</span>
     <span *ngIf="reply.isNew"><i class="fas fa-comment-medical ml-2 text-info"></i></span>
   </div>
   <div>{{reply.content}}</div>

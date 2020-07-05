@@ -2,10 +2,12 @@ import { CommentAdded } from './../models/commentAdded';
 import { Comment } from '../models/comment';
 import { setDisplayName } from '../models/user';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { map, catchError } from 'rxjs/operators';
 import * as signalR from "@aspnet/signalr";
-import { Observable, Subscriber } from 'rxjs';
+import { Observable, Subscriber, throwError } from 'rxjs';
+import { Router } from '@angular/router';
+import { ApplicationPaths, QueryParameterNames } from 'src/api-authorization/api-authorization.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +24,7 @@ export class CommentService {
 
   private hubConnection: signalR.HubConnection;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this.startConnection();
     this.addCommentAddedListener();
   }
@@ -87,6 +89,23 @@ export class CommentService {
         var comment = <Comment>res;
         setDisplayName(comment.author);
         return comment;
+      }), catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'Unknown error!';
+        if (error.error instanceof ErrorEvent) {
+          // Client-side errors
+          errorMessage = `Error: ${error.error.message}`;
+        } else {
+          // Server-side errors
+          if (error.status == 401) {
+            this.router.navigate(ApplicationPaths.LoginPathComponents, {
+              queryParams: {
+                [QueryParameterNames.ReturnUrl]: this.router.url
+              }
+            });
+          }
+          errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+        }
+        return throwError(errorMessage);
       }));
   }
 
