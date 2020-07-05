@@ -9,6 +9,8 @@ using MyAlbum.WebSPA.Controllers.Resources;
 using MyAlbum.WebSPA.Hubs;
 using System.Linq;
 using System;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace MyAlbum.WebSPA.Controllers
 {
@@ -38,13 +40,17 @@ namespace MyAlbum.WebSPA.Controllers
         /// Add a new comment
         /// </summary>
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddComment([FromBody] CommentResource commentResource)
         {
             Photo photo = await this.photoRepository.GetAsync(commentResource.PhotoId);
             if (photo != null)
             {
                 var comment = this.mapper.Map<CommentResource, Comment>(commentResource);
-                comment.Author = this.userRepository.GetOrAdd(comment.Author);
+                var currentUser = new User() {
+                    UserName = User.FindFirstValue(ClaimTypes.Name)
+                };
+                comment.Author = this.userRepository.GetOrAdd(currentUser);
                 comment.Photo = photo;
                 this.commentRepository.Add(comment);
                 await this.unitOfWork.CompleteAsync();

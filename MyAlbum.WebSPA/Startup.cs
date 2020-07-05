@@ -1,7 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +15,8 @@ using System.IO;
 using System;
 using MyAlbum.WebSPA.Hubs;
 using MyAlbum.WebSPA.Core.Utilities;
+using MyAlbum.Core.Models;
+using Microsoft.AspNetCore.Authentication;
 
 namespace MyAlbum
 {
@@ -41,6 +42,14 @@ namespace MyAlbum
         {
             services.AddAutoMapper(typeof(Startup));
             services.AddDbContext<MyAlbumDbContext>(options => options.UseSqlServer(_config.GetConnectionString("Default")));
+
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(_config.GetConnectionString("Default")));
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentityServer()
+                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>()
+                .AddProfileService<ProfileService>();
+            services.AddAuthentication().AddIdentityServerJwt();
 
             services.AddScoped<IPhotoRepository, PhotoRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -110,12 +119,17 @@ namespace MyAlbum
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseIdentityServer();
+            app.UseAuthorization();            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapHub<CommentHub>("/commentHub");
+                endpoints.MapRazorPages();
             });
 
             app.UseSpa(spa =>

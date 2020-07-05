@@ -18,6 +18,9 @@ import { WindowRef } from './models/WindowRef';
 import { CommentService } from './services/comment.service';
 import { ReplyFormComponent } from './components/_partials/reply-form/reply-form.component';
 import { ReplyListComponent } from './components/_partials/reply-list/reply-list.component';
+import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
+import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
+import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 
 @NgModule({
   declarations: [
@@ -33,9 +36,10 @@ import { ReplyListComponent } from './components/_partials/reply-list/reply-list
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    ApiAuthorizationModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'photos/new', component: PhotoFormComponent },
+      { path: 'photos/new', component: PhotoFormComponent, canActivate: [AuthorizeGuard] },
       { path: 'photos/:id', component: ViewPhotoComponent }
     ]),
     ToastyModule.forRoot(),
@@ -46,7 +50,8 @@ import { ReplyListComponent } from './components/_partials/reply-list/reply-list
     PhotoService,
     CommentService,
     WindowRef,
-    LocationService
+    LocationService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
