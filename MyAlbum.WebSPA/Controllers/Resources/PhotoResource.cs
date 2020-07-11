@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 
 namespace MyAlbum.WebSPA.Controllers.Resources
@@ -20,9 +21,9 @@ namespace MyAlbum.WebSPA.Controllers.Resources
         public double? CenterLng { get; set; }
         public double? CenterLat { get; set; }
         public int? MapZoom { get; set; }
-        public string MapFilePath { get; set; }
-        public ICollection<CommentResource> Comments { get; set; }
-        public ICollection<CategoryResource> PhotoCategories { get; set; }
+        public string MapFilePath { get; set; } // NOTE: For reservation only
+        public IEnumerable<CommentResource> Comments { get; set; }
+        public IEnumerable<CategoryResource> PhotoCategories { get; set; }
         public AlbumResource Album { get; set; }
         public UserResource Author { get; set; }
         public DateTime? CreatedDate { get; set; }
@@ -36,7 +37,20 @@ namespace MyAlbum.WebSPA.Controllers.Resources
 
         public bool Equals([AllowNull] PhotoResource other)
         {
-            return (this.Id == other.Id);
+            return (
+                this.Id == other.Id &&
+                this.Name == other.Name &&
+                this.Width == other.Width &&
+                this.Height == other.Height &&
+                this.FilePath == other.FilePath &&
+                this.LocLng == other.LocLng &&
+                this.LocLat == other.LocLat &&
+                this.CenterLng == other.CenterLng &&
+                this.CenterLat == other.CenterLat &&
+                this.MapZoom  == other.MapZoom &&
+                ((this.Author == null && other.Author == null) || this.Author.Equals(other.Author)) &&
+                this.PhotoCategories.SequenceEqual(other.PhotoCategories)
+            );
         }
 
         public override int GetHashCode() => Id;

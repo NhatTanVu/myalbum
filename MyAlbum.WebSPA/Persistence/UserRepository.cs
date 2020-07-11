@@ -18,7 +18,7 @@ namespace MyAlbum.Persistence
             return await this.context.Users.FindAsync(id);
         }
 
-        public User GetByUserNameAsync(string userName)
+        public User GetByUserName(string userName)
         {
             return this.context.Users.FirstOrDefault(u => u.UserName == userName);
         }
@@ -26,7 +26,7 @@ namespace MyAlbum.Persistence
         public User GetOrAdd(User user)
         {
             string userName = user.UserName;
-            User existingUser = GetByUserNameAsync(userName);
+            User existingUser = GetByUserName(userName);
             if (existingUser != null)
                 return existingUser;
             else

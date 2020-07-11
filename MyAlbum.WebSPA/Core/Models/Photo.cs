@@ -37,7 +37,18 @@ namespace MyAlbum.Core.Models
 
         public bool Equals([AllowNull] Photo other)
         {
-            return (this.Id == other.Id);
+            return (
+                this.Id == other.Id &&
+                this.Name == other.Name &&
+                this.Width == other.Width &&
+                this.Height == other.Height &&
+                this.FilePath == other.FilePath &&
+                this.LocLng == other.LocLng &&
+                this.LocLat == other.LocLat &&
+                this.CenterLng == other.CenterLng &&
+                this.CenterLat == other.CenterLat &&
+                this.MapZoom  == other.MapZoom
+            );
         }
 
         public override int GetHashCode() => Id;

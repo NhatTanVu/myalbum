@@ -5,14 +5,15 @@ using System.Linq;
 
 namespace MyAlbum.WebSPA.Mapping
 {
-    public class MappingProfile: Profile
+    public class MappingProfile : Profile
     {
         public MappingProfile()
         {
             CreateMap<Photo, PhotoResource>();
             CreateMap<Comment, CommentResource>()
                 .ForMember(dest => dest.PhotoId, opt => opt.MapFrom(src => src.Photo.Id))
-                .ForMember(dest => dest.Replies, opt => opt.MapFrom(src => src.Replies.Select(comment => new Comment() {
+                .ForMember(dest => dest.Replies, opt => opt.MapFrom(src => src.Replies.Select(comment => new Comment()
+                {
                     Author = comment.Author,
                     Content = comment.Content,
                     Id = comment.Id,
@@ -30,14 +31,22 @@ namespace MyAlbum.WebSPA.Mapping
             CreateMap<CommentResource, Comment>()
                 .ConstructUsing((src, ctx) =>
                 {
-                    return new Comment() {
+                    return new Comment()
+                    {
                         Id = src.Id,
-                        Photo = new Photo() {
+                        Photo = new Photo()
+                        {
                             Id = src.PhotoId
                         },
                         Author = ctx.Mapper.Map<UserResource, User>(src.Author)
                     };
                 });
+            CreateMap<CategoryResource, PhotoCategory>()
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => new Category()
+                {
+                    Name = src.Name,
+                    Id = src.Id
+                }));
             CreateMap<UserResource, User>();
             CreateMap<PhotoQueryResource, PhotoQuery>();
         }
