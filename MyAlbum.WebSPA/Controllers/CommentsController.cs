@@ -86,11 +86,11 @@ namespace MyAlbum.WebSPA.Controllers
         /// Get all replies for a comment
         /// </summary>
         [HttpGet("{id}")]
-        public IActionResult GetReplies([FromRoute] int id)
+        public IEnumerable<CommentResource> GetReplies([FromRoute] int id)
         {
             IEnumerable<Comment> replies = this.commentRepository.GetReplies(id);
             var replyResources = mapper.Map<IEnumerable<Comment>, IEnumerable<CommentResource>>(replies);
-            return Ok(replyResources);
+            return replyResources;
         }
     }
 }

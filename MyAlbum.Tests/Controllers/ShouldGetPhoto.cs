@@ -13,54 +13,58 @@ using MyAlbum.Core;
 using Moq;
 using Microsoft.AspNetCore.Hosting;
 using MyAlbum.WebSPA.Core.ObjectDetection;
+using System;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MyAlbum.Tests.Controllers
 {
-    public class PhotosController_CreatePhotoShould
+    public class ShouldGetPhoto
     {
         private readonly IMapper _mapper;
 
-        public PhotosController_CreatePhotoShould()
+        public ShouldGetPhoto()
         {
-            var mapperConfig = new MapperConfiguration(cfg => {
+            var mapperConfig = new MapperConfiguration(cfg =>
+            {
                 cfg.AddProfile<MappingProfile>();
             });
             this._mapper = mapperConfig.CreateMapper();
         }
 
-        private List<Photo> SeedMockDb_GetPhotos_ReturnPhotos(DbContextOptions<MyAlbumDbContext> options)
+        private List<Photo> SeedPhotos(List<int> seedIds, DbContextOptions<MyAlbumDbContext> options)
         {
-            List<Photo> seededPhotos = new List<Photo>();
-            seededPhotos.Add(new Photo(){
-                Id = 1,
-                Name = "Photo 1",
-                FilePath = @"C:\Photo\File\Path\1"
-            });
-            seededPhotos.Add(new Photo(){
-                Id = 2,
-                Name = "Photo 2",
-                FilePath = @"C:\Photo\File\Path\2"
-            });
+            List<Photo> seedPhotos = new List<Photo>();
+
+            foreach (var id in seedIds)
+            {
+                seedPhotos.Add(new Photo()
+                {
+                    Id = id,
+                    Name = "Photo " + id,
+                    FilePath = @"C:\Photo\File\Path\" + id
+                });
+            }
+
             using (var context = new MyAlbumDbContext(options))
             {
-                foreach(Photo photo in seededPhotos)
+                foreach (Photo photo in seedPhotos)
                 {
                     context.Photos.Add(photo);
                     context.SaveChanges();
                 }
             }
-            return seededPhotos;
+            return seedPhotos;
         }
 
         [Fact]
-        public async Task CreatePhoto()
+        public async Task GetPhoto()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<MyAlbumDbContext>()
-                .UseInMemoryDatabase(databaseName: "PhotosController_CreatePhotoShould_MyAlbumDatabase")
+                .UseInMemoryDatabase(databaseName: "GetPhoto_MyAlbumDatabase")
                 .Options;
-            var seededPhotos = SeedMockDb_GetPhotos_ReturnPhotos(options);
-            var seededPhotoResources = this._mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(seededPhotos);
+            var seedIds = new List<int> { new Random().Next(1, 100), new Random().Next(1, 100) };
+            var seedPhotos = SeedPhotos(seedIds, options);
             using (var context = new MyAlbumDbContext(options))
             {
                 var photoRepository = new PhotoRepository(context);
@@ -72,11 +76,18 @@ namespace MyAlbum.Tests.Controllers
                 mockHost.SetupGet(m => m.WebRootPath).Returns(string.Empty);
                 var mockObjectDetectionService = new Mock<IObjectDetectionService>();
                 PhotosController controller = new PhotosController(this._mapper, photoRepository, categoryRepository, userRepository, unitOfWork, photoUploadService, mockHost.Object, mockObjectDetectionService.Object);
-                var filterResource = new PhotoQueryResource();
-                // Act
-                var photos = await controller.GetPhotos(filterResource);
-                // Assert
-                Assert.True(seededPhotoResources.SequenceEqual(photos));
+                foreach (var seedPhoto in seedPhotos)
+                {
+                    var id = seedPhoto.Id;
+                    var seedPhotoResource = this._mapper.Map<Photo, PhotoResource>(seedPhoto);
+                    // Act
+                    var result = await controller.GetPhoto(id);
+                    // Assert
+                    Assert.IsType<OkObjectResult>(result);
+                    Assert.IsType<PhotoResource>(((OkObjectResult)result).Value);
+                    PhotoResource returnedPhotoResource = (PhotoResource)((OkObjectResult)result).Value;
+                    Assert.True(returnedPhotoResource.Equals(seedPhotoResource));
+                }
             }
         }
     }

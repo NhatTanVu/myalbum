@@ -6,7 +6,7 @@ namespace MyAlbum.Core
     public interface IUserRepository
     {
          Task<User> GetAsync(string id);
-         User GetByUserNameAsync(string userName);
+         User GetByUserName(string userName);
          User GetOrAdd(User user);
     }
 }

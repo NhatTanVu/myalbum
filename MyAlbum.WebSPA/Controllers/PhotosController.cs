@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using MyAlbum.WebSPA.Controllers.Resources;
 using MyAlbum.Core.Models;
 using MyAlbum.Core;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using MyAlbum.WebSPA.Core.ObjectDetection;
@@ -81,7 +80,7 @@ namespace MyAlbum.WebSPA.Controllers
             {
                 var fileToUpload = photoResource.FileToUpload;
                 photo.FilePath = await this.photoUploadService.UploadPhoto(fileToUpload, this.uploadsFolderPath);
-                var dimensions = await GetImageDimensions(fileToUpload);
+                var dimensions = await this.photoRepository.GetImageDimensions(fileToUpload);
                 photo.Height = dimensions.Height;
                 photo.Width = dimensions.Width;
                 string imageFilePath = Path.Combine(this.uploadsFolderPath, photo.FilePath);
@@ -125,54 +124,6 @@ namespace MyAlbum.WebSPA.Controllers
             photoResource.BoundingBoxFilePath = string.Format("{0}/{1}", this.outputFolderUrl, orgFilePath);
 
             return Ok(photoResource);
-        }
-
-        private async Task<(int Height, int Width)> GetImageDimensions(IFormFile file)
-        {
-            // Based on https://stackoverflow.com/questions/50377114/how-to-get-the-image-width-height-when-doing-upload-in-asp-net-core
-            if (file != null)
-            {
-                List<string> AcceptableImageExtentions = new List<string> { ".jpg", ".jpeg", ".png", ".bmp" };
-
-                string fileExtention = System.IO.Path.GetExtension(file.FileName);
-
-                if (AcceptableImageExtentions.Contains(fileExtention))
-                {
-                    using (System.IO.Stream stream = new System.IO.MemoryStream())
-                    {
-                        await file.CopyToAsync(stream);
-                        SixLabors.ImageSharp.Formats.IImageDecoder imageDecoder;
-
-                        if (fileExtention == ".jpeg" || fileExtention == ".jpg")
-                        {
-                            imageDecoder = new SixLabors.ImageSharp.Formats.Jpeg.JpegDecoder();
-                        }
-                        else if (fileExtention == ".png")
-                        {
-                            imageDecoder = new SixLabors.ImageSharp.Formats.Png.PngDecoder();
-                        }
-                        else
-                        {
-                            imageDecoder = new SixLabors.ImageSharp.Formats.Bmp.BmpDecoder();
-                        }
-
-
-                        if (stream.Position == stream.Length) //Check this because if your image is a .png, it might just throw an error
-                        {
-                            stream.Position = stream.Seek(0, SeekOrigin.Begin);
-                        }
-
-                        SixLabors.ImageSharp.Image<SixLabors.ImageSharp.PixelFormats.Rgba32> imageSharp = imageDecoder.Decode<SixLabors.ImageSharp.PixelFormats.Rgba32>(SixLabors.ImageSharp.Configuration.Default, stream);
-
-                        if (imageSharp != null)
-                        {
-                            return (imageSharp.Height, imageSharp.Width);
-                        }
-                    }
-                }
-            }
-
-            return (0, 0);
         }
     }
 }

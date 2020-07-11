@@ -16,11 +16,11 @@ using MyAlbum.WebSPA.Core.ObjectDetection;
 
 namespace MyAlbum.Tests.Controllers
 {
-    public class PhotosController_GetPhotosShould
+    public class ShouldGetPhotos
     {
         private readonly IMapper _mapper;
 
-        public PhotosController_GetPhotosShould()
+        public ShouldGetPhotos()
         {
             var mapperConfig = new MapperConfiguration(cfg => {
                 cfg.AddProfile<MappingProfile>();
@@ -28,28 +28,28 @@ namespace MyAlbum.Tests.Controllers
             this._mapper = mapperConfig.CreateMapper();
         }
 
-        private List<Photo> SeedMockDb_GetPhotos_ReturnPhotos(DbContextOptions<MyAlbumDbContext> options)
+        private List<Photo> SeedPhotos(DbContextOptions<MyAlbumDbContext> options)
         {
-            List<Photo> seededPhotos = new List<Photo>();
-            seededPhotos.Add(new Photo(){
+            List<Photo> seedPhotos = new List<Photo>();
+            seedPhotos.Add(new Photo(){
                 Id = 1,
                 Name = "Photo 1",
                 FilePath = @"C:\Photo\File\Path\1"
             });
-            seededPhotos.Add(new Photo(){
+            seedPhotos.Add(new Photo(){
                 Id = 2,
                 Name = "Photo 2",
                 FilePath = @"C:\Photo\File\Path\2"
             });
             using (var context = new MyAlbumDbContext(options))
             {
-                foreach(Photo photo in seededPhotos)
+                foreach(Photo photo in seedPhotos)
                 {
                     context.Photos.Add(photo);
                     context.SaveChanges();
                 }
             }
-            return seededPhotos;
+            return seedPhotos;
         }
 
         [Fact]
@@ -57,10 +57,10 @@ namespace MyAlbum.Tests.Controllers
         {
             // Arrange
             var options = new DbContextOptionsBuilder<MyAlbumDbContext>()
-                .UseInMemoryDatabase(databaseName: "PhotosController_GetPhotosShould_MyAlbumDatabase")
+                .UseInMemoryDatabase(databaseName: "GetPhotos_MyAlbumDatabase")
                 .Options;
-            var seededPhotos = SeedMockDb_GetPhotos_ReturnPhotos(options);
-            var seededPhotoResources = this._mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(seededPhotos);
+            var seedPhotos = SeedPhotos(options);
+            var seedPhotoResources = this._mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(seedPhotos);
             using (var context = new MyAlbumDbContext(options))
             {
                 var photoRepository = new PhotoRepository(context);
@@ -76,7 +76,7 @@ namespace MyAlbum.Tests.Controllers
                 // Act
                 var photos = await controller.GetPhotos(filterResource);
                 // Assert
-                Assert.True(seededPhotoResources.SequenceEqual(photos));
+                Assert.True(seedPhotoResources.SequenceEqual(photos));
             }
         }
     }

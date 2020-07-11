@@ -5,6 +5,8 @@ using MyAlbum.Core;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Z.EntityFramework.Plus;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace MyAlbum.Persistence
 {
@@ -16,12 +18,12 @@ namespace MyAlbum.Persistence
             this.context = context;
         }
 
-        public void Add(Photo photo)
+        public virtual void Add(Photo photo)
         {
             this.context.Add(photo);
         }
 
-        public async Task<Photo> GetAsync(int id, bool includeRelated = true)
+        public virtual async Task<Photo> GetAsync(int id, bool includeRelated = true)
         {
             if (!includeRelated)
                 return await context.Photos.FindAsync(id);
@@ -60,7 +62,55 @@ namespace MyAlbum.Persistence
             }
         }
 
-        public async Task<IEnumerable<Photo>> GetPhotos(PhotoQuery filter)
+        public virtual async Task<(int Height, int Width)> GetImageDimensions(IFormFile file)
+        {
+            // Based on https://stackoverflow.com/questions/50377114/how-to-get-the-image-width-height-when-doing-upload-in-asp-net-core
+            if (file != null)
+            {
+                List<string> AcceptableImageExtentions = new List<string> { ".jpg", ".jpeg", ".png", ".bmp" };
+
+                string fileExtention = System.IO.Path.GetExtension(file.FileName);
+
+                if (AcceptableImageExtentions.Contains(fileExtention))
+                {
+                    using (System.IO.Stream stream = new System.IO.MemoryStream())
+                    {
+                        await file.CopyToAsync(stream);
+                        SixLabors.ImageSharp.Formats.IImageDecoder imageDecoder;
+
+                        if (fileExtention == ".jpeg" || fileExtention == ".jpg")
+                        {
+                            imageDecoder = new SixLabors.ImageSharp.Formats.Jpeg.JpegDecoder();
+                        }
+                        else if (fileExtention == ".png")
+                        {
+                            imageDecoder = new SixLabors.ImageSharp.Formats.Png.PngDecoder();
+                        }
+                        else
+                        {
+                            imageDecoder = new SixLabors.ImageSharp.Formats.Bmp.BmpDecoder();
+                        }
+
+
+                        if (stream.Position == stream.Length) //Check this because if your image is a .png, it might just throw an error
+                        {
+                            stream.Position = stream.Seek(0, SeekOrigin.Begin);
+                        }
+
+                        SixLabors.ImageSharp.Image<SixLabors.ImageSharp.PixelFormats.Rgba32> imageSharp = imageDecoder.Decode<SixLabors.ImageSharp.PixelFormats.Rgba32>(SixLabors.ImageSharp.Configuration.Default, stream);
+
+                        if (imageSharp != null)
+                        {
+                            return (imageSharp.Height, imageSharp.Width);
+                        }
+                    }
+                }
+            }
+
+            return (0, 0);            
+        }
+
+        public virtual async Task<IEnumerable<Photo>> GetPhotos(PhotoQuery filter)
         {
             IQueryable<Photo> query = this.context.Photos
                 .Include(p => p.PhotoCategories)
