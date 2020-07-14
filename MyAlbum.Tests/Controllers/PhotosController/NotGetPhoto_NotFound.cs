@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using MyAlbum.WebSPA.Controllers;
 using MyAlbum.WebSPA.Mapping;
 using MyAlbum.Core.Models;
-using MyAlbum.Persistence;
 using Xunit;
 using MyAlbum.Core;
 using Moq;
@@ -29,22 +27,6 @@ namespace MyAlbum.Tests.Controllers
             this._mapper = mapperConfig.CreateMapper();
         }
 
-        private List<Photo> SeedPhotos(List<int> seedIds)
-        {
-            List<Photo> seedPhotos = new List<Photo>();
-
-            foreach (var id in seedIds)
-            {
-                seedPhotos.Add(new Photo()
-                {
-                    Id = id,
-                    Name = "Photo " + id,
-                    FilePath = @"C:\Photo\File\Path\" + id
-                });
-            }
-            return seedPhotos;
-        }
-
         private int GetRandomIntExcept(List<int> excludedId)
         {
             int result = new Random().Next(1, 100);
@@ -54,7 +36,7 @@ namespace MyAlbum.Tests.Controllers
         }
 
         [Fact]
-        public async Task GetPhoto_NotFound()
+        public async Task NotGetPhoto_NotFound()
         {
             // Arrange
             var seedIds = new List<int> { new Random().Next(1, 100), new Random().Next(1, 100) };

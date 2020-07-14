@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using MyAlbum.WebSPA.Controllers;
 using MyAlbum.WebSPA.Controllers.Resources;
 using MyAlbum.WebSPA.Mapping;
 using MyAlbum.Core.Models;
-using MyAlbum.Persistence;
 using Xunit;
 using MyAlbum.Core;
 using Moq;
@@ -14,7 +12,6 @@ using Microsoft.AspNetCore.Hosting;
 using MyAlbum.WebSPA.Core.ObjectDetection;
 using System;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace MyAlbum.Tests.Controllers
 {
