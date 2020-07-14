@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using MyAlbum.WebSPA.Controllers;
 using MyAlbum.WebSPA.Controllers.Resources;
 using MyAlbum.WebSPA.Mapping;
 using MyAlbum.Core.Models;
-using MyAlbum.Persistence;
 using Xunit;
 using MyAlbum.Core;
 using Moq;
@@ -14,7 +12,6 @@ using Microsoft.AspNetCore.Hosting;
 using MyAlbum.WebSPA.Core.ObjectDetection;
 using System;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace MyAlbum.Tests.Controllers
 {
@@ -52,7 +49,7 @@ namespace MyAlbum.Tests.Controllers
         public async Task GetPhoto()
         {
             // Arrange
-            var seedIds = new List<int> { new Random().Next(1, 100), new Random().Next(1, 100) };
+            var seedIds = new List<int> { new Random().Next(1, 50), new Random().Next(51, 100) };
             var seedPhotos = SeedPhotos(seedIds);
             var mockPhotoRepository = new Mock<IPhotoRepository>();
             var mockCategoryRepository = new Mock<ICategoryRepository>();

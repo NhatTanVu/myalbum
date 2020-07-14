@@ -2,17 +2,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using MyAlbum.WebSPA.Controllers;
 using MyAlbum.WebSPA.Controllers.Resources;
 using MyAlbum.WebSPA.Mapping;
 using MyAlbum.Core.Models;
-using MyAlbum.Persistence;
 using Xunit;
 using MyAlbum.Core;
 using Moq;
 using Microsoft.AspNetCore.Hosting;
 using MyAlbum.WebSPA.Core.ObjectDetection;
+using System;
 
 namespace MyAlbum.Tests.Controllers
 {
@@ -32,14 +31,14 @@ namespace MyAlbum.Tests.Controllers
         {
             List<Photo> seedPhotos = new List<Photo>();
             seedPhotos.Add(new Photo(){
-                Id = 1,
-                Name = "Photo 1",
-                FilePath = @"C:\Photo\File\Path\1"
+                Id = new Random().Next(1, 100),
+                Name = Guid.NewGuid().ToString(),
+                FilePath = @"C:\Photo\File\Path\" + new Random().Next(1, 100)
             });
             seedPhotos.Add(new Photo(){
-                Id = 2,
-                Name = "Photo 2",
-                FilePath = @"C:\Photo\File\Path\2"
+                Id = new Random().Next(1, 100),
+                Name = Guid.NewGuid().ToString(),
+                FilePath = @"C:\Photo\File\Path\" + new Random().Next(1, 100)
             });
             return seedPhotos;
         }
@@ -48,6 +47,7 @@ namespace MyAlbum.Tests.Controllers
         public async Task GetPhotos()
         {
             // Arrange
+
             var seedPhotos = SeedPhotos();
             var seedPhotoResources = this._mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(seedPhotos);
             var filterResource = new PhotoQueryResource();
