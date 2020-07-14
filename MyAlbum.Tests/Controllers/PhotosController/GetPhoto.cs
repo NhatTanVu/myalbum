@@ -49,7 +49,7 @@ namespace MyAlbum.Tests.Controllers
         public async Task GetPhoto()
         {
             // Arrange
-            var seedIds = new List<int> { new Random().Next(1, 100), new Random().Next(1, 100) };
+            var seedIds = new List<int> { new Random().Next(1, 50), new Random().Next(51, 100) };
             var seedPhotos = SeedPhotos(seedIds);
             var mockPhotoRepository = new Mock<IPhotoRepository>();
             var mockCategoryRepository = new Mock<ICategoryRepository>();

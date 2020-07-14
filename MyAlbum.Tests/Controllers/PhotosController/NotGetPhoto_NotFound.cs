@@ -39,7 +39,7 @@ namespace MyAlbum.Tests.Controllers
         public async Task NotGetPhoto_NotFound()
         {
             // Arrange
-            var seedIds = new List<int> { new Random().Next(1, 100), new Random().Next(1, 100) };
+            var seedIds = new List<int> { new Random().Next(1, 50), new Random().Next(51, 100) };
             var notFoundId = GetRandomIntExcept(seedIds);
             var mockPhotoRepository = new Mock<IPhotoRepository>();
             mockPhotoRepository.Setup(m => m.GetAsync(notFoundId, true)).ReturnsAsync((Photo)null);
