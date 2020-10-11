@@ -118,6 +118,13 @@ namespace MyAlbum.Persistence
 
             if (filter.CategoryId.HasValue)
                 query = query.Where(p => p.PhotoCategories.Select(pc => pc.CategoryId).Any(id => id == filter.CategoryId));
+            if (filter.HasLocation.HasValue)
+            {
+                if (filter.HasLocation.Value)
+                    query = query.Where(p => p.LocLat.HasValue && p.LocLng.HasValue);
+                else
+                    query = query.Where(p => !p.LocLat.HasValue || !p.LocLng.HasValue);
+            }
             var photos = await query.ToListAsync();
             return photos;
         }

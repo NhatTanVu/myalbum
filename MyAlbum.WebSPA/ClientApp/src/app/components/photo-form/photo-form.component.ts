@@ -55,7 +55,7 @@ export class PhotoFormComponent implements OnInit {
     });
 
     // Listen to map's click event
-    this.map.addListener('click', (e) => {
+    google.maps.event.addListener(this.map, 'click', (e) => {
       this.placeMarkerAndPanTo(e.latLng);
     });
 
@@ -63,7 +63,7 @@ export class PhotoFormComponent implements OnInit {
     this.searchBox = new google.maps.places.SearchBox(this.gmapSearchBox.nativeElement);
 
     // Bias the SearchBox results towards current map's viewport.
-    this.map.addListener('bounds_changed', (e) => {
+    google.maps.event.addListener(this.map, 'bounds_changed', (e) => {
       this.searchBox.setBounds(this.map.getBounds());
     });
 

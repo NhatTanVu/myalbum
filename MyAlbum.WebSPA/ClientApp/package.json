@@ -23,6 +23,7 @@
     "@angular/router": "8.0.0",
     "@aspnet/signalr": "^1.1.4",
     "@fortawesome/fontawesome-free": "^5.12.0",
+    "@googlemaps/markerclustererplus": "^1.0.3",
     "@nguniversal/module-map-ngfactory-loader": "8.0.0-rc.1",
     "@ngx-loading-bar/core": "^4.2.0",
     "@ngx-loading-bar/http-client": "^4.2.0",
