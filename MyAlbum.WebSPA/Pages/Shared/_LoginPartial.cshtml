@@ -15,9 +15,14 @@
 <ul class="navbar-nav flex-grow">
     <li class="nav-item" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
         <a class="nav-link text-dark" href="~/">
-            <i class="fas fa-home"></i> Home
+            <i class="fas fa-torii-gate"></i> Explore
         </a>
     </li>
+    <li class="nav-item" [routerLinkActive]="['link-active']">
+        <a class="nav-link text-dark" href="~/worldmap">
+            <i class="fas fa-globe"></i> World Map
+        </a>
+    </li>    
     <li class="nav-item" [routerLinkActive]="['link-active']">
         <a class="nav-link text-dark" href="~/photos/new">
             <i class="fas fa-plus"></i> Add Photo

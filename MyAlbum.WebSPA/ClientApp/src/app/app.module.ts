@@ -21,6 +21,7 @@ import { ReplyListComponent } from './components/_partials/reply-list/reply-list
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
+import { WorldMapComponent } from './components/world-map/world-map.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
     PhotoFormComponent,
     ViewPhotoComponent,
     ReplyFormComponent,
-    ReplyListComponent
+    ReplyListComponent,
+    WorldMapComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -40,7 +42,8 @@ import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'photos/new', component: PhotoFormComponent, canActivate: [AuthorizeGuard] },
-      { path: 'photos/:id', component: ViewPhotoComponent }
+      { path: 'photos/:id', component: ViewPhotoComponent },
+      { path: 'worldmap', component: WorldMapComponent }
     ]),
     ToastyModule.forRoot(),
     LoadingBarHttpClientModule, // for HttpClient use

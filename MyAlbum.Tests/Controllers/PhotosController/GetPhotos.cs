@@ -47,7 +47,6 @@ namespace MyAlbum.Tests.Controllers
         public async Task GetPhotos()
         {
             // Arrange
-
             var seedPhotos = SeedPhotos();
             var seedPhotoResources = this._mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(seedPhotos);
             var filterResource = new PhotoQueryResource();

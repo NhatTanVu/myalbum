@@ -1,0 +1,16 @@
+<div id="world-map">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="explore-gallery">
+                <a *ngFor="let p of viewportPhotos" href="javascript:;" (click)="panTo(p)">
+                    <img src="{{ p.filePath }}" alt="{{ p.name }}" class="img-thumbnail">
+                </a>
+              </div>
+        </div>
+        <div class="col-lg-8">
+            <input id="gmapSearchBox" class="form-control mb-2" type="text" placeholder="Type location here..." #gmapSearchBox
+                (keydown.enter)="$event.preventDefault()">
+            <div id="gmap" #gmap></div>
+        </div>        
+    </div>    
+</div>

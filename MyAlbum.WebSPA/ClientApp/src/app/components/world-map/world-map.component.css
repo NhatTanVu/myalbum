@@ -1,0 +1,4 @@
+.explore-gallery img.img-thumbnail {
+    max-height: 100px;
+    min-height: 100px;
+  }
