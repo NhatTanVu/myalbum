@@ -40,30 +40,35 @@ export class WorldMapComponent implements OnInit {
       this.query.hasLocation = true;
       this.photoService.getAll(this.query)
         .subscribe(photos => {
-          this.allPhotos = photos;
           // Create map
           var mapProp = {
             center: new google.maps.LatLng(3.140853, 101.693207), // KUL
-            zoom: 1,
+            zoom: 12,
             mapTypeId: google.maps.MapTypeId.ROADMAP
           };
-          this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
-          this.markers = this.allPhotos.map((photo, i) => {
-            var marker = new google.maps.Marker({
-              position: { lat: photo.locLat, lng: photo.locLng },
-              label: "",
+          this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);          
+          this.allPhotos = photos;
+          if (this.allPhotos.length > 0) {
+            var allBounds = new google.maps.LatLngBounds();
+            this.markers = this.allPhotos.map((photo, i) => {
+              var markerPosition = { lat: photo.locLat, lng: photo.locLng };
+              var marker = new google.maps.Marker({
+                position: markerPosition,
+                label: "",
+              });
+              google.maps.event.addListener(marker, 'click', function() {
+                var bounds = new google.maps.LatLngBounds(marker.getPosition());
+                this.map.fitBounds(bounds);
+                this.map.setZoom(((this.map.getZoom() - 10) > 0) ? (this.map.getZoom() - 10) : 1);
+              });
+              allBounds.extend(markerPosition);
+              return marker;
             });
-            google.maps.event.addListener(marker, 'click', function() {
-              var bounds = new google.maps.LatLngBounds(marker.getPosition());
-              this.map.fitBounds(bounds);
-              this.map.setZoom(((this.map.getZoom() - 10) > 0) ? (this.map.getZoom() - 10) : 1);
+            this.map.fitBounds(allBounds);
+            this.markerCluster = new MarkerClusterer(this.map, this.markers, { 
+              imagePath: "/lib/@googlemaps/markerclustererplus/m" 
             });
-            return marker;
-          });
-          
-          this.markerCluster = new MarkerClusterer(this.map, this.markers, { 
-            imagePath: "/lib/@googlemaps/markerclustererplus/m" 
-          });
+          }
           google.maps.event.addListener(this.map, 'bounds_changed', (e) => {
             var bound = this.map.getBounds();
             this.viewportPhotos = this.allPhotos.filter((photo) => {
