@@ -29,3 +29,12 @@ html {
   content:" *";
   color: red;
 }
+
+.explore-gallery img:hover {
+  transform: scale(1.05, 1.05);
+}
+
+img {
+  transition: transform 5s cubic-bezier(.165,.84,.26,.98);
+  transform: scale(1);
+}
