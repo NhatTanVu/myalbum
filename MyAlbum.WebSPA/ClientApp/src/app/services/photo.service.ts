@@ -63,6 +63,21 @@ export class PhotoService {
       .pipe(map(res => <SavePhoto>res));
   }
 
+  save(photo: SavePhoto, file) {
+    var formData = new FormData();
+    formData.append('FileToUpload', file);
+    formData.append('Id', photo.id.toString());
+    formData.append('Name', photo.name);
+    formData.append('LocLat', photo.locLat ? photo.locLat.toString() : null);
+    formData.append('LocLng', photo.locLng ? photo.locLng.toString() : null);
+    formData.append('CenterLat', photo.centerLat ? photo.centerLat.toString() : null);
+    formData.append('CenterLng', photo.centerLng ? photo.centerLng.toString() : null);
+    formData.append('MapZoom', photo.mapZoom ? photo.mapZoom.toString() : null);
+
+    return this.http.post(this.photosEndpoint + '/' + photo.id, formData)
+      .pipe(map(res => <SavePhoto>res));
+  }
+
   getPhoto(id) {
     return this.http.get(this.photosEndpoint + '/' + id, this.httpOptions)
       .pipe(map(res => {

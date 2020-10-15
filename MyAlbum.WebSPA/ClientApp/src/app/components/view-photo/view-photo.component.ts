@@ -126,7 +126,7 @@ export class ViewPhotoComponent implements OnInit {
       // Create map
       var mapProp = {
         center: new google.maps.LatLng(this.photo.centerLat, this.photo.centerLng),
-        zoom: 12,
+        zoom: this.photo.mapZoom ? this.photo.mapZoom : 12,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
@@ -134,6 +134,7 @@ export class ViewPhotoComponent implements OnInit {
         position: new google.maps.LatLng(this.photo.locLat, this.photo.locLng),
         map: this.map
       });
+      this.map.panTo(marker.getPosition());
     }
   }
 

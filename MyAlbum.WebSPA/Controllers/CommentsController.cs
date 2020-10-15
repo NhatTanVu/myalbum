@@ -83,7 +83,7 @@ namespace MyAlbum.WebSPA.Controllers
         }
 
         /// <summary>
-        /// Get all replies for a comment
+        /// Get all replies for a comment by ID
         /// </summary>
         [HttpGet("{id}")]
         public IEnumerable<CommentResource> GetReplies([FromRoute] int id)

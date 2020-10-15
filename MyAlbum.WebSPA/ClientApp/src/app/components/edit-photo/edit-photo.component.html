@@ -1,1 +1,45 @@
-<p>edit-photo works!</p>
+<h1>Edit Photo</h1>
+<form #f="ngForm" (ngSubmit)="submit()">
+  <div class="form-group">
+    <h5 for="photoName">Name:</h5>
+    <input id="photoName" name="photoName" type="text" class="form-control col-lg-8" [(ngModel)]="photo.name" />
+  </div>
+  <div class="form-group">
+    <h5 for="photoFile">Photo:</h5>
+    <div class="row mb-2">
+      <div class="col-lg-4">
+        <img src="{{ photo.filePath }}" class="img-thumbnail">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <input type="file" class="form-control-file" id="photoFile" name="photoFile" #photoFile />
+      </div>
+      <div class="col-lg-2 col-form-label-sm">Please choose photos having these objects:</div>
+      <div class="col-lg-6 text-justify col-form-label-sm">
+        <i>aeroplane, bicycle, bird, boat, bottle, bus, car, cat, chair, cow, dinningtable, dog, horse, motorbike,
+          person, pottedplant, sheep, sofa, train, tvmonitor</i>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="row mb-2">
+      <h5 class="col-lg-2" for="gmapSearchBox">Photo Location:</h5>
+      <div class="col-lg-6">
+        <input id="gmapSearchBox" class="form-control" type="text" placeholder="Type location here..." #gmapSearchBox
+          (keydown.enter)="$event.preventDefault()">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-8">
+        <div id="gmap" #gmap></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group col-lg-8">
+    <div class="row">
+      <button class="btn btn-primary mr-3" type="submit">Save</button>
+      <button class="btn btn-secondary" type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </div>
+</form>

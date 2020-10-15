@@ -67,7 +67,6 @@ export class PhotoFormComponent implements OnInit {
       this.searchBox.setBounds(this.map.getBounds());
     });
 
-    // var markers = [];
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
     this.searchBox.addListener('places_changed', (e) => {

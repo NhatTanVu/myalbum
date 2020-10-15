@@ -75,9 +75,9 @@ namespace MyAlbum.WebSPA.Controllers
         [Authorize]
         public async Task<IActionResult> CreatePhoto([FromForm] PhotoResource photoResource)
         {
-            var photo = this.mapper.Map<PhotoResource, Photo>(photoResource);
             if (photoResource.FileToUpload != null)
             {
+                var photo = this.mapper.Map<PhotoResource, Photo>(photoResource);                
                 var fileToUpload = photoResource.FileToUpload;
                 photo.FilePath = await this.photoUploadService.UploadPhoto(fileToUpload, this.uploadsFolderPath);
                 var dimensions = await this.photoRepository.GetImageDimensions(fileToUpload);
@@ -108,7 +108,7 @@ namespace MyAlbum.WebSPA.Controllers
         }
 
         /// <summary>
-        /// Get a photo by id
+        /// Get a photo by ID
         /// </summary>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPhoto([FromRoute] int id)
@@ -125,5 +125,15 @@ namespace MyAlbum.WebSPA.Controllers
 
             return Ok(photoResource);
         }
+
+        /// <summary>
+        /// Save a photo by ID
+        /// </summary>
+        [HttpPost("{id}")]
+        public async Task<IActionResult> GetPhoto([FromRoute] int id, [FromForm] PhotoResource photoResource)
+        {
+
+            return Ok();
+        }        
     }
 }
