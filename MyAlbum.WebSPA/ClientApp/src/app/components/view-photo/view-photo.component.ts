@@ -1,7 +1,7 @@
 import { Photo } from './../../models/photo';
 import { PhotoService } from './../../services/photo.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Comment, findReplyInComment, mergeNewComment } from './../../models/comment';
 import { CommentService } from 'src/app/services/comment.service';
 import { ToastyService } from 'ng2-toasty';
@@ -64,16 +64,25 @@ export class ViewPhotoComponent implements OnInit {
     private photoService: PhotoService,
     private commentService: CommentService,
     private route: ActivatedRoute,
+    private router: Router,
     private toasty: ToastyService
   ) {
     this.route.params.subscribe(p => {
       this.photoId = +p['id'];
       this.newComment.photoId = this.photoId;
-      this.photoService.getPhoto(this.photoId)
+      this.photoService.get(this.photoId)
         .subscribe(photo => {
-          this.photo = photo;
-          this.hasMap = (photo.locLat != null) && (photo.locLng != null);
-          this.initializeMap();
+          if (photo) {
+            this.photo = photo;
+            this.hasMap = (photo.locLat != null) && (photo.locLng != null);
+            this.initializeMap();
+          }
+          else {
+            this.router.navigate(['/']);
+          }
+        },
+        err => {
+          this.router.navigate(['/']);
         });
     });
 

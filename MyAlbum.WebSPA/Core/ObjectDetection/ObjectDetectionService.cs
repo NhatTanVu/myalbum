@@ -41,7 +41,7 @@ namespace MyAlbum.WebSPA.Core.ObjectDetection
                 var boundingBoxes =
                     probabilities
                     .Select(probability => parser.ParseOutputs(probability))
-                    .Select(boxes => parser.FilterBoundingBoxes(boxes, 5, .5F));
+                    .Select(boxes => parser.FilterBoundingBoxes(boxes, 5, .7F));
 
                 for (var i = 0; i < images.Count(); i++)
                 {

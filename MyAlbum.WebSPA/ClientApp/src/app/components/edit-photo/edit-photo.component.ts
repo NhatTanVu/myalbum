@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastyService } from 'ng2-toasty';
+import { ToastData, ToastyService } from 'ng2-toasty';
 import { LocationService } from './../../services/location.service';
 import { PhotoService } from './../../services/photo.service';
 import { PositionModel, Photo } from './../../models/photo';
@@ -11,7 +11,6 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./edit-photo.component.css']
 })
 export class EditPhotoComponent implements OnInit {
-  photoId: number = 0;
   photo: Photo = {
     id: 0,
     name: "",
@@ -45,12 +44,19 @@ export class EditPhotoComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router) {
     this.route.params.subscribe(p => {
-      this.photoId = +p['id'];
-      this.photoService.getPhoto(this.photoId)
+      this.photoService.get(+p['id'])
         .subscribe(photo => {
-          this.photo = photo;
-          this.hasMap = (photo.locLat != null) && (photo.locLng != null);
-          this.initializeMap();
+          if (photo) {
+            this.photo = photo;
+            this.hasMap = (photo.locLat != null) && (photo.locLng != null);
+            this.initializeMap();
+          }
+          else {
+            this.router.navigate(['/']);
+          }
+        },
+        err => {
+          this.router.navigate(['/']);
         });
     });
   }
@@ -68,6 +74,7 @@ export class EditPhotoComponent implements OnInit {
       };
       if (this.hasMap) {
         mapProp.center = new google.maps.LatLng(this.photo.centerLat, this.photo.centerLng);
+        mapProp.zoom = this.photo.mapZoom;
       }
       this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 
@@ -148,5 +155,70 @@ export class EditPhotoComponent implements OnInit {
       this.marker.setMap(null);
       this.position = null;
     });
-  }  
+  }
+
+  submit() {
+    var nativeElement: HTMLInputElement = this.fileInput.nativeElement;
+    var photoFile = null;
+    if (nativeElement.files && nativeElement.files.length > 0) {
+      photoFile = nativeElement.files[0];
+    }
+    if (this.position) {
+      this.photo.locLat = this.position.latitude;
+      this.photo.locLng = this.position.longitude;
+      this.photo.centerLat = this.map.getCenter().lat();
+      this.photo.centerLng = this.map.getCenter().lng();
+      this.photo.mapZoom = this.map.getZoom();
+    }
+    else {
+      this.photo.locLat = null;
+      this.photo.locLng = null;
+      this.photo.centerLat = null;
+      this.photo.centerLng = null;
+      this.photo.mapZoom = null;
+    }
+
+    var result$ = this.photoService.save(this.photo, photoFile);
+    result$.subscribe(
+      photo => {
+        this.toasty.success({
+          title: "Success",
+          msg: "Saved successfully.",
+          theme: "bootstrap",
+          showClose: true,
+          timeout: 1500
+        });
+        this.photo = photo;
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
+  back() {
+    this.router.navigate(['/photos/' + this.photo.id]);
+  }
+
+  delete() {
+    var result$ = this.photoService.delete(this.photo.id);
+    var router = this.router;
+    result$.subscribe(
+      res => {
+        this.toasty.success({
+          title: "Success",
+          msg: "Deleted successfully.",
+          theme: "bootstrap",
+          showClose: true,
+          timeout: 1500,
+          onRemove: function (toast: ToastData) {
+            router.navigate(['/']);
+          }
+        });
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
 }

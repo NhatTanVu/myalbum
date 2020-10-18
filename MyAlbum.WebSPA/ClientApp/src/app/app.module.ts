@@ -44,7 +44,7 @@ import { EditPhotoComponent } from './components/edit-photo/edit-photo.component
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'photos/new', component: PhotoFormComponent, canActivate: [AuthorizeGuard] },
-      { path: 'photos/edit/:id', component: EditPhotoComponent },
+      { path: 'photos/edit/:id', component: EditPhotoComponent, canActivate: [AuthorizeGuard] },
       { path: 'photos/:id', component: ViewPhotoComponent },
       { path: 'worldmap', component: WorldMapComponent }
     ]),

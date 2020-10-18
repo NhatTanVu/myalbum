@@ -37,6 +37,10 @@ namespace MyAlbum.Persistence
                         .IncludeFilter(p => p.Comments.Where(c => c.ParentId == null)
                             .Select(c => c.Author))
                     .FirstOrDefaultAsync(p => p.Id == id);
+
+                if (photo == null)
+                    return null;
+
                 var photoWithCategories = await context.Photos
                     .Include(p => p.PhotoCategories)
                         .ThenInclude(pc => pc.Category)
@@ -107,7 +111,7 @@ namespace MyAlbum.Persistence
                 }
             }
 
-            return (0, 0);            
+            return (0, 0);
         }
 
         public virtual async Task<IEnumerable<Photo>> GetPhotos(PhotoQuery filter)
@@ -127,6 +131,11 @@ namespace MyAlbum.Persistence
             }
             var photos = await query.ToListAsync();
             return photos;
+        }
+
+        public virtual void Delete(Photo photo)
+        {
+            this.context.Remove(photo);
         }
     }
 }

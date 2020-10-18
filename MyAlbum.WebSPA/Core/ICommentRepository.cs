@@ -10,5 +10,6 @@ namespace MyAlbum.Core
         Task<Comment> GetAsync(int id, bool includeRelated = true);
         IEnumerable<Comment> GetReplies(int id);
         IEnumerable<Comment> GetSelfAndAncestors(int id);
+        void DeleteAll(List<Comment> comments);
     }
 }
