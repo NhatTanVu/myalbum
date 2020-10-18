@@ -43,6 +43,7 @@ namespace MyAlbum.WebSPA.Controllers.Resources
                 this.Width == other.Width &&
                 this.Height == other.Height &&
                 this.FilePath == other.FilePath &&
+                this.BoundingBoxFilePath == other.BoundingBoxFilePath &&
                 this.LocLng == other.LocLng &&
                 this.LocLat == other.LocLat &&
                 this.CenterLng == other.CenterLng &&

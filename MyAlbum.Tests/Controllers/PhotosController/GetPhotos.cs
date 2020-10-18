@@ -65,6 +65,11 @@ namespace MyAlbum.Tests.Controllers
                 mockCategoryRepository.Object, mockUserRepository.Object, mockCommentRepository.Object,
                 mockUnitOfWork.Object, mockPhotoUploadService.Object, 
                 mockHost.Object, mockObjectDetectionService.Object);
+            seedPhotoResources = seedPhotoResources.Select(p => {
+                p.BoundingBoxFilePath = string.Format("{0}/{1}", controller.OutputFolderUrl, p.FilePath);
+                p.FilePath = string.Format("{0}/{1}", controller.UploadFolderUrl, p.FilePath);
+                return p;
+            });                
             // Act
             var photos = await controller.GetPhotos(filterResource);
             // Assert

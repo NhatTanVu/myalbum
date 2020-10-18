@@ -15,11 +15,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MyAlbum.Tests.Controllers
 {
-    public class PhotosController_Test2
+    public class PhotosController_Test7
     {
         private readonly IMapper _mapper;
 
-        public PhotosController_Test2()
+        public PhotosController_Test7()
         {
             var mapperConfig = new MapperConfiguration(cfg =>
             {
@@ -28,7 +28,7 @@ namespace MyAlbum.Tests.Controllers
             this._mapper = mapperConfig.CreateMapper();
         }
 
-        private List<Photo> SeedPhotos(List<int> seedIds)
+        private List<Photo> SeedPhotos(List<int> seedIds, string expectedUserName)
         {
             List<Photo> seedPhotos = new List<Photo>();
 
@@ -39,6 +39,10 @@ namespace MyAlbum.Tests.Controllers
                     Id = id,
                     Name = "Photo " + id,
                     FilePath = @"C:\Photo\File\Path\" + id,
+                    Author = new User()
+                    {
+                        UserName = expectedUserName
+                    },
                 });
             }
 
@@ -46,11 +50,13 @@ namespace MyAlbum.Tests.Controllers
         }
 
         [Fact]
-        public async Task GetPhoto()
+        public async Task DeletePhoto()
         {
             // Arrange
             var seedIds = new List<int> { new Random().Next(1, 50), new Random().Next(51, 100) };
-            var seedPhotos = SeedPhotos(seedIds);
+            string expectedUserName = string.Format("test_{0}@gmail.com", Guid.NewGuid());
+            ControllerContext controllerContext = Utilities.SetupCurrentUserForController(expectedUserName);
+            var seedPhotos = SeedPhotos(seedIds, expectedUserName);
             var mockPhotoRepository = new Mock<IPhotoRepository>();
             var mockCommentRepository = new Mock<ICommentRepository>();
             var mockCategoryRepository = new Mock<ICategoryRepository>();
@@ -61,24 +67,23 @@ namespace MyAlbum.Tests.Controllers
             mockHost.SetupGet(m => m.WebRootPath).Returns(string.Empty);
             var mockObjectDetectionService = new Mock<IObjectDetectionService>();
 
-            PhotosController controller = new PhotosController(this._mapper, mockPhotoRepository.Object, 
-                mockCategoryRepository.Object, mockUserRepository.Object, mockCommentRepository.Object, mockUnitOfWork.Object, 
+            PhotosController controller = new PhotosController(this._mapper, mockPhotoRepository.Object,
+                mockCategoryRepository.Object, mockUserRepository.Object, mockCommentRepository.Object, mockUnitOfWork.Object,
                 mockPhotoUploadService.Object, mockHost.Object, mockObjectDetectionService.Object);
+            controller.ControllerContext = controllerContext;
+            int count = 0;
             foreach (var seedPhoto in seedPhotos)
             {
                 var id = seedPhoto.Id;
-                var seedPhotoResource = this._mapper.Map<Photo, PhotoResource>(seedPhoto);
                 mockPhotoRepository.Setup(m => m.GetAsync(id, true)).ReturnsAsync(seedPhoto);
-
-                seedPhotoResource.BoundingBoxFilePath = string.Format("{0}/{1}", controller.OutputFolderUrl, seedPhotoResource.FilePath);
-                seedPhotoResource.FilePath = string.Format("{0}/{1}", controller.UploadFolderUrl, seedPhotoResource.FilePath);                                
+                mockPhotoUploadService.Setup(m => m.DeletePhoto(seedPhoto.FilePath, controller.UploadFolderPath, controller.OutputFolderPath));
                 // Act
-                var result = await controller.GetPhoto(id);
+                var result = await controller.DeletePhoto(id);
                 // Assert
-                Assert.IsType<OkObjectResult>(result);
-                Assert.IsType<PhotoResource>(((OkObjectResult)result).Value);
-                PhotoResource returnedPhotoResource = (PhotoResource)((OkObjectResult)result).Value;
-                Assert.True(returnedPhotoResource.Equals(seedPhotoResource));
+                Assert.IsType<OkResult>(result);
+                mockPhotoRepository.Verify(m => m.Delete(seedPhoto), Times.Once);
+                mockCommentRepository.Verify(m => m.DeleteAll(It.IsAny<List<Comment>>()), Times.Exactly(++count));
+                mockPhotoUploadService.Verify(m => m.DeletePhoto(seedPhoto.FilePath, controller.UploadFolderPath, controller.OutputFolderPath), Times.Once);
             }
         }
     }

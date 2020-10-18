@@ -51,6 +51,38 @@ namespace MyAlbum.WebSPA.Controllers
             this.outputFolderUrl = "/uploads/output";
         }
 
+        public string UploadFolderUrl
+        {
+            get
+            {
+                return this.uploadsFolderUrl;
+            }
+        }
+
+        public string UploadFolderPath
+        {
+            get
+            {
+                return this.uploadsFolderPath;
+            }
+        }
+
+        public string OutputFolderUrl
+        {
+            get
+            {
+                return this.outputFolderUrl;
+            }
+        }      
+
+        public string OutputFolderPath
+        {
+            get
+            {
+                return this.outputFolderPath;
+            }
+        }  
+
         /// <summary>
         /// Get a list of photos by filter
         /// </summary>
@@ -63,7 +95,7 @@ namespace MyAlbum.WebSPA.Controllers
             photoResources = photoResources.Select(res =>
             {
                 string orgFilePath = res.FilePath;
-                res.FilePath = Path.Combine(this.uploadsFolderUrl, orgFilePath);
+                res.FilePath = string.Format("{0}/{1}", this.uploadsFolderUrl, orgFilePath);
                 res.BoundingBoxFilePath = string.Format("{0}/{1}", this.outputFolderUrl, orgFilePath);
                 return res;
             });
@@ -126,7 +158,7 @@ namespace MyAlbum.WebSPA.Controllers
 
             var photoResource = mapper.Map<Photo, PhotoResource>(photo);
             string orgFilePath = photoResource.FilePath;
-            photoResource.FilePath = Path.Combine(this.uploadsFolderUrl, orgFilePath);
+            photoResource.FilePath = string.Format("{0}/{1}", this.uploadsFolderUrl, orgFilePath);
             photoResource.BoundingBoxFilePath = string.Format("{0}/{1}", this.outputFolderUrl, orgFilePath);
 
             return Ok(photoResource);
@@ -182,7 +214,7 @@ namespace MyAlbum.WebSPA.Controllers
 
                 var outputPhotoResource = mapper.Map<Photo, PhotoResource>(photo);
                 string orgFilePath = outputPhotoResource.FilePath;
-                outputPhotoResource.FilePath = Path.Combine(this.uploadsFolderUrl, orgFilePath);
+                outputPhotoResource.FilePath = string.Format("{0}/{1}", this.uploadsFolderUrl, orgFilePath);
                 outputPhotoResource.BoundingBoxFilePath = string.Format("{0}/{1}", this.outputFolderUrl, orgFilePath);
 
                 return Ok(outputPhotoResource);
