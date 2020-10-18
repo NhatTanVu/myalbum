@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyAlbum.Core.Models;
@@ -8,7 +9,7 @@ using Xunit;
 
 namespace MyAlbum.Tests.Repositories
 {
-    public class CommentRepository_Test3
+    public class CommentRepository_Test5
     {
         private IEnumerable<Comment> SeedReplies(int seedCommentId, MyAlbumDbContext context)
         {
@@ -46,21 +47,25 @@ namespace MyAlbum.Tests.Repositories
         }
 
         [Fact]
-        public void GetReplies()
+        public async Task DeleteAll()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<MyAlbumDbContext>()
-                .UseInMemoryDatabase(databaseName: "GetReplies_MyAlbumDatabase")
+                .UseInMemoryDatabase(databaseName: "DeleteAll_MyAlbumDatabase")
                 .Options;
             using (var context = new MyAlbumDbContext(options))
             {
+                UnitOfWork unitOfWork = new UnitOfWork(context);
                 int seedCommentId = new Random().Next(1, 100);
                 IEnumerable<Comment> seedReplies = SeedReplies(seedCommentId, context);
                 CommentRepository commentRepository = new CommentRepository(context);
+                // Assert #1
+                Assert.Equal(seedReplies.Count(), context.Comments.Count());
                 // Act
-                var replies = commentRepository.GetReplies(seedCommentId);
-                // Assert
-                Assert.Equal(seedReplies, replies);
+                commentRepository.DeleteAll(seedReplies.ToList());
+                await unitOfWork.CompleteAsync();
+                // Assert #2
+                Assert.Equal(0, context.Comments.Count());
             }
         }
     }
