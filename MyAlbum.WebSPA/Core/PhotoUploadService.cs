@@ -12,7 +12,12 @@ namespace MyAlbum.Core
         }
         public async Task<string> UploadPhoto(IFormFile formFile, string uploadsFolderPath)
         {
-            return await this.photoStorage.StorePhoto(uploadsFolderPath, formFile);
+            return await this.photoStorage.StorePhoto(formFile, uploadsFolderPath);
+        }
+
+        public void DeletePhoto(string filePath, string uploadsFolderPath, string outputFolderPath)
+        {
+            this.photoStorage.DeletePhoto(filePath, uploadsFolderPath, outputFolderPath);
         }
     }
 }

@@ -47,6 +47,8 @@ namespace MyAlbum.Tests.Controllers
             mockPhotoRepository.Setup(m => m.GetImageDimensions(It.IsAny<IFormFile>()))
                 .ReturnsAsync((expectedHeight, expectedWidth));
 
+            var mockCommentRepository = new Mock<ICommentRepository>();
+
             var mockHost = new Mock<IWebHostEnvironment>();
             string expectedWebRootPath = seed;
             mockHost.SetupGet(m => m.WebRootPath).Returns(expectedWebRootPath);
@@ -80,7 +82,7 @@ namespace MyAlbum.Tests.Controllers
             var mockUnitOfWork = new Mock<IUnitOfWork>();
 
             PhotosController controller = new PhotosController(this._mapper, mockPhotoRepository.Object, mockCategoryRepository.Object,
-                mockUserRepository.Object, mockUnitOfWork.Object, photoUploadService.Object, mockHost.Object, mockObjectDetectionService.Object);
+                mockUserRepository.Object, mockCommentRepository.Object, mockUnitOfWork.Object, photoUploadService.Object, mockHost.Object, mockObjectDetectionService.Object);
             controller.ControllerContext = controllerContext;
             PhotoResource originalResource = new PhotoResource()
             {

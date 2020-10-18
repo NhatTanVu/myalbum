@@ -63,7 +63,22 @@ export class PhotoService {
       .pipe(map(res => <SavePhoto>res));
   }
 
-  getPhoto(id) {
+  save(photo: SavePhoto, file) {
+    var formData = new FormData();
+    formData.append('FileToUpload', file);
+    formData.append('Id', photo.id.toString());
+    formData.append('Name', photo.name);
+    formData.append('LocLat', photo.locLat ? photo.locLat.toString() : null);
+    formData.append('LocLng', photo.locLng ? photo.locLng.toString() : null);
+    formData.append('CenterLat', photo.centerLat ? photo.centerLat.toString() : null);
+    formData.append('CenterLng', photo.centerLng ? photo.centerLng.toString() : null);
+    formData.append('MapZoom', photo.mapZoom ? photo.mapZoom.toString() : null);
+
+    return this.http.post(this.photosEndpoint + '/' + photo.id, formData)
+      .pipe(map(res => <Photo>res));
+  }
+
+  get(id) {
     return this.http.get(this.photosEndpoint + '/' + id, this.httpOptions)
       .pipe(map(res => {
         var photo = <Photo>res;
@@ -73,5 +88,12 @@ export class PhotoService {
         });
         return photo;
       }));
+  }
+
+  delete(id) {
+    return this.http.delete(this.photosEndpoint + '/' + id, this.httpOptions)
+      .pipe(map(res => {
+        return res;
+      }));        
   }
 }

@@ -51,6 +51,7 @@ namespace MyAlbum.Tests.Controllers
             var seedPhotoResources = this._mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(seedPhotos);
             var filterResource = new PhotoQueryResource();
             var mockPhotoRepository = new Mock<IPhotoRepository>();
+            var mockCommentRepository = new Mock<ICommentRepository>();
             mockPhotoRepository.Setup(m => m.GetPhotos(It.IsAny<PhotoQuery>())).ReturnsAsync(seedPhotos);
             var mockCategoryRepository = new Mock<ICategoryRepository>();
             var mockUserRepository = new Mock<IUserRepository>();
@@ -61,7 +62,7 @@ namespace MyAlbum.Tests.Controllers
             var mockObjectDetectionService = new Mock<IObjectDetectionService>();
 
             PhotosController controller = new PhotosController(this._mapper, mockPhotoRepository.Object, 
-                mockCategoryRepository.Object, mockUserRepository.Object, 
+                mockCategoryRepository.Object, mockUserRepository.Object, mockCommentRepository.Object,
                 mockUnitOfWork.Object, mockPhotoUploadService.Object, 
                 mockHost.Object, mockObjectDetectionService.Object);
             // Act

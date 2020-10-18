@@ -83,5 +83,36 @@ namespace MyAlbum.Persistence
 
             return result;
         }
+
+        private IEnumerable<int> GetDeletedIds(Comment comment)
+        {
+            List<int> deletedIds = new List<int>();
+            var replies = GetReplies(comment.Id);
+            if (replies != null && replies.Count() > 0)
+            {
+                foreach (Comment reply in replies)
+                {
+                    deletedIds.AddRange(GetDeletedIds(reply));
+                }
+            }
+            else
+            {
+                deletedIds.Add(comment.Id);
+            }
+
+            return deletedIds;
+        }
+
+        public void DeleteAll(List<Comment> comments)
+        {
+            List<int> deletedIds = new List<int>();
+            foreach(var comment in comments)
+            {
+                deletedIds.AddRange(GetDeletedIds(comment));
+            }
+            var deletedComments = this.context.Comments.Where(c => deletedIds.Contains(c.Id));
+
+            this.context.RemoveRange(deletedComments);
+        }
     }
 }

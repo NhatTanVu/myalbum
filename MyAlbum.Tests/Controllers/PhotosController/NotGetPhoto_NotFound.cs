@@ -43,7 +43,7 @@ namespace MyAlbum.Tests.Controllers
             var notFoundId = GetRandomIntExcept(seedIds);
             var mockPhotoRepository = new Mock<IPhotoRepository>();
             mockPhotoRepository.Setup(m => m.GetAsync(notFoundId, true)).ReturnsAsync((Photo)null);
-
+            var mockCommentRepository = new Mock<ICommentRepository>();
             var mockCategoryRepository = new Mock<ICategoryRepository>();
             var mockUserRepository = new Mock<IUserRepository>();
             var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -52,7 +52,7 @@ namespace MyAlbum.Tests.Controllers
             mockHost.SetupGet(m => m.WebRootPath).Returns(string.Empty);
             var mockObjectDetectionService = new Mock<IObjectDetectionService>();
             PhotosController controller = new PhotosController(this._mapper, mockPhotoRepository.Object, 
-                mockCategoryRepository.Object, mockUserRepository.Object, mockUnitOfWork.Object, 
+                mockCategoryRepository.Object, mockUserRepository.Object, mockCommentRepository.Object, mockUnitOfWork.Object, 
                 mockPhotoUploadService.Object, mockHost.Object, mockObjectDetectionService.Object);
             // Act
             var result = await controller.GetPhoto(notFoundId);

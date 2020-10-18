@@ -1,4 +1,4 @@
-<h1>Add Photo</h1>
+<h1>Edit Photo</h1>
 <form #f="ngForm" (ngSubmit)="submit()">
   <div class="form-group">
     <h5 for="photoName">Name:</h5>
@@ -6,6 +6,11 @@
   </div>
   <div class="form-group">
     <h5 for="photoFile">Photo:</h5>
+    <div class="row mb-2">
+      <div class="col-lg-4">
+        <img src="{{ photo.filePath }}" class="img-thumbnail">
+      </div>
+    </div>
     <div class="row">
       <div class="col-12">
         <input type="file" class="form-control-file" id="photoFile" name="photoFile" #photoFile />
@@ -33,8 +38,9 @@
   </div>
   <div class="form-group col-lg-8">
     <div class="row">
-      <button class="btn btn-primary mr-3" type="submit">Save</button>
-      <button class="btn btn-secondary" type="button" (click)="cancel()">Cancel</button>
+      <button class="btn btn-secondary mr-3" type="button" (click)="back()">Back</button>
+      <button class="btn btn-primary mr-3" type="button" (click)="submit()">Save</button>
+      <button class="btn btn-danger" type="button" (click)="delete()">Delete</button>
     </div>
   </div>
 </form>

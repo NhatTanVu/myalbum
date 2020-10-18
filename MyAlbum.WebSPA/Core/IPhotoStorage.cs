@@ -5,6 +5,7 @@ namespace MyAlbum.Core
 {
     public interface IPhotoStorage
     {
-        Task<string> StorePhoto(string uploadsFolderPath, IFormFile formFile);
+        Task<string> StorePhoto(IFormFile formFile, string uploadsFolderPath);
+        void DeletePhoto(string filePath, string uploadsFolderPath, string outputFolderPath);
     }
 }

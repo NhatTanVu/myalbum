@@ -7,7 +7,7 @@ namespace MyAlbum.Core
 {
     public class FileSystemPhotoStorage : IPhotoStorage
     {
-        public async Task<string> StorePhoto(string uploadsFolderPath, IFormFile formFile)
+        public async Task<string> StorePhoto(IFormFile formFile, string uploadsFolderPath)
         {
             if (!Directory.Exists(uploadsFolderPath))
                 Directory.CreateDirectory(uploadsFolderPath);
@@ -19,6 +19,16 @@ namespace MyAlbum.Core
             }
 
             return fileName;
+        }
+
+        public void DeletePhoto(string fileName, string uploadsFolderPath, string outputFolderPath)
+        {
+            System.GC.Collect(); 
+            System.GC.WaitForPendingFinalizers();            
+            var uploadFilePath = Path.Combine(uploadsFolderPath, fileName);
+            var outputFilePath = Path.Combine(outputFolderPath, fileName);
+            File.Delete(uploadFilePath);
+            File.Delete(outputFilePath);
         }
     }
 }

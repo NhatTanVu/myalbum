@@ -52,6 +52,7 @@ namespace MyAlbum.Tests.Controllers
             var seedIds = new List<int> { new Random().Next(1, 50), new Random().Next(51, 100) };
             var seedPhotos = SeedPhotos(seedIds);
             var mockPhotoRepository = new Mock<IPhotoRepository>();
+            var mockCommentRepository = new Mock<ICommentRepository>();
             var mockCategoryRepository = new Mock<ICategoryRepository>();
             var mockUserRepository = new Mock<IUserRepository>();
             var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -61,7 +62,7 @@ namespace MyAlbum.Tests.Controllers
             var mockObjectDetectionService = new Mock<IObjectDetectionService>();
 
             PhotosController controller = new PhotosController(this._mapper, mockPhotoRepository.Object, 
-                mockCategoryRepository.Object, mockUserRepository.Object, mockUnitOfWork.Object, 
+                mockCategoryRepository.Object, mockUserRepository.Object, mockCommentRepository.Object, mockUnitOfWork.Object, 
                 mockPhotoUploadService.Object, mockHost.Object, mockObjectDetectionService.Object);
             foreach (var seedPhoto in seedPhotos)
             {

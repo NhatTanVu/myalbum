@@ -22,6 +22,7 @@ import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { WorldMapComponent } from './components/world-map/world-map.component';
+import { EditPhotoComponent } from './components/edit-photo/edit-photo.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { WorldMapComponent } from './components/world-map/world-map.component';
     ViewPhotoComponent,
     ReplyFormComponent,
     ReplyListComponent,
-    WorldMapComponent
+    WorldMapComponent,
+    EditPhotoComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -42,6 +44,7 @@ import { WorldMapComponent } from './components/world-map/world-map.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'photos/new', component: PhotoFormComponent, canActivate: [AuthorizeGuard] },
+      { path: 'photos/edit/:id', component: EditPhotoComponent, canActivate: [AuthorizeGuard] },
       { path: 'photos/:id', component: ViewPhotoComponent },
       { path: 'worldmap', component: WorldMapComponent }
     ]),
