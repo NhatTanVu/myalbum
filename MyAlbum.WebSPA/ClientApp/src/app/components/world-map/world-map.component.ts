@@ -57,9 +57,12 @@ export class WorldMapComponent implements OnInit {
                 label: "",
               });
               google.maps.event.addListener(marker, 'click', function () {
-                var bounds = new google.maps.LatLngBounds(marker.getPosition());
-                this.map.fitBounds(bounds);
-                this.map.setZoom(((this.map.getZoom() - 10) > 0) ? (this.map.getZoom() - 10) : 1);
+                this.map.setCenter(marker.getPosition());
+                this.map.setZoom(this.map.getZoom() + 1);
+              });
+              google.maps.event.addListener(marker, 'rightclick', function () {
+                this.map.setCenter(marker.getPosition());
+                this.map.setZoom((this.map.getZoom() - 1) > 1 ? (this.map.getZoom() - 1) : 1);
               });
               allBounds.extend(markerPosition);
               return marker;
@@ -74,6 +77,14 @@ export class WorldMapComponent implements OnInit {
             this.viewportPhotos = this.allPhotos.filter((photo) => {
               return bound.contains({ lat: photo.locLat, lng: photo.locLng });
             });
+          });
+          google.maps.event.addListener(this.map, 'click', (e) => {
+            this.map.setCenter(e.latLng);
+            this.map.setZoom(this.map.getZoom() + 2);
+          });
+          google.maps.event.addListener(this.map, 'rightclick', (e) => {
+            this.map.setCenter(e.latLng);
+            this.map.setZoom((this.map.getZoom() - 2) > 2 ? (this.map.getZoom() - 2) : 2);
           });
           // Create the search box and link it to the UI element.
           this.searchBox = new google.maps.places.SearchBox(this.gmapSearchBox.nativeElement);
@@ -101,7 +112,7 @@ export class WorldMapComponent implements OnInit {
 
               this.viewportPhotos = this.allPhotos.filter((photo) => {
                 return bounds.contains({ lat: photo.locLat, lng: photo.locLng });
-              });              
+              });
             }
           });
         });
@@ -111,6 +122,5 @@ export class WorldMapComponent implements OnInit {
   panTo(photo: Photo) {
     var location = new google.maps.LatLng({ lat: photo.locLat, lng: photo.locLng });
     this.map.setCenter(location);
-    this.map.setZoom(this.map.getZoom() + 2);
   }
 }

@@ -1,4 +1,18 @@
 .explore-gallery img.img-thumbnail {
-    max-height: 100px;
-    min-height: 100px;
+    max-height: 150px;
+    min-height: 150px;
   }
+
+.explore-gallery .img-block {
+  display: inline-block; 
+  position: relative;
+}
+
+.explore-gallery .external-button {
+  position: absolute; 
+  right: 0.4rem; 
+  top: 0.4rem; 
+  border-radius: 0.125rem; 
+  padding: 0.25em; 
+  background-color: rgba(255,255,255,0.4);
+}
