@@ -2,7 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastData, ToastyService } from 'ng2-toasty';
 import { LocationService } from './../../services/location.service';
 import { PhotoService } from './../../services/photo.service';
-import { PositionModel, Photo } from './../../models/photo';
+import { PositionModel, Photo, PhotoCategory } from './../../models/photo';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 @Component({
@@ -11,6 +11,88 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./edit-photo.component.css']
 })
 export class EditPhotoComponent implements OnInit {
+  readonly tagSeparator: string = ", ";
+  readonly availableCategories: PhotoCategory[] = [
+    {
+      id: 1,
+      name: "aeroplane"
+    },
+    {
+      id: 2,
+      name: "bicycle"
+    },
+    {
+      id: 3,
+      name: "bird"
+    },
+    {
+      id: 4,
+      name: "boat"
+    },
+    {
+      id: 5,
+      name: "bottle"
+    },
+    {
+      id: 6,
+      name: "bus"
+    },
+    {
+      id: 7,
+      name: "car"
+    },
+    {
+      id: 8,
+      name: "cat"
+    },{
+      id: 9,
+      name: "chair"
+    },
+    {
+      id: 10,
+      name: "cow"
+    },
+    {
+      id: 11,
+      name: "diningtable"
+    },
+    {
+      id: 12,
+      name: "dog"
+    },
+    {
+      id: 13,
+      name: "horse"
+    },
+    {
+      id: 14,
+      name: "motorbike"
+    },
+    {
+      id: 15,
+      name: "person"
+    },
+    {
+      id: 16,
+      name: "pottedplant"
+    },
+    {
+      id: 17,
+      name: "sheep"
+    },
+    {
+      id: 18,
+      name: "sofa"
+    },
+    {
+      id: 19,
+      name: "train"
+    },
+    {
+      id: 20,
+      name: "tvmonitor"
+    }    
+  ];
   photo: Photo = {
     id: 0,
     name: "",
@@ -28,6 +110,7 @@ export class EditPhotoComponent implements OnInit {
     createdDate: null,
     modifiedDate: null
   };
+  photoTags: string = "";
   position: PositionModel = null;
 
   @ViewChild("photoFile", { static: false }) fileInput: ElementRef;
@@ -48,6 +131,7 @@ export class EditPhotoComponent implements OnInit {
         .subscribe(photo => {
           if (photo) {
             this.photo = photo;
+            this.photoTags = this.photo.photoCategories.map(c => c.name).join(this.tagSeparator);
             this.hasMap = (photo.locLat != null) && (photo.locLng != null);
             this.initializeMap();
           }
@@ -177,6 +261,10 @@ export class EditPhotoComponent implements OnInit {
       this.photo.centerLng = null;
       this.photo.mapZoom = null;
     }
+    var selectedTags = this.photoTags.split(this.tagSeparator);
+    this.photo.photoCategories = this.availableCategories.filter(cat => {
+      return selectedTags.indexOf(cat.name) >= 0;
+    });
 
     var result$ = this.photoService.save(this.photo, photoFile);
     result$.subscribe(
