@@ -12,10 +12,10 @@ Website to share albums, photos with Google Maps locations
 ![Explore](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/explore.JPG?raw=true)
 
 2. **World Map**\
-![World Map](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/world_map.JPG?raw=true)
+![World Map](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/world_map.jpg?raw=true)
 
 3. **Add Photo**\
-![Add Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/add_photo.JPG?raw=true)
+![Add Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/add_photo.jpg?raw=true)
 
 4. **View Photo**\
 ![View Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/view_photo.JPG?raw=true)
