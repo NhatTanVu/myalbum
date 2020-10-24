@@ -210,6 +210,19 @@ namespace MyAlbum.WebSPA.Controllers
                 photo.CenterLat = photoResource.CenterLat;
                 photo.MapZoom = photoResource.MapZoom;
 
+                var currentCategories = photo.PhotoCategories.ToList();
+                var currentCategoriesIds = currentCategories.Select(cat => cat.CategoryId);
+                var strSelectedCategories = Request.Form.ToDictionary(x => x.Key, x => x.Value.ToString())["PhotoCategories"];
+                var selectedCategoryResources = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<CategoryResource>>(strSelectedCategories);
+                var selectedCategoryIds =  selectedCategoryResources.Select(cat => cat.Id);
+                var deletedCategoryIds = photo.PhotoCategories.Where(cat => !selectedCategoryIds.Contains(cat.CategoryId)).Select(cat => cat.CategoryId);
+                var newCategoryResources = selectedCategoryResources.Where(selectedCat => !currentCategoriesIds.Contains(selectedCat.Id));
+                var newCategories = mapper.Map<IEnumerable<CategoryResource>, IEnumerable<PhotoCategory>>(newCategoryResources).ToList();
+
+                currentCategories.RemoveAll(c => deletedCategoryIds.Contains(c.CategoryId));
+                currentCategories.AddRange(newCategories);
+                
+                photo.PhotoCategories = currentCategories;
                 await this.unitOfWork.CompleteAsync();
 
                 var outputPhotoResource = mapper.Map<Photo, PhotoResource>(photo);

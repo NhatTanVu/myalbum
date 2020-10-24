@@ -11,20 +11,29 @@
         <img src="{{ photo.filePath }}" class="img-thumbnail">
       </div>
     </div>
+    <h5 for="photoTag">Tags:</h5>
+    <div class="row mb-2">
+      <div class="col-lg-6">
+        <input type="text" class="form-control" id="photoTag" name="photoTag" [(ngModel)]="photoTags" />
+      </div>
+      <div class="col-lg-2">
+        <label class="col-form-label-sm" for="photoTag">(separated by ", ")</label>
+      </div>
+    </div>
     <div class="row">
       <div class="col-12">
         <input type="file" class="form-control-file" id="photoFile" name="photoFile" #photoFile />
       </div>
       <div class="col-lg-2 col-form-label-sm">Please choose photos having these objects:</div>
       <div class="col-lg-6 text-justify col-form-label-sm">
-        <i>aeroplane, bicycle, bird, boat, bottle, bus, car, cat, chair, cow, dinningtable, dog, horse, motorbike,
+        <i>aeroplane, bicycle, bird, boat, bottle, bus, car, cat, chair, cow, diningtable, dog, horse, motorbike,
           person, pottedplant, sheep, sofa, train, tvmonitor</i>
       </div>
     </div>
   </div>
   <div class="form-group">
     <div class="row mb-2">
-      <h5 class="col-lg-2" for="gmapSearchBox">Photo Location:</h5>
+      <h5 class="col-lg-2" for="gmapSearchBox">Location:</h5>
       <div class="col-lg-6">
         <input id="gmapSearchBox" class="form-control" type="text" placeholder="Type location here..." #gmapSearchBox
           (keydown.enter)="$event.preventDefault()">

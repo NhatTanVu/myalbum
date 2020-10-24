@@ -21,7 +21,8 @@ export class PhotoFormComponent implements OnInit {
     locLng: null,
     centerLat: null,
     centerLng: null,
-    mapZoom: null
+    mapZoom: null,
+    photoCategories: []
   };
   position: PositionModel = null;
 

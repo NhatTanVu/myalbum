@@ -73,6 +73,7 @@ export class PhotoService {
     formData.append('CenterLat', photo.centerLat ? photo.centerLat.toString() : null);
     formData.append('CenterLng', photo.centerLng ? photo.centerLng.toString() : null);
     formData.append('MapZoom', photo.mapZoom ? photo.mapZoom.toString() : null);
+    formData.append('PhotoCategories', photo.photoCategories ? JSON.stringify(photo.photoCategories) : null);
 
     return this.http.post(this.photosEndpoint + '/' + photo.id, formData)
       .pipe(map(res => <Photo>res));
