@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 namespace MyAlbum.WebSPA.Controllers
 {
     [ApiExplorerSettings(IgnoreApi=true)]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage()]
     public class OidcConfigurationController : Controller
     {
         private readonly ILogger<OidcConfigurationController> logger;
