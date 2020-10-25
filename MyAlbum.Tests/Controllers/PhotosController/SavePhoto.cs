@@ -31,6 +31,21 @@ namespace MyAlbum.Tests.Controllers
             this._mapper = mapperConfig.CreateMapper();
         }
 
+        private Mock<HttpContext> MockHttpContext(IEnumerable<CategoryResource> categories)
+        {
+            var mockHttpContext = new Mock<HttpContext>();
+
+            mockHttpContext.Setup(r => r.Request.Form).Returns(delegate()
+            {
+                var dict = new Dictionary<string, Microsoft.Extensions.Primitives.StringValues>();
+                dict.Add("PhotoCategories", Newtonsoft.Json.JsonConvert.SerializeObject(categories));
+                var nv = new Microsoft.AspNetCore.Http.FormCollection(dict);
+                return nv;
+            });
+
+            return mockHttpContext;
+        }
+
         [Fact]
         public async Task SavePhoto()
         {
@@ -48,7 +63,6 @@ namespace MyAlbum.Tests.Controllers
             mockPhotoRepository.Setup(m => m.GetImageDimensions(It.IsAny<IFormFile>()))
                 .ReturnsAsync((expectedHeight, expectedWidth));
             string expectedUserName = string.Format("test_{0}@gmail.com", seed);
-            ControllerContext controllerContext = Utilities.SetupCurrentUserForController(expectedUserName);            
             var seedPhoto = new Photo()
             {
                 Id = photoId,
@@ -97,8 +111,7 @@ namespace MyAlbum.Tests.Controllers
             var mockUnitOfWork = new Mock<IUnitOfWork>();
 
             PhotosController controller = new PhotosController(this._mapper, mockPhotoRepository.Object, mockCategoryRepository.Object,
-                mockUserRepository.Object, mockCommentRepository.Object, mockUnitOfWork.Object, photoUploadService.Object, mockHost.Object, mockObjectDetectionService.Object);
-            controller.ControllerContext = controllerContext;
+                mockUserRepository.Object, mockCommentRepository.Object, mockUnitOfWork.Object, photoUploadService.Object, mockHost.Object, mockObjectDetectionService.Object);  
             PhotoResource originalResource = new PhotoResource()
             {
                 Id = photoId,
@@ -121,6 +134,9 @@ namespace MyAlbum.Tests.Controllers
                     UserName = expectedUserName
                 }
             };
+            var mockHttpContext = MockHttpContext(originalResource.PhotoCategories);
+            ControllerContext controllerContext = Utilities.SetupCurrentUserForController(expectedUserName, mockHttpContext);            
+            controller.ControllerContext = controllerContext;
             // Act
             var result = await controller.SavePhoto(photoId, originalResource);
             originalResource.BoundingBoxFilePath = string.Format("{0}/{1}", controller.OutputFolderUrl, originalResource.FilePath);

@@ -2,6 +2,10 @@
 Website to share albums, photos with Google Maps locations
 # Azure website
 * **URL**: https://my-album.azurewebsites.net/
+# Code coverage
+1. **Summary**\
+![Summary](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/code-coverage.jpg?raw=true)
+2. [Detailed Report](https://htmlpreview.github.io/?https://github.com/NhatTanVu/myalbum/blob/Code-Coverage/MyAlbum.Tests/coveragereport/index.html)
 # Screenshots
 1. **Explore**\
 ![Explore](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/explore.JPG?raw=true)
