@@ -18,7 +18,7 @@ Website to share albums, photos with Google Maps locations
 ![Add Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/add_photo.jpg?raw=true)
 
 4. **Edit Photo**\
-![Edit Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/edit_photo.jpg?raw=true)
+![Edit Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/edit-photo.jpg?raw=true)
 
 5. **View Photo**\
 ![View Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/view_photo.JPG?raw=true)
