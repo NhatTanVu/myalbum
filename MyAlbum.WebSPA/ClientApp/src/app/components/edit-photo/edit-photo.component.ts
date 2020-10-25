@@ -110,7 +110,7 @@ export class EditPhotoComponent implements OnInit {
     createdDate: null,
     modifiedDate: null
   };
-  photoTags: string = "";
+  photoTags: number[];
   position: PositionModel = null;
 
   @ViewChild("photoFile", { static: false }) fileInput: ElementRef;
@@ -131,7 +131,7 @@ export class EditPhotoComponent implements OnInit {
         .subscribe(photo => {
           if (photo) {
             this.photo = photo;
-            this.photoTags = this.photo.photoCategories.map(c => c.name).join(this.tagSeparator);
+            this.photoTags = this.photo.photoCategories.map(c => c.id);
             this.hasMap = (photo.locLat != null) && (photo.locLng != null);
             this.initializeMap();
           }
@@ -261,9 +261,8 @@ export class EditPhotoComponent implements OnInit {
       this.photo.centerLng = null;
       this.photo.mapZoom = null;
     }
-    var selectedTags = this.photoTags.split(this.tagSeparator);
     this.photo.photoCategories = this.availableCategories.filter(cat => {
-      return selectedTags.indexOf(cat.name) >= 0;
+      return this.photoTags.indexOf(cat.id) >= 0;
     });
 
     var result$ = this.photoService.save(this.photo, photoFile);

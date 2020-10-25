@@ -5,6 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
@@ -50,7 +51,8 @@ import { EditPhotoComponent } from './components/edit-photo/edit-photo.component
     ]),
     ToastyModule.forRoot(),
     LoadingBarHttpClientModule, // for HttpClient use
-    LoadingBarModule
+    LoadingBarModule,
+    NgSelectModule
   ],
   providers: [
     PhotoService,
