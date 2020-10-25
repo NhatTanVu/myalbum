@@ -17,17 +17,20 @@ Website to share albums, photos with Google Maps locations
 3. **Add Photo**\
 ![Add Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/add_photo.jpg?raw=true)
 
-4. **View Photo**\
+4. **Edit Photo**\
+![Edit Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/edit_photo.jpg?raw=true)
+
+5. **View Photo**\
 ![View Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/view_photo.JPG?raw=true)
 
-5. **View Photo >> Object Detection** (click on the photo)
+6. **View Photo >> Object Detection** (click on the photo)
 ![View Photo >> Object Detection](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/view_photo_object_detection.JPG?raw=true)
 
-6. **View Photo >> Add Comment**
+7. **View Photo >> Add Comment**
 ![View Photo >> Add Comment](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/add_comment.JPG?raw=true)
 
-7. **View Photo >> Update New Comment (real-time)**
+8. **View Photo >> Update New Comment (real-time)**
 ![View Photo >> Update New Comment (real-time)](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/update_new_comment_real_time.JPG?raw=true)
 
-8. **View Photo >> Add & View Reply**
+9. **View Photo >> Add & View Reply**
 ![View Photo >> Add & View Reply](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/view_add_reply.JPG?raw=true)
