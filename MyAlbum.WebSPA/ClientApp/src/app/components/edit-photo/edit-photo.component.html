@@ -14,7 +14,13 @@
     <h5 for="photoTag">Tags:</h5>
     <div class="row mb-2">
       <div class="col-lg-6">
-        <input type="text" class="form-control" id="photoTag" name="photoTag" [(ngModel)]="photoTags" />
+        <ng-select id="photoTag" name="photoTag" [items]="availableCategories" 
+           bindLabel="name" 
+           bindValue="id" 
+           [hideSelected]="true"
+           multiple="true"
+           [(ngModel)]="photoTags">
+        </ng-select>
       </div>
       <div class="col-lg-2">
         <label class="col-form-label-sm" for="photoTag">(separated by ", ")</label>
