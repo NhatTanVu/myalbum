@@ -1,18 +1,34 @@
-.explore-gallery img.img-thumbnail {
-    max-height: 150px;
-    min-height: 150px;
-  }
+.explore-gallery .img-block span {
+  cursor: zoom-in;
+}
+
+.explore-gallery .img-block span div {
+  float: left;
+  border-radius: 0px;
+  overflow: hidden;
+  padding: 0px;
+  border: 0.25rem solid #f0f0f0;
+  margin-right: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.explore-gallery img {
+  max-height: 150px;
+  min-height: 150px;
+  display: block;
+}
 
 .explore-gallery .img-block {
-  display: inline-block; 
+  display: inline-block;
   position: relative;
+  overflow: auto;
 }
 
 .explore-gallery .external-button {
-  position: absolute; 
-  right: 0.4rem; 
-  top: 0.4rem; 
-  border-radius: 0.125rem; 
-  padding: 0.25em; 
-  background-color: rgba(255,255,255,0.4);
+  position: absolute;
+  right: 0.4rem;
+  top: 0.4rem;
+  border-radius: 0.125rem;
+  padding: 0.25em;
+  background-color: rgba(255, 255, 255, 0.4);
 }

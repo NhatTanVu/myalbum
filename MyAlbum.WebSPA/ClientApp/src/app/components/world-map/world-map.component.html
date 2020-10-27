@@ -2,10 +2,12 @@
   <div class="row">
     <div class="col-lg-4">
       <div class="explore-gallery">
-        <div class="m-1 img-block" *ngFor="let p of viewportPhotos">
-          <a href="javascript:;" (click)="panTo(p)">
-            <img src="{{ p.filePath }}" alt="{{ p.name }}" class="img-thumbnail">
-          </a>
+        <div class="img-block" *ngFor="let p of viewportPhotos">
+          <span (click)="panTo(p)">
+            <div>
+              <img src="{{ p.filePath }}" alt="{{ p.name }}">
+            </div>
+          </span>
           <a href="/photos/{{p.id}}" target="_blank" class="external-button"><i
               class="edit-link fas fa-external-link-alt"></i></a>
         </div>
