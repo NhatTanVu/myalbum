@@ -1,4 +1,19 @@
-.explore-gallery img.img-thumbnail {
+.explore-gallery div {
+  float: left;
+  border-radius: 0px;
+  overflow: hidden;
+  padding: 0px;
+  border: 0.25rem solid #f0f0f0;
+  margin-right: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.explore-gallery {
+  overflow: auto;
+}
+
+.explore-gallery img {
   max-height: 300px;
   min-height: 300px;
+  display: block;
 }

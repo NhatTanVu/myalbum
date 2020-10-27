@@ -35,6 +35,6 @@ html {
 }
 
 img {
-  transition: transform 5s cubic-bezier(.165,.84,.26,.98);
+  transition: transform 1s cubic-bezier(.165,.84,.26,.98);
   transform: scale(1);
 }
