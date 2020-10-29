@@ -27,8 +27,10 @@ export class ViewPhotoComponent implements OnInit {
     centerLng: null,
     mapZoom: null,
     comments: [],
+    totalComments: 0,
     createdDate: null,
-    modifiedDate: null
+    modifiedDate: null,
+    author: null
   };
   newComment: Comment = {
     id: 0,

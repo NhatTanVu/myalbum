@@ -1,3 +1,7 @@
+.explore-gallery {
+  overflow: auto;
+}
+
 .explore-gallery .img-block span {
   cursor: zoom-in;
 }
@@ -22,6 +26,7 @@
   display: inline-block;
   position: relative;
   overflow: auto;
+  float: left; /* Fix space-between-inline-blocks issue */
 }
 
 .explore-gallery .external-button {

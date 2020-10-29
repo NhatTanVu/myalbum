@@ -97,6 +97,8 @@ namespace MyAlbum.WebSPA.Controllers
                 string orgFilePath = res.FilePath;
                 res.FilePath = string.Format("{0}/{1}", this.uploadsFolderUrl, orgFilePath);
                 res.BoundingBoxFilePath = string.Format("{0}/{1}", this.outputFolderUrl, orgFilePath);
+                res.TotalComments = res.Comments.Count();
+                ((List<CommentResource>)res.Comments).Clear();
                 return res;
             });
 

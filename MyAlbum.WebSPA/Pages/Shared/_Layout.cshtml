@@ -12,12 +12,35 @@
     <link rel="stylesheet" type="text/css" href="~/Identity/lib/bootstrap/dist/css/bootstrap.min.css" />
     @* <link rel="stylesheet" href="~/Identity/css/site.css" /> *@
     <link rel="stylesheet"  type="text/css" href="~/lib/fontawesome-free/css/all.min.css" />
+    <style>
+        body,
+        html {
+            height: 100%;
+        }
+
+        body {
+            min-width: 750px;
+            /* Suppose you want minimum width of 750px */
+            width: auto !important;
+            /* Firefox will set width as auto */
+            width: 750px;
+            /* As IE6 ignores !important it will set width as 750px; */
+        }
+
+        #container-body {
+            min-height: 80%;
+        }
+    </style>
+
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-light navbar-toggleable-sm bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" href="~/">My Album</a>
+                <a class="navbar-brand" href="~/">
+                    <img src="~/logo.jpg" alt="logo.jpg" height="40px" width="40px">
+                    My Album
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -41,16 +64,11 @@
         </nav>
     </header>
 
-    <div class="container-fluid">
+    <div class="container-fluid" id="container-body">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-    @* <footer class="footer border-top text-muted">
-        <div class="container">
-            &copy; 2020 - MyAlbum.WebSPA - <a asp-area="" asp-page="Privacy">Privacy</a>
-        </div>
-    </footer> *@
     <footer id="footer">
         <div class="container-fluid bg-light text-dark border-top mt-3">
         <div class="row">

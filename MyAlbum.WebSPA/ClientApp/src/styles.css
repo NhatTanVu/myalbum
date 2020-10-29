@@ -16,6 +16,15 @@ html {
   height: 100%;
 }
 
+body {
+  min-width: 750px;
+  /* Suppose you want minimum width of 750px */
+  width: auto !important;
+  /* Firefox will set width as auto */
+  width: 750px;
+  /* As IE6 ignores !important it will set width as 750px; */
+}
+
 #container-body {
   min-height: 80%;
 }
@@ -26,15 +35,15 @@ html {
 }
 
 .required:after {
-  content:" *";
+  content: " *";
   color: red;
 }
 
 .explore-gallery img:hover {
-  transform: scale(1.05, 1.05);
+  transform: scale(1.025, 1.025);
 }
 
 img {
-  transition: transform 1s cubic-bezier(.165,.84,.26,.98);
+  transition: transform 1s cubic-bezier(.165, .84, .26, .98);
   transform: scale(1);
 }

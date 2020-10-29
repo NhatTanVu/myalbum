@@ -1,7 +1,20 @@
 <div class="explore-gallery">
   <a *ngFor="let p of photos" href="/photos/{{ p.id }}">
-    <div>
-      <img src="{{ p.filePath }}" alt="{{ p.name }}" >
-    </div>    
+    <div class="image-box">
+      <img src="{{ p.filePath }}" alt="{{ p.name }}">
+      <div class="interaction-view">
+        <div class="interaction-bar">
+          <div class="text">
+            <div class="title">{{ p.name }}</div>
+            <div class="author">by {{ p.author.displayName }}</div>
+          </div>
+          <div class="engagement">
+            <div class="total-comments">
+                <i class="fas fa-comments"></i> {{ p.totalComments }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </a>
 </div>

@@ -107,8 +107,10 @@ export class EditPhotoComponent implements OnInit {
     centerLng: null,
     mapZoom: null,
     comments: [],
+    totalComments: 0,
     createdDate: null,
-    modifiedDate: null
+    modifiedDate: null,
+    author: null
   };
   photoTags: number[];
   position: PositionModel = null;

@@ -23,6 +23,7 @@ namespace MyAlbum.WebSPA.Controllers.Resources
         public int? MapZoom { get; set; }
         public string MapFilePath { get; set; } // NOTE: For reservation only
         public IEnumerable<CommentResource> Comments { get; set; }
+        public int TotalComments { get; set; }
         public IEnumerable<CategoryResource> PhotoCategories { get; set; }
         public AlbumResource Album { get; set; }
         public UserResource Author { get; set; }

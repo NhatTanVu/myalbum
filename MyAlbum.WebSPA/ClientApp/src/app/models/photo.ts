@@ -1,4 +1,5 @@
 import { Comment } from './comment';
+import { User } from './user';
 
 export interface PhotoCategory {
     id: number;
@@ -19,8 +20,10 @@ export interface Photo {
     centerLng: number;
     mapZoom: number;
     comments: Comment[];
+    totalComments: number;
     createdDate: Date;
     modifiedDate: Date;
+    author: User;
 }
 
 export interface SavePhoto {
