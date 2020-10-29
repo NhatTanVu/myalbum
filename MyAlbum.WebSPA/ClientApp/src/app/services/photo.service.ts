@@ -34,7 +34,11 @@ export class PhotoService {
         }),
         map(res => {
           this.loadingBar.stop();
-          return <Photo[]>res;
+          var photos = <Photo[]>res;
+          photos.forEach(photo => {
+            setDisplayName(photo.author);
+          });
+          return photos;
         }));
   }
 

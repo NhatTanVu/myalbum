@@ -118,6 +118,8 @@ namespace MyAlbum.Persistence
         {
             IQueryable<Photo> query = this.context.Photos
                 .Include(p => p.PhotoCategories)
+                .Include(p => p.Author)
+                .IncludeFilter(p => p.Comments.Where(c => c.ParentId == null))
                 .AsQueryable();
 
             if (filter.CategoryId.HasValue)
