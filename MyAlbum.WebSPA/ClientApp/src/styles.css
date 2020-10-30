@@ -16,15 +16,6 @@ html {
   height: 100%;
 }
 
-body {
-  min-width: 750px;
-  /* Suppose you want minimum width of 750px */
-  width: auto !important;
-  /* Firefox will set width as auto */
-  width: 750px;
-  /* As IE6 ignores !important it will set width as 750px; */
-}
-
 #container-body {
   min-height: 80%;
 }

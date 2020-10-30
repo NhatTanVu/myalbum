@@ -1,32 +1,15 @@
-.explore-gallery {
-  overflow: auto;
-}
-
-.explore-gallery .img-block span {
-  cursor: zoom-in;
-}
-
-.explore-gallery .img-block span div {
-  float: left;
-  border-radius: 0px;
-  overflow: hidden;
-  padding: 0px;
-  border: 0.25rem solid #f0f0f0;
-  margin-right: 0.25rem;
-  margin-bottom: 0.25rem;
-}
-
 .explore-gallery img {
-  max-height: 150px;
-  min-height: 150px;
+  width: 100%;
+  height: 100%;
   display: block;
 }
 
-.explore-gallery .img-block {
-  display: inline-block;
+.explore-gallery .image-box {
   position: relative;
-  overflow: auto;
-  float: left; /* Fix space-between-inline-blocks issue */
+  border: 0.25rem solid #f0f0f0;
+  cursor: zoom-in;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .explore-gallery .external-button {

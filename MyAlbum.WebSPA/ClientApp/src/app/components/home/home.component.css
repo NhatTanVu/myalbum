@@ -1,27 +1,19 @@
-.explore-gallery {
-  overflow: auto;
-}
-
 .explore-gallery div.image-box {
-  float: left;
-  border-radius: 0px;
-  overflow: hidden;
-  padding: 0px;
-  border: 0.25rem solid #f0f0f0;
-  margin-right: 0.25rem;
-  margin-bottom: 0.25rem;
   position: relative;
+  border: 0.25rem solid #f0f0f0;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .explore-gallery div.image-box img {
-  max-height: 300px;
-  min-height: 300px;
+  width: 100%;
+  height: 100%;
   display: block;
 }
 
 .explore-gallery div.image-box div.interaction-view {
   width: 100%;
-  height: 300px;
+  height: 100%;
   opacity: 0;
   position: absolute;
   top: 0;
