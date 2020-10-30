@@ -18,15 +18,6 @@
             height: 100%;
         }
 
-        body {
-            min-width: 750px;
-            /* Suppose you want minimum width of 750px */
-            width: auto !important;
-            /* Firefox will set width as auto */
-            width: 750px;
-            /* As IE6 ignores !important it will set width as 750px; */
-        }
-
         #container-body {
             min-height: 80%;
         }
@@ -35,7 +26,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light navbar-toggleable-sm bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-md navbar-light navbar-toggleable-md bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" href="~/">
                     <img src="~/logo.jpg" alt="logo.jpg" height="40px" width="40px">
@@ -45,7 +36,7 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <div class="navbar-collapse collapse d-md-inline-flex flex-md-row-reverse">
                     @{
                         var result = Engine.FindView(ViewContext, "_LoginPartial", isMainPage: false);
                     }

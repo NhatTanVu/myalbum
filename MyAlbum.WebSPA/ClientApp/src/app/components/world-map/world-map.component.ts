@@ -1,7 +1,9 @@
 import { PhotoService } from './../../services/photo.service';
 import { Photo } from './../../models/photo';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import MarkerClusterer from '@googlemaps/markerclustererplus';
+
+declare var Tessarray: any;
 
 @Component({
   selector: 'app-world-map',
@@ -20,6 +22,7 @@ export class WorldMapComponent implements OnInit {
   allPhotos: Photo[];
   viewportPhotos: Photo[];
   query: any = {};
+  @ViewChildren('imageBoxes') imageBoxes: QueryList<any>;
 
   constructor(
     private photoService: PhotoService
@@ -32,6 +35,9 @@ export class WorldMapComponent implements OnInit {
 
   ngAfterViewInit() {
     this.initializeMap();
+    this.imageBoxes.changes.subscribe(t => {
+      this.ngForRendered();
+    });    
   }
 
   initializeMap() {
@@ -123,4 +129,22 @@ export class WorldMapComponent implements OnInit {
     var location = new google.maps.LatLng({ lat: photo.locLat, lng: photo.locLng });
     this.map.setCenter(location);
   }
+
+  ngForRendered() {
+    var tessarray = new Tessarray(".explore-gallery", ".image-box", {
+      selectorClass: false,
+      boxTransition: false,
+      boxTransformOutTransition: false,
+      flickr: {
+        // http://flickr.github.io/justified-layout/
+        targetRowHeight: 150,
+        targetRowHeightTolerance: 0.05,
+        boxSpacing: {
+          horizontal: 5,
+          vertical: 5
+        },
+        containerPadding: 0
+      }
+    });
+  }  
 }

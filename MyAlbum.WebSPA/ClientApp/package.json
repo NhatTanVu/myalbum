@@ -33,6 +33,7 @@
     "bootstrap": "^4.3.1",
     "core-js": "^2.6.5",
     "jquery": "3.4.1",
+    "justified-layout": "^4.0.0",
     "ng2-toasty": "^4.0.3",
     "oidc-client": "^1.9.0",
     "popper.js": "^1.14.3",
