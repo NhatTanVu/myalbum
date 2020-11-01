@@ -15,11 +15,11 @@
         <div class="flipper">
           <div class="front">
             <!-- front content -->
-            <img src="{{ photo.filePath }}" class="img-thumbnail">
+            <img src="{{ photo.filePath }}" class="img-thumbnail rounded-0">
           </div>
           <div class="back">
             <!-- back content -->
-            <img src="{{ photo.boundingBoxFilePath }}" class="img-thumbnail">
+            <img src="{{ photo.boundingBoxFilePath }}" class="img-thumbnail rounded-0">
           </div>
         </div>
       </div>
@@ -59,7 +59,7 @@
         <hr />
       </div>
       <div>
-        <form id="newCommentForm" #f="ngForm" (ngSubmit)="f.form.valid && submitComment()" class="container">
+        <form id="newCommentForm" #f="ngForm" (ngSubmit)="f.form.valid && submitComment()" class="container pt-2">
           <!-- <div class="row">
             <div class="form-group col-4">
               <label for="newUName" class="required">User Name:</label>

@@ -8,7 +8,7 @@
     <h5 for="photoFile">Photo:</h5>
     <div class="row mb-2">
       <div class="col-lg-4">
-        <img src="{{ photo.filePath }}" class="img-thumbnail">
+        <img src="{{ photo.filePath }}" class="img-thumbnail rounded-0">
       </div>
     </div>
     <h5 for="photoTag">Tags:</h5>
@@ -51,7 +51,7 @@
       </div>
     </div>
   </div>
-  <div class="form-group col-lg-8">
+  <div class="col-lg-8">
     <div class="row">
       <button class="btn btn-secondary mr-3" type="button" (click)="back()">Back</button>
       <button class="btn btn-primary mr-3" type="button" (click)="submit()">Save</button>

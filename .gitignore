@@ -6,3 +6,5 @@ MyAlbum.WebSPA/sql/
 MyAlbum.Tests/TestResults/
 MyAlbum.WebSPA/appsettings.Production.json
 MyAlbum.WebSPA/appsettings.Development.json
+publish/
+_notes.txt
