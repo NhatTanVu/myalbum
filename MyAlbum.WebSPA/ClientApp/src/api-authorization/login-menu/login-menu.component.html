@@ -1,23 +1,23 @@
 <ul class="navbar-nav" *ngIf="isAuthenticated | async">
     <li class="nav-item">
-        <a  class="nav-link text-dark" [routerLink]='["/authentication/profile"]' title="Manage">
+        <a  class="nav-link text-light" [routerLink]='["/authentication/profile"]' title="Manage">
             <i class="fas fa-user-cog"></i> Manage
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" [routerLink]='["/authentication/logout"]' [state]='{ local: true }' title="Logout">
+        <a class="nav-link text-light" [routerLink]='["/authentication/logout"]' [state]='{ local: true }' title="Logout">
             <i class="fas fa-sign-out-alt"></i> Logout
         </a>
     </li>
 </ul>
 <ul class="navbar-nav" *ngIf="!(isAuthenticated | async)">
   <li class="nav-item">
-        <a class="nav-link text-dark" [routerLink]='["/authentication/register"]'>
+        <a class="nav-link text-light" [routerLink]='["/authentication/register"]'>
             <i class="fas fa-user-plus"></i> Register
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" [routerLink]='["/authentication/login"]'>
+        <a class="nav-link text-light" [routerLink]='["/authentication/login"]'>
             <i class="fas fa-sign-in-alt"></i> Login
         </a>
     </li>

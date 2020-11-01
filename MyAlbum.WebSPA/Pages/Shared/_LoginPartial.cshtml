@@ -14,30 +14,30 @@
 
 <ul class="navbar-nav flex-grow">
     <li class="nav-item" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
-        <a class="nav-link text-dark" href="~/">
+        <a class="nav-link text-light" href="~/">
             <i class="fas fa-torii-gate"></i> Explore
         </a>
     </li>
     <li class="nav-item" [routerLinkActive]="['link-active']">
-        <a class="nav-link text-dark" href="~/worldmap">
+        <a class="nav-link text-light" href="~/worldmap">
             <i class="fas fa-globe"></i> World Map
         </a>
     </li>    
     <li class="nav-item" [routerLinkActive]="['link-active']">
-        <a class="nav-link text-dark" href="~/photos/new">
+        <a class="nav-link text-light" href="~/photos/new">
             <i class="fas fa-plus"></i> Add Photo
         </a>
     </li>    
     @if (SignInManager.IsSignedIn(User))
     {        
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+        <li class="nav-item @(ViewContext.HttpContext.Request.Path.ToString().IndexOf("Account/Manage") >= 0 ? "link-active" : "")">
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
                 <i class="fas fa-user-cog"></i> Manage
             </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item @(ViewContext.HttpContext.Request.Path.ToString().IndexOf("Account/Logout") >= 0 ? "link-active" : "")">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/">
-                <button type="submit" class="nav-link btn btn-link text-dark">
+                <button type="submit" class="nav-link btn btn-link text-light">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
             </form>
@@ -45,13 +45,13 @@
     }
     else
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@returnUrl">
+        <li class="nav-item @(ViewContext.HttpContext.Request.Path.ToString().IndexOf("Account/Register") >= 0 ? "link-active" : "")">
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@returnUrl">
                 <i class="fas fa-user-plus"></i> Register
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@returnUrl">
+        <li class="nav-item @(ViewContext.HttpContext.Request.Path.ToString().IndexOf("Account/Login") >= 0 ? "link-active" : "")">
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@returnUrl">
                 <i class="fas fa-sign-in-alt"></i> Login
             </a>
         </li>

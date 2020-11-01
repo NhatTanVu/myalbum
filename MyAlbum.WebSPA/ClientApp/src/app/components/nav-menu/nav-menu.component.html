@@ -1,28 +1,28 @@
 <header>
-  <nav class="navbar navbar-expand-md navbar-toggleable-md navbar-light bg-white border-bottom box-shadow mb-3">
+  <nav class="navbar navbar-expand-md navbar-toggleable-md navbar-dark box-shadow-bottom background-dark-darker">
     <div class="container-fluid">
-      <a class="navbar-brand" [routerLink]="['/']">
-        <img src="/logo.jpg" alt="logo.jpg" height="40px" width="40px">
+      <a class="navbar-brand text-light" [routerLink]="['/']">
+        <img class="rounded" src="/logo.jpg" alt="logo.jpg" height="40px" width="40px">
         My Album
       </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+      <button class="navbar-toggler text-light" type="button" data-toggle="collapse" data-target=".navbar-collapse"
         aria-label="Toggle navigation" [attr.aria-expanded]="isExpanded" (click)="toggle()">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="navbar-collapse collapse d-md-inline-flex flex-md-row-reverse" [ngClass]="{ show: isExpanded }">
         <ul class="navbar-nav flex-grow">
           <li class="nav-item" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-dark" [routerLink]="['/']">
+            <a class="nav-link text-light" [routerLink]="['/']">
               <i class="fas fa-torii-gate"></i> Explore
             </a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/worldmap']">
+            <a class="nav-link text-light" [routerLink]="['/worldmap']">
               <i class="fas fa-globe"></i> World Map
             </a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/photos/new']">
+            <a class="nav-link text-light" [routerLink]="['/photos/new']">
               <i class="fas fa-plus"></i> Add Photo
             </a>
           </li>
