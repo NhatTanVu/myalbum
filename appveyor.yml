@@ -1,0 +1,14 @@
+image: Visual Studio 2015
+
+before_build:
+- nuget restore
+- choco install opencover.portable
+- choco install codecov
+
+build:
+  project: MyAlbum.sln
+  verbosity: minimal
+
+test_script:
+- OpenCover.Console.exe -register:NhatTanVu -target:"%xunit20%\xunit.console.x86.exe" -targetargs:".\MyAlbum.Tests\bin\Debug\netcoreapp3.1\MyAlbum.Tests.dll" -noshadow" -filter:"+[MyAlbum.WebSPA]MyAlbum.Persistence.*Repository +[MyAlbum.WebSPA]MyAlbum.Core.*Storage +[MyAlbum.WebSPA]MyAlbum.Core.*Service +[MyAlbum.WebSPA]MyAlbum.WebSPA.Controllers.*Controller -[MyAlbum.Tests*]*" -output:".\MyAlbum.WebSPA_coverage.xml" -oldstyle
+- codecov -f "MyAlbum.WebSPA_coverage.xml"
