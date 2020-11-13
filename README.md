@@ -1,5 +1,7 @@
 # My Album
 Website to share albums, photos with Google Maps locations
+# Status
+[![codecov](https://codecov.io/gh/NhatTanVu/myalbum/branch/master/graph/badge.svg)](https://codecov.io/gh/NhatTanVu/myalbum)
 # Azure website
 * **URL**: https://my-album.azurewebsites.net/
 # Screenshots
