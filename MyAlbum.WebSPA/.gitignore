@@ -175,7 +175,7 @@ ClientBin/
 *~
 *.dbmdl
 *.dbproj.schemaview
-*.pfx
+*.real.pfx
 *.publishsettings
 orleans.codegen.cs
 
