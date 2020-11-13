@@ -10,5 +10,5 @@ build:
   verbosity: minimal
 
 test_script:
-- OpenCover.Console.exe -register:NhatTanVu -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:test -filter:"+[MyAlbum.WebSPA]MyAlbum.Persistence.*Repository +[MyAlbum.WebSPA]MyAlbum.Core.*Storage +[MyAlbum.WebSPA]MyAlbum.Core.*Service +[MyAlbum.WebSPA]MyAlbum.WebSPA.Controllers.*Controller -[MyAlbum.Tests*]*" -output:".\MyAlbum.WebSPA_coverage.xml" -oldstyle
+- OpenCover.Console.exe -register:NhatTanVu -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:test -filter:"+[MyAlbum.WebSPA]MyAlbum.Persistence.*Repository +[MyAlbum.WebSPA]MyAlbum.Core.*Storage +[MyAlbum.WebSPA]MyAlbum.Core.*Service +[MyAlbum.WebSPA]MyAlbum.WebSPA.Controllers.*Controller -[MyAlbum.Tests*]* -[MyAlbum.WebSPA]*OidcConfigurationController" -output:".\MyAlbum.WebSPA_coverage.xml" -oldstyle
 - codecov -f "MyAlbum.WebSPA_coverage.xml" -t a921bbb2-9b19-4e86-8c1f-00109359f2bc
