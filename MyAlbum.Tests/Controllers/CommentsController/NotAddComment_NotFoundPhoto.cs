@@ -4,7 +4,6 @@ using MyAlbum.WebSPA.Controllers;
 using MyAlbum.WebSPA.Controllers.Resources;
 using MyAlbum.WebSPA.Mapping;
 using MyAlbum.Core.Models;
-using MyAlbum.Persistence;
 using Xunit;
 using MyAlbum.Core;
 using Moq;

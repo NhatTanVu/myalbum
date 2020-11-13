@@ -45,7 +45,7 @@ namespace MyAlbum.Tests.Repositories
         {
             // Arrange
             var options = new DbContextOptionsBuilder<MyAlbumDbContext>()
-                .UseInMemoryDatabase(databaseName: "DeletePhoto_MyAlbumDatabase")
+                .UseInMemoryDatabase(databaseName: "PhotoRepository_DeletePhoto_MyAlbumDatabase")
                 .Options;
             using (var context = new MyAlbumDbContext(options))
             {

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyAlbum.Core.Models;
 using MyAlbum.Persistence;
@@ -15,7 +14,7 @@ namespace MyAlbum.Tests.Repositories
         {
             // Arrange
             var options = new DbContextOptionsBuilder<MyAlbumDbContext>()
-                .UseInMemoryDatabase(databaseName: "GetSelfAndAncestors_MyAlbumDatabase")
+                .UseInMemoryDatabase(databaseName: "CommentRepository_GetSelfAndAncestors_MyAlbumDatabase")
                 .Options;
             using (var context = new MyAlbumDbContext(options))
             {

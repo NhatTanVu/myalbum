@@ -13,11 +13,6 @@ namespace MyAlbum.Persistence
             this.context = context;
         }
 
-        // public async Task<User> GetAsync(string id)
-        // {
-        //     return await this.context.Users.FindAsync(id);
-        // }
-
         public User GetByUserName(string userName)
         {
             return this.context.Users.FirstOrDefault(u => u.UserName == userName);

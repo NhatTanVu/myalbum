@@ -14,7 +14,7 @@ namespace MyAlbum.Tests.Repositories
         {
             // Arrange
             var options = new DbContextOptionsBuilder<MyAlbumDbContext>()
-                .UseInMemoryDatabase(databaseName: "AddPhoto_MyAlbumDatabase")
+                .UseInMemoryDatabase(databaseName: "PhotoRepository_AddPhoto_MyAlbumDatabase")
                 .Options;
             using (var context = new MyAlbumDbContext(options))
             {
