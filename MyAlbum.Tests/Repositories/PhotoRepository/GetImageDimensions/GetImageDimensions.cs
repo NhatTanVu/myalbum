@@ -1,9 +1,7 @@
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 using MyAlbum.Persistence;
 using Xunit;
 
@@ -21,9 +19,9 @@ namespace MyAlbum.Tests.Repositories
         }
 
         [Theory]
-        [InlineData("car.jpg", "GetImageDimensionsJPG_MyAlbumDatabase", 1920, 1536)]
-        [InlineData("car.bmp", "GetImageDimensionsBMP_MyAlbumDatabase", 1920, 1536)]
-        [InlineData("car.png", "GetImageDimensionsPNG_MyAlbumDatabase", 1920, 1536)]
+        [InlineData("car.jpg", "PhotoRepository_GetImageDimensionsJPG_MyAlbumDatabase", 1920, 1536)]
+        [InlineData("car.bmp", "PhotoRepository_GetImageDimensionsBMP_MyAlbumDatabase", 1920, 1536)]
+        [InlineData("car.png", "PhotoRepository_GetImageDimensionsPNG_MyAlbumDatabase", 1920, 1536)]
         [InlineData("", "GetImageDimensionsEmpty_MyAlbumDatabase", 0, 0)]
         public async Task GetImageDimensions(string filePath, string databaseName, int width, int height)
         {

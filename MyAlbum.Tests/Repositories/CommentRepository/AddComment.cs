@@ -14,7 +14,7 @@ namespace MyAlbum.Tests.Repositories
         {
             // Arrange
             var options = new DbContextOptionsBuilder<MyAlbumDbContext>()
-                .UseInMemoryDatabase(databaseName: "AddComment_MyAlbumDatabase")
+                .UseInMemoryDatabase(databaseName: "CommentRepository_AddComment_MyAlbumDatabase")
                 .Options;
             using (var context = new MyAlbumDbContext(options))
             {

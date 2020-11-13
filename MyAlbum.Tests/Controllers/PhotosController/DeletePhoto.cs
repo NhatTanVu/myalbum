@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using MyAlbum.WebSPA.Controllers;
-using MyAlbum.WebSPA.Controllers.Resources;
 using MyAlbum.WebSPA.Mapping;
 using MyAlbum.Core.Models;
 using Xunit;
