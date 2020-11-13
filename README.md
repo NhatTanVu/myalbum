@@ -37,7 +37,3 @@ Website to share albums, photos with Google Maps locations
 2. Add 2 app settings: "**ASPNETCORE_ENVIRONMENT**" and "**ConnectionStrings:Default**" to Azure App Service as below:
 ![App Settings](https://raw.githubusercontent.com/NhatTanVu/vega/master/_screenshots/Add%20App%20Settings.PNG)
 3. Follow this [article](https://docs.microsoft.com/en-us/aspnet/core/tutorials/publish-to-azure-webapp-using-vscode?view=aspnetcore-3.1) to deploy to Azure
-# Code coverage
-1. **Summary**\
-![Summary](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/code-coverage.jpg)
-2. [Detailed Report](https://htmlpreview.github.io/?https://github.com/NhatTanVu/myalbum/blob/master/MyAlbum.Tests/CoverageReport/index.html)
