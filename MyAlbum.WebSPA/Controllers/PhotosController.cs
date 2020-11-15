@@ -14,6 +14,7 @@ using System.Security.Claims;
 
 namespace MyAlbum.WebSPA.Controllers
 {
+    [ApiExplorerSettings(GroupName = "Photos")] 
     [Route("/api/photos")]
     public class PhotosController : Controller
     {
@@ -136,6 +137,7 @@ namespace MyAlbum.WebSPA.Controllers
                 {
                     UserName = User.FindFirstValue(ClaimTypes.Name)
                 };
+                photo.Album = null;
                 photo.Author = this.userRepository.GetOrAdd(currentUser);
 
                 this.photoRepository.Add(photo);
@@ -215,7 +217,7 @@ namespace MyAlbum.WebSPA.Controllers
                 var currentCategories = photo.PhotoCategories.ToList();
                 var currentCategoriesIds = currentCategories.Select(cat => cat.CategoryId);
                 var strSelectedCategories = Request.Form.ToDictionary(x => x.Key, x => x.Value.ToString())["PhotoCategories"];
-                var selectedCategoryResources = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<CategoryResource>>(strSelectedCategories);
+                var selectedCategoryResources = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<CategoryResource>>(strSelectedCategories) ?? new List<CategoryResource>();
                 var selectedCategoryIds =  selectedCategoryResources.Select(cat => cat.Id);
                 var deletedCategoryIds = photo.PhotoCategories.Where(cat => !selectedCategoryIds.Contains(cat.CategoryId)).Select(cat => cat.CategoryId);
                 var newCategoryResources = selectedCategoryResources.Where(selectedCat => !currentCategoriesIds.Contains(selectedCat.Id));
