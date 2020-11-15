@@ -14,6 +14,7 @@ using System.Security.Claims;
 
 namespace MyAlbum.WebSPA.Controllers
 {
+    [ApiExplorerSettings(GroupName = "Comments")] 
     [Route("/api/comments")]
     public class CommentsController : Controller
     {

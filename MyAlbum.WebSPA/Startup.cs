@@ -17,6 +17,11 @@ using MyAlbum.WebSPA.Hubs;
 using MyAlbum.WebSPA.Core.Utilities;
 using MyAlbum.Core.Models;
 using Microsoft.AspNetCore.Authentication;
+using System.Collections.Generic;
+using Microsoft.IdentityModel.Logging;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 
 namespace MyAlbum
 {
@@ -50,6 +55,20 @@ namespace MyAlbum
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>()
                 .AddProfileService<ProfileService>();
             services.AddAuthentication().AddIdentityServerJwt();
+            services.Configure<JwtBearerOptions>(
+                IdentityServerJwtConstants.IdentityServerJwtBearerScheme,
+                options =>
+                {
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidAudiences = new List<string> 
+                        {
+                            "MyAlbum.DeveloperAPI",
+                            "MyAlbum.WebSPAAPI" 
+                        }
+                    };
+                });
 
             services.AddScoped<IPhotoRepository, PhotoRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -59,6 +78,7 @@ namespace MyAlbum
             services.AddScoped<IPhotoUploadService, PhotoUploadService>();
             services.AddScoped<IPhotoStorage, FileSystemPhotoStorage>();
             services.AddScoped<IObjectDetectionService, ObjectDetectionService>(s => new ObjectDetectionService(this._env.WebRootPath));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddControllersWithViews().AddJsonOptions(options =>
             {
@@ -73,11 +93,42 @@ namespace MyAlbum
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Photos API", Version = "1.0" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My Album API", Version = "1.0" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header using the Bearer scheme. <br/><br/> 
+                                Enter 'Bearer' [space] and then your token in the text input below.
+                                <br/>Example: 'Bearer 12345abcdef'<br/><br/>",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        },
+                        Scheme = "oauth2",
+                        Name = "Bearer",
+                        In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
+                    }
+                });
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+                c.DocInclusionPredicate((_, api) => !string.IsNullOrWhiteSpace(api.GroupName));
+                c.TagActionsBy(api => new List<string> { api.GroupName });
             });
 
             services.AddSignalR().AddJsonProtocol(options =>
@@ -96,12 +147,13 @@ namespace MyAlbum
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Photos API v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My Album API v1");
             });
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                IdentityModelEventSource.ShowPII = true;
             }
             else
             {
