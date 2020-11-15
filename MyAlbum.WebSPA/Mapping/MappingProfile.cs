@@ -47,6 +47,7 @@ namespace MyAlbum.WebSPA.Mapping
                     Name = src.Name,
                     Id = src.Id
                 }));
+            CreateMap<AlbumResource, Album>();
             CreateMap<UserResource, User>();
             CreateMap<PhotoQueryResource, PhotoQuery>();
         }
