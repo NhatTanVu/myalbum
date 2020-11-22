@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace MyAlbum.WebSPA.Controllers.Resources
 {
@@ -9,6 +10,7 @@ namespace MyAlbum.WebSPA.Controllers.Resources
         public UserResource Author { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
+        public IEnumerable<PhotoResource> Photos { get; set; }
 
         public AlbumResource()
         {

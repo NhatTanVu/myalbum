@@ -47,7 +47,7 @@ namespace MyAlbum.Tests.Controllers
         }
 
         [Fact]
-        public async Task SavePhoto()
+        public async Task UpdatePhoto()
         {
             // Arrange
             int photoId = new Random().Next(1, 100);
@@ -108,10 +108,11 @@ namespace MyAlbum.Tests.Controllers
             };
             mockUserRepository.Setup(m => m.GetOrAdd(It.IsAny<User>())).Returns(expectedUser);
 
+            var mockAlbumRepository = new Mock<IAlbumRepository>();
             var mockUnitOfWork = new Mock<IUnitOfWork>();
 
             PhotosController controller = new PhotosController(this._mapper, mockPhotoRepository.Object, mockCategoryRepository.Object,
-                mockUserRepository.Object, mockCommentRepository.Object, mockUnitOfWork.Object, photoUploadService.Object, mockHost.Object, mockObjectDetectionService.Object);  
+                mockUserRepository.Object, mockCommentRepository.Object, mockAlbumRepository.Object, mockUnitOfWork.Object, photoUploadService.Object, mockHost.Object, mockObjectDetectionService.Object);  
             PhotoResource originalResource = new PhotoResource()
             {
                 Id = photoId,
@@ -138,7 +139,7 @@ namespace MyAlbum.Tests.Controllers
             ControllerContext controllerContext = Utilities.SetupCurrentUserForController(expectedUserName, mockHttpContext);            
             controller.ControllerContext = controllerContext;
             // Act
-            var result = await controller.SavePhoto(photoId, originalResource);
+            var result = await controller.UpdatePhoto(photoId, originalResource);
             originalResource.BoundingBoxFilePath = string.Format("{0}/{1}", controller.OutputFolderUrl, originalResource.FilePath);
             originalResource.FilePath = string.Format("{0}/{1}", controller.UploadFolderUrl, originalResource.FilePath);            
             // Assert

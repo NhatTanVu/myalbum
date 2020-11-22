@@ -11,6 +11,7 @@ using MyAlbum.WebSPA.Core.ObjectDetection;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using System;
 
 namespace MyAlbum.WebSPA.Controllers
 {
@@ -23,6 +24,7 @@ namespace MyAlbum.WebSPA.Controllers
         private readonly ICategoryRepository categoryRepository;
         private readonly IUserRepository userRepository;
         private readonly ICommentRepository commentRepository;
+        private readonly IAlbumRepository albumRepository;
         private readonly IUnitOfWork unitOfWork;
         private readonly IPhotoUploadService photoUploadService;
         private readonly IWebHostEnvironment host;
@@ -34,7 +36,7 @@ namespace MyAlbum.WebSPA.Controllers
 
         public PhotosController(IMapper mapper,
             IPhotoRepository photoRepository, ICategoryRepository categoryRepository, IUserRepository userRepository,
-            ICommentRepository commentRepository, IUnitOfWork unitOfWork, IPhotoUploadService photoUploadService,
+            ICommentRepository commentRepository, IAlbumRepository albumRepository, IUnitOfWork unitOfWork, IPhotoUploadService photoUploadService,
             IWebHostEnvironment host, IObjectDetectionService objectDetectionService)
         {
             this.objectDetectionService = objectDetectionService;
@@ -45,6 +47,7 @@ namespace MyAlbum.WebSPA.Controllers
             this.categoryRepository = categoryRepository;
             this.userRepository = userRepository;
             this.commentRepository = commentRepository;
+            this.albumRepository = albumRepository;
             this.mapper = mapper;
             this.uploadsFolderPath = Path.Combine(host.WebRootPath, "uploads");
             this.uploadsFolderUrl = "/uploads";
@@ -82,7 +85,26 @@ namespace MyAlbum.WebSPA.Controllers
             {
                 return this.outputFolderPath;
             }
-        }  
+        }
+
+        /// <summary>
+        /// Get a photo by ID
+        /// </summary>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPhoto([FromRoute] int id)
+        {
+            var photo = await photoRepository.GetAsync(id);
+
+            if (photo == null)
+                return NotFound();
+
+            var photoResource = mapper.Map<Photo, PhotoResource>(photo);
+            string orgFilePath = photoResource.FilePath;
+            photoResource.FilePath = string.Format("{0}/{1}", this.uploadsFolderUrl, orgFilePath);
+            photoResource.BoundingBoxFilePath = string.Format("{0}/{1}", this.outputFolderUrl, orgFilePath);
+
+            return Ok(photoResource);
+        }
 
         /// <summary>
         /// Get a list of photos by filter
@@ -137,7 +159,18 @@ namespace MyAlbum.WebSPA.Controllers
                 {
                     UserName = User.FindFirstValue(ClaimTypes.Name)
                 };
-                photo.Album = null;
+
+                if (photoResource.Album != null && photoResource.Album.Id > 0)
+                {
+                    var newAlbum =  await this.albumRepository.GetAsync(photoResource.Album.Id, false);
+                    if (newAlbum != null)
+                        photo.Album = newAlbum;
+                    else
+                        return BadRequest();
+                }
+                else
+                    photo.Album = null;
+
                 photo.Author = this.userRepository.GetOrAdd(currentUser);
 
                 this.photoRepository.Add(photo);
@@ -150,30 +183,11 @@ namespace MyAlbum.WebSPA.Controllers
         }
 
         /// <summary>
-        /// Get a photo by ID
-        /// </summary>
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetPhoto([FromRoute] int id)
-        {
-            var photo = await photoRepository.GetAsync(id);
-
-            if (photo == null)
-                return NotFound();
-
-            var photoResource = mapper.Map<Photo, PhotoResource>(photo);
-            string orgFilePath = photoResource.FilePath;
-            photoResource.FilePath = string.Format("{0}/{1}", this.uploadsFolderUrl, orgFilePath);
-            photoResource.BoundingBoxFilePath = string.Format("{0}/{1}", this.outputFolderUrl, orgFilePath);
-
-            return Ok(photoResource);
-        }
-
-        /// <summary>
-        /// Save a photo by ID
+        /// Update a photo by ID
         /// </summary>
         [HttpPost("{id}")]
         [Authorize()]
-        public async Task<IActionResult> SavePhoto([FromRoute] int id, [FromForm] PhotoResource photoResource)
+        public async Task<IActionResult> UpdatePhoto([FromRoute] int id, [FromForm] PhotoResource photoResource)
         {
             Photo photo = await photoRepository.GetAsync(id);
             if (photo != null)
@@ -222,11 +236,21 @@ namespace MyAlbum.WebSPA.Controllers
                 var deletedCategoryIds = photo.PhotoCategories.Where(cat => !selectedCategoryIds.Contains(cat.CategoryId)).Select(cat => cat.CategoryId);
                 var newCategoryResources = selectedCategoryResources.Where(selectedCat => !currentCategoriesIds.Contains(selectedCat.Id));
                 var newCategories = mapper.Map<IEnumerable<CategoryResource>, IEnumerable<PhotoCategory>>(newCategoryResources).ToList();
-
                 currentCategories.RemoveAll(c => deletedCategoryIds.Contains(c.CategoryId));
                 currentCategories.AddRange(newCategories);
-                
                 photo.PhotoCategories = currentCategories;
+
+                if (photoResource.Album != null && photoResource.Album.Id > 0)
+                {
+                    var newAlbum =  await this.albumRepository.GetAsync(photoResource.Album.Id, false);
+                    if (newAlbum != null)
+                        photo.Album = newAlbum;
+                    else
+                        return BadRequest();
+                }
+                else
+                    photo.Album = null;
+                photo.ModifiedDate = DateTime.UtcNow;
                 await this.unitOfWork.CompleteAsync();
 
                 var outputPhotoResource = mapper.Map<Photo, PhotoResource>(photo);
