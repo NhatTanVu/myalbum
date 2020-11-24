@@ -60,6 +60,7 @@ namespace MyAlbum.Tests.Controllers
             var mockCommentRepository = new Mock<ICommentRepository>();
             var mockCategoryRepository = new Mock<ICategoryRepository>();
             var mockUserRepository = new Mock<IUserRepository>();
+            var mockAlbumRepository = new Mock<IAlbumRepository>();
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             var mockPhotoUploadService = new Mock<IPhotoUploadService>();
             var mockHost = new Mock<IWebHostEnvironment>();
@@ -67,7 +68,8 @@ namespace MyAlbum.Tests.Controllers
             var mockObjectDetectionService = new Mock<IObjectDetectionService>();
 
             PhotosController controller = new PhotosController(this._mapper, mockPhotoRepository.Object,
-                mockCategoryRepository.Object, mockUserRepository.Object, mockCommentRepository.Object, mockUnitOfWork.Object,
+                mockCategoryRepository.Object, mockUserRepository.Object, mockCommentRepository.Object, 
+                mockAlbumRepository.Object, mockUnitOfWork.Object,
                 mockPhotoUploadService.Object, mockHost.Object, mockObjectDetectionService.Object);
             controller.ControllerContext = controllerContext;
             int count = 0;

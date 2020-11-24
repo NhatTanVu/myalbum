@@ -37,6 +37,9 @@ namespace MyAlbum.Core.Models
 
         public bool Equals([AllowNull] Photo other)
         {
+            if (other == null)
+                return false;
+
             return (
                 this.Id == other.Id &&
                 this.Name == other.Name &&

@@ -10,6 +10,9 @@ namespace MyAlbum.WebSPA.Controllers.Resources
         
         public bool Equals([AllowNull] CategoryResource other)
         {
+            if (other == null)
+                return false;
+
             return (
                 this.Name == other.Name
             );

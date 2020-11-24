@@ -78,10 +78,11 @@ namespace MyAlbum.Tests.Controllers
             };
             mockUserRepository.Setup(m => m.GetOrAdd(It.IsAny<User>())).Returns(expectedUser);
 
+            var mockAlbumRepository = new Mock<IAlbumRepository>();
             var mockUnitOfWork = new Mock<IUnitOfWork>();
 
             PhotosController controller = new PhotosController(this._mapper, mockPhotoRepository.Object, mockCategoryRepository.Object,
-                mockUserRepository.Object, mockCommentRepository.Object, mockUnitOfWork.Object, photoUploadService.Object, mockHost.Object, mockObjectDetectionService.Object);
+                mockUserRepository.Object, mockCommentRepository.Object, mockAlbumRepository.Object, mockUnitOfWork.Object, photoUploadService.Object, mockHost.Object, mockObjectDetectionService.Object);
             controller.ControllerContext = controllerContext;
             PhotoResource originalResource = new PhotoResource()
             {

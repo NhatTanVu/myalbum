@@ -122,6 +122,8 @@ namespace MyAlbum.Persistence
                 .IncludeFilter(p => p.Comments.Where(c => c.ParentId == null))
                 .AsQueryable();
 
+            if (!string.IsNullOrEmpty(filter.AuthorUserName))
+                query = query.Where(a => a.Author.UserName == filter.AuthorUserName);
             if (filter.CategoryId.HasValue)
                 query = query.Where(p => p.PhotoCategories.Select(pc => pc.CategoryId).Any(id => id == filter.CategoryId));
             if (filter.HasLocation.HasValue)

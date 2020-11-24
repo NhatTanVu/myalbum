@@ -9,9 +9,9 @@ using Xunit;
 
 namespace MyAlbum.Tests.Repositories
 {
-    public class PhotoRepository_Test5
+    public class AlbumRepository_Test3
     {
-        private IEnumerable<Photo> SeedPhotos(MyAlbumDbContext context)
+        private IEnumerable<Album> SeedAlbums(MyAlbumDbContext context)
         {
             string seedUserId = Guid.NewGuid().ToString();
             string expectedUserName = "test@gmail.com";
@@ -20,24 +20,24 @@ namespace MyAlbum.Tests.Repositories
                 Id = seedUserId,
                 UserName = expectedUserName
             };
-            int numOfPhotos = new Random().Next(5, 20);
-            List<Photo> seedPhotos = new List<Photo>(numOfPhotos);
-            int seedPhotoId = new Random().Next(1, 100);
+            int numOfAlbums = new Random().Next(5, 20);
+            List<Album> seedAlbums = new List<Album>(numOfAlbums);
+            int seedAlbumId = new Random().Next(1, 100);
 
-            for (int i = 1; i <= numOfPhotos; i++)
+            for (int i = 1; i <= numOfAlbums; i++)
             {
-                Photo seedPhoto = new Photo()
+                Album seedAlbum = new Album()
                 {
-                    Id = seedPhotoId + i,
+                    Id = seedAlbumId + i,
                     Name = Guid.NewGuid().ToString(),
                     Author = seedUser
                 };
-                context.Photos.Add(seedPhoto);
-                seedPhotos.Add(seedPhoto);
+                context.Albums.Add(seedAlbum);
+                seedAlbums.Add(seedAlbum);
             }
             context.SaveChanges();
 
-            return seedPhotos;
+            return seedAlbums;
         }  
 
         [Fact]
@@ -45,23 +45,23 @@ namespace MyAlbum.Tests.Repositories
         {
             // Arrange
             var options = new DbContextOptionsBuilder<MyAlbumDbContext>()
-                .UseInMemoryDatabase(databaseName: "PhotoRepository_DeletePhoto_MyAlbumDatabase")
+                .UseInMemoryDatabase(databaseName: "AlbumRepository_DeleteAlbum_MyAlbumDatabase")
                 .Options;
             using (var context = new MyAlbumDbContext(options))
             {
-                IEnumerable<Photo> seedPhotos = SeedPhotos(context);
+                IEnumerable<Album> seedAlbums = SeedAlbums(context);
                 UnitOfWork unitOfWork = new UnitOfWork(context);
-                PhotoRepository photoRepository = new PhotoRepository(context);
-                int count = seedPhotos.Count();
-                foreach(var photo in seedPhotos)
+                AlbumRepository albumRepository = new AlbumRepository(context);
+                int count = seedAlbums.Count();
+                foreach(var album in seedAlbums)
                 {
                     // Act
-                    photoRepository.Delete(photo);
+                    albumRepository.Delete(album);
                     await unitOfWork.CompleteAsync();
                     // Assert
-                    Assert.Equal(--count, context.Photos.Count());
+                    Assert.Equal(--count, context.Albums.Count());
                 }
             }            
-        }
+        }        
     }
 }

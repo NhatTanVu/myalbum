@@ -38,11 +38,22 @@ namespace MyAlbum.WebSPA.Controllers
         }
 
         /// <summary>
-        /// Add a new comment
+        /// Get all replies for a comment by ID
+        /// </summary>
+        [HttpGet("{id}")]
+        public IEnumerable<CommentResource> GetReplies([FromRoute] int id)
+        {
+            IEnumerable<Comment> replies = this.commentRepository.GetReplies(id);
+            var replyResources = mapper.Map<IEnumerable<Comment>, IEnumerable<CommentResource>>(replies);
+            return replyResources;
+        }        
+
+        /// <summary>
+        /// Create a new comment
         /// </summary>
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddComment([FromBody] CommentResource commentResource)
+        public async Task<IActionResult> CreateComment([FromBody] CommentResource commentResource)
         {
             Photo photo = await this.photoRepository.GetAsync(commentResource.PhotoId);
             if (photo != null)
@@ -81,17 +92,6 @@ namespace MyAlbum.WebSPA.Controllers
             }
             var comment = replyResources[replyResources.Count - 1];
             await this.commentHub.Clients.All.SendAsync("commentAdded", comment);
-        }
-
-        /// <summary>
-        /// Get all replies for a comment by ID
-        /// </summary>
-        [HttpGet("{id}")]
-        public IEnumerable<CommentResource> GetReplies([FromRoute] int id)
-        {
-            IEnumerable<Comment> replies = this.commentRepository.GetReplies(id);
-            var replyResources = mapper.Map<IEnumerable<Comment>, IEnumerable<CommentResource>>(replies);
-            return replyResources;
         }
     }
 }

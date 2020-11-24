@@ -73,7 +73,7 @@ namespace MyAlbum.Tests.Controllers
                 }
             };
             // Act
-            var result = await controller.AddComment(originalResource);
+            var result = await controller.CreateComment(originalResource);
             // Assert
             Assert.IsType<OkObjectResult>(result);
             Assert.IsType<CommentResource>(((OkObjectResult)result).Value);

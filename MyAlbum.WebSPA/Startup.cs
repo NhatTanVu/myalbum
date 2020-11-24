@@ -74,6 +74,7 @@ namespace MyAlbum
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IAlbumRepository, AlbumRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPhotoUploadService, PhotoUploadService>();
             services.AddScoped<IPhotoStorage, FileSystemPhotoStorage>();
@@ -81,9 +82,10 @@ namespace MyAlbum
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddControllersWithViews().AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
-            });
+                options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter())
+            ).AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

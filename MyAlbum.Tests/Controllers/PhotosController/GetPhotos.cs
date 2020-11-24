@@ -36,7 +36,7 @@ namespace MyAlbum.Tests.Controllers
                 FilePath = @"C:\Photo\File\Path\" + new Random().Next(1, 100)
             });
             seedPhotos.Add(new Photo(){
-                Id = new Random().Next(1, 100),
+                Id = new Random().Next(51, 100),
                 Name = Guid.NewGuid().ToString(),
                 FilePath = @"C:\Photo\File\Path\" + new Random().Next(1, 100)
             });
@@ -55,6 +55,7 @@ namespace MyAlbum.Tests.Controllers
             mockPhotoRepository.Setup(m => m.GetPhotos(It.IsAny<PhotoQuery>())).ReturnsAsync(seedPhotos);
             var mockCategoryRepository = new Mock<ICategoryRepository>();
             var mockUserRepository = new Mock<IUserRepository>();
+            var mockAlbumRepository = new Mock<IAlbumRepository>();
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             var mockPhotoUploadService = new Mock<IPhotoUploadService>();
             var mockHost = new Mock<IWebHostEnvironment>();
@@ -63,7 +64,7 @@ namespace MyAlbum.Tests.Controllers
 
             PhotosController controller = new PhotosController(this._mapper, mockPhotoRepository.Object, 
                 mockCategoryRepository.Object, mockUserRepository.Object, mockCommentRepository.Object,
-                mockUnitOfWork.Object, mockPhotoUploadService.Object, 
+                mockAlbumRepository.Object, mockUnitOfWork.Object, mockPhotoUploadService.Object, 
                 mockHost.Object, mockObjectDetectionService.Object);
             seedPhotoResources = seedPhotoResources.Select(p => {
                 p.BoundingBoxFilePath = string.Format("{0}/{1}", controller.OutputFolderUrl, p.FilePath);
