@@ -18,6 +18,9 @@ namespace MyAlbum.WebSPA.Controllers.Resources
         
         public bool Equals([AllowNull] CommentResource other)
         {
+            if (other == null)
+                return false;
+
             return (
                 this.Id == other.Id &&
                 this.Content == other.Content &&

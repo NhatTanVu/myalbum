@@ -36,7 +36,7 @@ namespace MyAlbum.Tests.Controllers
                 FilePath = @"C:\Photo\File\Path\" + new Random().Next(1, 100)
             });
             seedPhotos.Add(new Photo(){
-                Id = new Random().Next(1, 100),
+                Id = new Random().Next(51, 100),
                 Name = Guid.NewGuid().ToString(),
                 FilePath = @"C:\Photo\File\Path\" + new Random().Next(1, 100)
             });

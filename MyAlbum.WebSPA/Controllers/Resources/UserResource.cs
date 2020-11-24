@@ -13,6 +13,9 @@ namespace MyAlbum.WebSPA.Controllers.Resources
 
         public bool Equals([AllowNull] UserResource other)
         {
+            if (other == null)
+                return false;
+
             return (
                 this.UserName == other.UserName
             );

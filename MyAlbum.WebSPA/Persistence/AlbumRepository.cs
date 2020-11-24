@@ -10,12 +10,10 @@ namespace MyAlbum.Persistence
     public class AlbumRepository : IAlbumRepository
     {
         private readonly MyAlbumDbContext context;
-        private readonly IPhotoRepository photoRepository;
 
-        public AlbumRepository(MyAlbumDbContext context, IPhotoRepository photoRepository)
+        public AlbumRepository(MyAlbumDbContext context)
         {
             this.context = context;
-            this.photoRepository = photoRepository;
         }
 
         public virtual void Add(Album album)

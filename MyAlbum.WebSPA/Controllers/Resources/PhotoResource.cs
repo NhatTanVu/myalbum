@@ -38,6 +38,9 @@ namespace MyAlbum.WebSPA.Controllers.Resources
 
         public bool Equals([AllowNull] PhotoResource other)
         {
+            if (other == null)
+                return false;
+
             return (
                 this.Id == other.Id &&
                 this.Name == other.Name &&

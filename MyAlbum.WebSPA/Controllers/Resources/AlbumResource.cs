@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MyAlbum.WebSPA.Controllers.Resources
 {
-    public class AlbumResource
+    public class AlbumResource : IEquatable<AlbumResource>
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -14,6 +15,17 @@ namespace MyAlbum.WebSPA.Controllers.Resources
 
         public AlbumResource()
         {
+        }
+
+        public bool Equals([AllowNull] AlbumResource other)
+        {
+            if (other == null)
+                return false;
+
+            return (
+                this.Id == other.Id &&
+                this.Name == other.Name
+            );
         }
     }
 }

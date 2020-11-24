@@ -17,18 +17,13 @@ namespace MyAlbum.WebSPA.Controllers
     {
         private readonly IMapper mapper;
         private readonly IAlbumRepository albumRepository;
-        private readonly ICommentRepository commentRepository;
         private readonly IUserRepository userRepository;
         private readonly IUnitOfWork unitOfWork;
-        private readonly IPhotoRepository photoRepository;
 
-        public AlbumsController(IMapper mapper, IAlbumRepository albumRepository, ICommentRepository commentRepository,
-            IUserRepository userRepository, IPhotoRepository photoRepository, IUnitOfWork unitOfWork)
+        public AlbumsController(IMapper mapper, IAlbumRepository albumRepository, IUserRepository userRepository, IUnitOfWork unitOfWork)
         {
-            this.photoRepository = photoRepository;
             this.userRepository = userRepository;
             this.unitOfWork = unitOfWork;
-            this.commentRepository = commentRepository;
             this.mapper = mapper;
             this.albumRepository = albumRepository;
         }
