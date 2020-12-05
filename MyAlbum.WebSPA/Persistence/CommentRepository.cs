@@ -58,7 +58,7 @@ namespace MyAlbum.Persistence
             foreach (var reply in replies)
                 if (tempReplies.Any(r => r.ID == reply.Id))
                     reply.NumOfReplies = tempReplies.First(r => r.ID == reply.Id).NumOfReplies;
-            return replies;
+            return replies ?? new List<Comment>();
         }
 
         public IEnumerable<Comment> GetSelfAndAncestors(int id)
@@ -73,12 +73,9 @@ namespace MyAlbum.Persistence
             {
                 int parentId = comment.ParentId.Value;
                 comment = this.context.Comments.Find(parentId);
-                if (comment != null)
-                {
-                    comment.Replies = (ICollection<Comment>)this.GetReplies(parentId);
-                    comment.NumOfReplies = comment.Replies.Count;
-                    result.Add(comment);
-                }
+                comment.Replies = (ICollection<Comment>)this.GetReplies(parentId);
+                comment.NumOfReplies = comment.Replies.Count;
+                result.Add(comment);
             }
 
             return result;
@@ -88,12 +85,9 @@ namespace MyAlbum.Persistence
         {
             List<int> deletedIds = new List<int>();
             var replies = GetReplies(comment.Id);
-            if (replies != null && replies.Count() > 0)
+            foreach (Comment reply in replies)
             {
-                foreach (Comment reply in replies)
-                {
-                    deletedIds.AddRange(GetDeletedIds(reply));
-                }
+                deletedIds.AddRange(GetDeletedIds(reply));
             }
             deletedIds.Add(comment.Id);
 

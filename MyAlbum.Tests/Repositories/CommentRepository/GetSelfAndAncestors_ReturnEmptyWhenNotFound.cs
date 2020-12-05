@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MyAlbum.Core.Models;
 using MyAlbum.Persistence;
@@ -11,11 +10,11 @@ namespace MyAlbum.Tests.Repositories
     public class CommentRepository_Test6
     {
         [Fact]
-        public void GetSelfAndAncestors_ReturnNullWhenNotFound()
+        public void GetSelfAndAncestors_ReturnEmptyWhenNotFound()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<MyAlbumDbContext>()
-                .UseInMemoryDatabase(databaseName: "CommentRepository_GetSelfAndAncestors_ReturnNullWhenNotFound_MyAlbumDatabase")
+                .UseInMemoryDatabase(databaseName: "CommentRepository_GetSelfAndAncestors_ReturnEmptyWhenNotFound_MyAlbumDatabase")
                 .Options;
             using (var context = new MyAlbumDbContext(options))
             {
@@ -25,7 +24,7 @@ namespace MyAlbum.Tests.Repositories
                 // Act
                 var replies = commentRepository.GetSelfAndAncestors(seedCommentId - 1);
                 // Assert
-                Assert.Equal(0, replies.Count());
+                Assert.Empty(replies);
             }
         }
 
