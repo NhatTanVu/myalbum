@@ -58,7 +58,7 @@ namespace MyAlbum.Persistence
             foreach (var reply in replies)
                 if (tempReplies.Any(r => r.ID == reply.Id))
                     reply.NumOfReplies = tempReplies.First(r => r.ID == reply.Id).NumOfReplies;
-            return replies ?? new List<Comment>();
+            return replies;
         }
 
         public IEnumerable<Comment> GetSelfAndAncestors(int id)
