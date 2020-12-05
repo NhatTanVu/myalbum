@@ -95,10 +95,7 @@ namespace MyAlbum.Persistence
                     deletedIds.AddRange(GetDeletedIds(reply));
                 }
             }
-            else
-            {
-                deletedIds.Add(comment.Id);
-            }
+            deletedIds.Add(comment.Id);
 
             return deletedIds;
         }

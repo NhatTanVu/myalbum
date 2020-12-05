@@ -9,7 +9,7 @@ using Xunit;
 
 namespace MyAlbum.Tests.Repositories
 {
-    public class CommentRepository_Test5
+    public class CommentRepository_Test7
     {
         private IEnumerable<Comment> SeedReplies(int seedCommentId, MyAlbumDbContext context)
         {
@@ -28,16 +28,17 @@ namespace MyAlbum.Tests.Repositories
             int numOfReplies = new Random().Next(3, 5);
             List<Comment> seedReplies = new List<Comment>(numOfReplies);
 
-            for (int i = 1; i <= numOfReplies; i++)
+            for (int i = 0; i < numOfReplies; i++)
             {
                 Comment seedReply = new Comment()
                 {
                     Id = seedCommentId + i,
-                    ParentId = null,
+                    ParentId = (i == 0) ? (int?)null : seedCommentId + i - 1,
                     Content = Guid.NewGuid().ToString(),
                     Photo = seedPhoto,
                     Author = seedUser
                 };
+
                 context.Comments.Add(seedReply);
                 seedReplies.Add(seedReply);
             }
@@ -47,11 +48,11 @@ namespace MyAlbum.Tests.Repositories
         }
 
         [Fact]
-        public async Task DeleteAll()
+        public async Task DeleteAll_WithReplies()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<MyAlbumDbContext>()
-                .UseInMemoryDatabase(databaseName: "CommentRepository_DeleteAll_MyAlbumDatabase")
+                .UseInMemoryDatabase(databaseName: "CommentRepository_DeleteAll_WithReplies_MyAlbumDatabase")
                 .Options;
             using (var context = new MyAlbumDbContext(options))
             {
