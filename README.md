@@ -41,7 +41,7 @@
 
 9. **View Photo >> Reply Comment**
 ![View Photo >> Add & View Reply](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/reply_comment.jpg?raw=true)
-# Deploy to Azure
+# Deployment to Azure
 1. Create 1 Azure App Service and 1 Azure SQL database
 2. Add 2 app settings: "**ASPNETCORE_ENVIRONMENT**" and "**ConnectionStrings:Default**" to Azure App Service as below:
 ![App Settings](https://raw.githubusercontent.com/NhatTanVu/vega/master/_screenshots/Add%20App%20Settings.PNG)
