@@ -12,6 +12,8 @@
 [![Stargazers repo roster for @NhatTanVu/myalbum](https://reporoster.com/stars/NhatTanVu/myalbum)](https://github.com/NhatTanVu/myalbum/stargazers)
 # Website
 * **URL**: https://my-album.azurewebsites.net/
+* **Email**: guest@gmail.com (for add/edit photo, comment, reply)
+* **Password**: 2u)TAa
 # Screenshots
 1. **Explore**\
 ![Explore](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/explore.JPG?raw=true)
