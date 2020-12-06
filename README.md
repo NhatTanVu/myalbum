@@ -2,7 +2,7 @@
 <h1 align="center">My Album</h1>
 <p align="center">Website to share albums and photos with Google Maps locations</p>
 
-<p align="center"><a href="https://my-album.azurewebsites.net/"><img src="https://github.com/NhatTanVu/myalbum/raw/master/_screenshots/explore.JPG" alt="My Album demo" width="500"/></a></p>
+<p align="center"><a href="https://my-album.azurewebsites.net/"><img src="https://github.com/NhatTanVu/myalbum/raw/master/_screenshots/explore.jpg" alt="My Album demo" width="500"/></a></p>
 
 # Status
 [![Codecov](https://codecov.io/gh/NhatTanVu/myalbum/branch/master/graph/badge.svg)](https://codecov.io/gh/NhatTanVu/myalbum)
@@ -13,7 +13,7 @@
 * **URL**: https://my-album.azurewebsites.net/
 # Screenshots
 1. **Explore**\
-![Explore](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/explore.JPG?raw=true)
+![Explore](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/explore.jpg?raw=true)
 
 2. **World Map**\
 ![World Map](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/world_map.jpg?raw=true)
@@ -22,22 +22,22 @@
 ![Add Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/add_photo.jpg?raw=true)
 
 4. **Edit Photo**\
-![Edit Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/edit-photo.jpg?raw=true)
+![Edit Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/edit_photo.jpg?raw=true)
 
 5. **View Photo**\
-![View Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/view_photo.JPG?raw=true)
+![View Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/view_photo.jpg?raw=true)
 
 6. **View Photo >> Object Detection** (click on the photo)
-![View Photo >> Object Detection](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/view_photo_object_detection.JPG?raw=true)
+![View Photo >> Object Detection](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/view_photo_object_detection.jpg?raw=true)
 
 7. **View Photo >> Add Comment**
-![View Photo >> Add Comment](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/add_comment.JPG?raw=true)
+![View Photo >> Add Comment](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/add_comment.jpg?raw=true)
 
-8. **View Photo >> Update New Comment (real-time)**
-![View Photo >> Update New Comment (real-time)](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/update_new_comment_real_time.JPG?raw=true)
+8. **View Photo >> Notify Comment (real-time)**
+![View Photo >> Update New Comment (real-time)](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/notify_comment.jpg?raw=true)
 
-9. **View Photo >> Add & View Reply**
-![View Photo >> Add & View Reply](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/view_add_reply.JPG?raw=true)
+9. **View Photo >> Reply Comment**
+![View Photo >> Add & View Reply](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/reply_comment.jpg?raw=true)
 # Deploy to Azure
 1. Create 1 Azure App Service and 1 Azure SQL database
 2. Add 2 app settings: "**ASPNETCORE_ENVIRONMENT**" and "**ConnectionStrings:Default**" to Azure App Service as below:
