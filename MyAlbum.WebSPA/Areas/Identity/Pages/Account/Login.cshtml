@@ -32,14 +32,15 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <input type="hidden" asp-for="Input.DisplayMode" value="@Model.DisplayMode" />
                     <button type="submit" class="btn btn-primary">Log in</button>
                 </div>
                 <div>
                     <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                        <a id="forgot-password" asp-page="./ForgotPassword" asp-route-displayMode="@Model.DisplayMode">Forgot your password?</a>
                     </p>
                     <div>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" asp-route-displayMode="@Model.DisplayMode">Register as a new user</a>
                     </div>
                 </div>
             </form>
@@ -79,4 +80,11 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+}
+
+@if (!string.IsNullOrEmpty(Model.DisplayMode))
+{
+    <script type="text/javascript">
+        var displayMode = "@Model.DisplayMode";
+    </script>    
 }

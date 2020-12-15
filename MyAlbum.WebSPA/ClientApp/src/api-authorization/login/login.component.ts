@@ -3,6 +3,8 @@ import { AuthorizeService, AuthenticationResultStatus } from '../authorize.servi
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { LoginActions, QueryParameterNames, ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
+import { GlobalDataService } from 'src/app/services/globalData.service';
+import { DisplayMode, GlobalData } from 'src/app/models/globalData';
 
 // The main responsibility of this component is to handle the user's login process.
 // This is the starting point for the login process. Any component that needs to authenticate
@@ -15,16 +17,23 @@ import { LoginActions, QueryParameterNames, ApplicationPaths, ReturnUrlType } fr
 })
 export class LoginComponent implements OnInit {
   public message = new BehaviorSubject<string>(null);
+  globalData: GlobalData;
 
   constructor(
     private authorizeService: AuthorizeService,
     private activatedRoute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private globalDataService: GlobalDataService
+  ) {
+    this.globalDataService.currentGlobalData$.subscribe(globalData => this.globalData = globalData);
+  }
 
   async ngOnInit() {
     const action = this.activatedRoute.snapshot.url[1];
+    console.log("action = " + action);
     switch (action.path) {
       case LoginActions.Login:
+        console.log("this.getReturnUrl() = " + this.getReturnUrl());
         await this.login(this.getReturnUrl());
         break;
       case LoginActions.LoginCallback:
@@ -69,11 +78,13 @@ export class LoginComponent implements OnInit {
   private async processLoginCallback(): Promise<void> {
     const url = window.location.href;
     const result = await this.authorizeService.completeSignIn(url);
+    console.log("processLoginCallback result.status = " + result.status);
     switch (result.status) {
       case AuthenticationResultStatus.Redirect:
         // There should not be any redirects as completeSignIn never redirects.
         throw new Error('Should not redirect.');
       case AuthenticationResultStatus.Success:
+        console.log("processLoginCallback getReturnUrl = " + this.getReturnUrl(result.state));
         await this.navigateToReturnUrl(this.getReturnUrl(result.state));
         break;
       case AuthenticationResultStatus.Fail:
@@ -84,19 +95,21 @@ export class LoginComponent implements OnInit {
 
   private redirectToRegister(): any {
     this.redirectToApiAuthorizationPath(
-      `${ApplicationPaths.IdentityRegisterPath}?returnUrl=${encodeURI('/' + ApplicationPaths.Login)}`);
+      `${ApplicationPaths.IdentityRegisterPath}?returnUrl=${encodeURI('/' + ApplicationPaths.Login)}&displayMode=${this.globalData.displayMode}`);
   }
 
   private redirectToProfile(): void {
-    this.redirectToApiAuthorizationPath(ApplicationPaths.IdentityManagePath);
+    this.redirectToApiAuthorizationPath(
+      `${ApplicationPaths.IdentityManagePath}?displayMode=${this.globalData.displayMode}`);
   }
 
-  private async navigateToReturnUrl(returnUrl: string) {
+  private navigateToReturnUrl(returnUrl: string) {
     // It's important that we do a replace here so that we remove the callback uri with the
     // fragment containing the tokens from the browser history.
-    await this.router.navigateByUrl(returnUrl, {
-      replaceUrl: true
-    });
+    // await this.router.navigateByUrl(returnUrl, {
+    //   replaceUrl: true
+    // });
+    window.location.replace(returnUrl);
   }
 
   private getReturnUrl(state?: INavigationState): string {
@@ -111,7 +124,7 @@ export class LoginComponent implements OnInit {
     }
     return (state && state.returnUrl) ||
       fromQuery ||
-      ApplicationPaths.DefaultLoginRedirectPath;
+      ApplicationPaths.DefaultLoginRedirectPath + "?displayMode=" + this.globalData.displayMode;
   }
 
   private redirectToApiAuthorizationPath(apiAuthorizationPath: string) {

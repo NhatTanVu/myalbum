@@ -26,7 +26,8 @@
               "src/styles.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.css",
               "node_modules/ng2-toasty/bundles/style-bootstrap.css",
-              "node_modules/@ng-select/ng-select/themes/default.theme.css"
+              "node_modules/@ng-select/ng-select/themes/default.theme.css",
+              "node_modules/css-toggle-switch/dist/toggle-switch.css"
             ],
             "scripts": [
               "node_modules/justified-layout/dist/justified-layout.js",

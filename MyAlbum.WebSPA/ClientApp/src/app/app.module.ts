@@ -24,6 +24,11 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { WorldMapComponent } from './components/world-map/world-map.component';
 import { EditPhotoComponent } from './components/edit-photo/edit-photo.component';
+import { GlobalDataService } from './services/globalData.service';
+import { AddAlbumComponent } from './components/add-album/add-album.component';
+import { EditAlbumComponent } from './components/edit-album/edit-album.component';
+import { ViewAlbumComponent } from './components/view-album/view-album.component';
+import { ExploreAlbumComponent } from './components/explore-album/explore-album.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +40,11 @@ import { EditPhotoComponent } from './components/edit-photo/edit-photo.component
     ReplyFormComponent,
     ReplyListComponent,
     WorldMapComponent,
-    EditPhotoComponent
+    EditPhotoComponent,
+    AddAlbumComponent,
+    EditAlbumComponent,
+    ViewAlbumComponent,
+    ExploreAlbumComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -44,10 +53,16 @@ import { EditPhotoComponent } from './components/edit-photo/edit-photo.component
     ApiAuthorizationModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'photos/new', component: PhotoFormComponent, canActivate: [AuthorizeGuard] },
-      { path: 'photos/edit/:id', component: EditPhotoComponent, canActivate: [AuthorizeGuard] },
-      { path: 'photos/:id', component: ViewPhotoComponent },
-      { path: 'worldmap', component: WorldMapComponent }
+      { path: 'worldmap', component: WorldMapComponent },
+
+      { path: 'photo/new', component: PhotoFormComponent, canActivate: [AuthorizeGuard] },
+      { path: 'photo/edit/:id', component: EditPhotoComponent, canActivate: [AuthorizeGuard] },
+      { path: 'photo/:id', component: ViewPhotoComponent },
+      
+      { path: 'album', component: ExploreAlbumComponent },
+      { path: 'album/new', component: AddAlbumComponent, canActivate: [AuthorizeGuard] },
+      { path: 'album/edit/:id', component: EditAlbumComponent, canActivate: [AuthorizeGuard] },
+      { path: 'album/:id', component: ViewAlbumComponent }
     ]),
     ToastyModule.forRoot(),
     LoadingBarHttpClientModule, // for HttpClient use
@@ -59,6 +74,7 @@ import { EditPhotoComponent } from './components/edit-photo/edit-photo.component
     CommentService,
     WindowRef,
     LocationService,
+    GlobalDataService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

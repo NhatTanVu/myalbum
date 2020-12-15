@@ -13,7 +13,8 @@
     @* <link rel="stylesheet" href="~/Identity/css/site.css" /> *@
     <link rel="stylesheet"  type="text/css" href="~/lib/fontawesome-free/css/all.min.css" />
     <link rel="stylesheet"  type="text/css" href="~/lib/styles.css" />
-
+    <link rel="stylesheet"  type="text/css" href="~/lib/toggle-switch.css" />
+    <link rel="stylesheet"  type="text/css" href="~/lib/nav-menu.component.css" />
 </head>
 <body>
     <header>
@@ -23,10 +24,20 @@
                     <img class="rounded" src="~/logo.jpg" alt="logo.jpg" height="40px" width="40px">
                     My Album
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <div class="d-inline-flex">
+                    <div class="rounded switch-toggle alert display-mode mobile">
+                        <input id="photo1" name="displayMode1" type="radio" checked value="photo">
+                        <label for="photo1" onclick="changeDisplayMode('photo')">Photo</label>
+                        <input id="album1" name="displayMode1" type="radio" value="album" [(ngModel)]="displayMode">
+                        <label for="album1" onclick="changeDisplayMode('album')">Album</label>
+                        <a class="btn btn-primary"></a>
+                    </div>
+                    <span class="separator mobile"></span>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>                
                 <div class="navbar-collapse collapse d-md-inline-flex flex-md-row-reverse">
                     @{
                         var result = Engine.FindView(ViewContext, "_LoginPartial", isMainPage: false);
