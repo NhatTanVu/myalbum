@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { User, UserManager, WebStorageStateStore } from 'oidc-client';
 import { BehaviorSubject, concat, from, Observable } from 'rxjs';
 import { filter, map, mergeMap, take, tap } from 'rxjs/operators';
+import { GlobalData } from 'src/app/models/globalData';
+import { GlobalDataService } from 'src/app/services/globalData.service';
 import { ApplicationPaths, ApplicationName } from './api-authorization.constants';
 
 export type IAuthenticationResult =
@@ -43,6 +45,13 @@ export class AuthorizeService {
   private popUpDisabled = true;
   private userManager: UserManager;
   private userSubject: BehaviorSubject<IUser | null> = new BehaviorSubject(null);
+
+  globalData: GlobalData;
+  constructor(
+    private globalDataService: GlobalDataService
+  ) {
+    this.globalDataService.currentGlobalData$.subscribe(globalData => this.globalData = globalData);
+  }
 
   public isAuthenticated(): Observable<boolean> {
     return this.getUser().pipe(map(u => !!u));
@@ -146,7 +155,7 @@ export class AuthorizeService {
     try {
       const state = await this.userManager.signoutCallback(url);
       this.userSubject.next(null);
-      return this.success(state && state.data);
+      return this.success(state && state.state);
     } catch (error) {
       console.log(`There was an error trying to log out '${error}'.`);
       return this.error(error);
@@ -154,7 +163,11 @@ export class AuthorizeService {
   }
 
   private createArguments(state?: any): any {
-    return { useReplaceToNavigate: true, data: state };
+    return {
+      useReplaceToNavigate: true, data: state, extraQueryParams: {
+        displayMode: this.globalData.displayMode
+      }
+    };
   }
 
   private error(message: string): IAuthenticationResult {

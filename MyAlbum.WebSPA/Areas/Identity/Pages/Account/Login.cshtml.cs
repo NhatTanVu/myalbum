@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using MyAlbum.Core.Models;
+using System.Web;
 
 namespace MyAlbum.WebSPA.Areas.Identity.Pages.Account
 {
@@ -38,6 +39,8 @@ namespace MyAlbum.WebSPA.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
 
+        public string DisplayMode { get; set; }
+
         [TempData]
         public string ErrorMessage { get; set; }
 
@@ -53,9 +56,11 @@ namespace MyAlbum.WebSPA.Areas.Identity.Pages.Account
 
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
+
+            public string DisplayMode { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(string returnUrl = null, string displayMode = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
@@ -70,11 +75,27 @@ namespace MyAlbum.WebSPA.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             ReturnUrl = returnUrl;
+            DisplayMode = displayMode ?? GetDisplayMode(returnUrl);
+        }
+
+        private string GetDisplayMode(string url)
+        {
+            int idx = url.IndexOf('?');
+            string query = idx >= 0 ? url.Substring(idx) : "";
+            return HttpUtility.ParseQueryString(query).Get("displayMode");
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
+            if (returnUrl.IndexOf('?') >= 0)
+            {
+                returnUrl += "&displayMode=" + Input.DisplayMode;
+            }
+            else
+            {
+                returnUrl += "?displayMode=" + Input.DisplayMode;
+            }
 
             if (ModelState.IsValid)
             {

@@ -5,29 +5,66 @@
         <img class="rounded" src="/logo.jpg" alt="logo.jpg" height="40px" width="40px">
         My Album
       </a>
-      <button class="navbar-toggler text-light" type="button" data-toggle="collapse" data-target=".navbar-collapse"
-        aria-label="Toggle navigation" [attr.aria-expanded]="isExpanded" (click)="toggle()">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <div class="d-inline-flex">
+        <div class="rounded switch-toggle alert display-mode mobile">
+          <div class="overlay" *ngIf="router.url == '/worldmap'"></div>
+          <div>
+            <input id="photo1" name="displayMode1" type="radio" value="photo" [checked]="displayMode == 'photo'"
+              [disabled]="router.url == '/worldmap'">
+            <label for="photo1" (click)="changeDisplayMode('photo')">Photo</label>
+            <input id="album1" name="displayMode1" type="radio" value="album" [checked]="displayMode == 'album'"
+              [disabled]="router.url == '/worldmap'">
+            <label for="album1" (click)="changeDisplayMode('album')">Album</label>
+            <a class="btn btn-primary"></a>
+          </div>
+        </div>
+        <span class="separator mobile"></span>
+        <button class="navbar-toggler text-light" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+          aria-label="Toggle navigation" [attr.aria-expanded]="isExpanded" (click)="toggle()">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
       <div class="navbar-collapse collapse d-md-inline-flex flex-md-row-reverse" [ngClass]="{ show: isExpanded }">
         <ul class="navbar-nav flex-grow">
           <li class="nav-item" [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-light" [routerLink]="['/']">
+            <a class="nav-link text-light" routerLink="/" *ngIf="displayMode == 'photo'">
+              <i class="fas fa-torii-gate"></i> Explore
+            </a>
+            <a class="nav-link text-light" [routerLink]="['/album/']" *ngIf="displayMode == 'album'">
               <i class="fas fa-torii-gate"></i> Explore
             </a>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-light" [routerLink]="['/worldmap']">
+          <li class="nav-item" [class.disabled]="displayMode == 'album'" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-light" [routerLink]="['/worldmap']" *ngIf="displayMode == 'photo'">
               <i class="fas fa-globe"></i> World Map
             </a>
+            <span class="nav-link text-dark" *ngIf="displayMode == 'album'">
+              <i class="fas fa-globe"></i> World Map
+            </span>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-light" [routerLink]="['/photos/new']">
-              <i class="fas fa-plus"></i> Add Photo
+            <a class="nav-link text-light" [routerLink]="['/photo/new']" *ngIf="displayMode == 'photo'">
+              <i class="fas fa-plus"></i> Add
+            </a>
+            <a class="nav-link text-light" [routerLink]="['/album/new']" *ngIf="displayMode == 'album'">
+              <i class="fas fa-plus"></i> Add
             </a>
           </li>
           <app-login-menu></app-login-menu>
         </ul>
+        <span class="separator"></span>
+        <div class="rounded switch-toggle alert display-mode">
+          <div class="overlay" *ngIf="router.url == '/worldmap'"></div>
+          <div>
+            <input id="photo2" name="displayMode2" type="radio" value="photo" [checked]="displayMode == 'photo'"
+              [disabled]="router.url == '/worldmap'">
+            <label for="photo2" (click)="changeDisplayMode('photo')">Photo</label>
+            <input id="album2" name="displayMode2" type="radio" value="album" [checked]="displayMode == 'album'"
+              [disabled]="router.url == '/worldmap'">
+            <label for="album2" (click)="changeDisplayMode('album')">Album</label>
+            <a class="btn btn-primary"></a>
+          </div>
+        </div>
       </div>
     </div>
   </nav>

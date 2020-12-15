@@ -69,6 +69,6 @@ li {
   color: grey!important;
 }
 
-.nav-item:hover {
+.nav-item:not(.disabled):hover {
   border-bottom: 2px solid rgba(255, 255, 255, .85);
 }

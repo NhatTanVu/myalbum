@@ -4,6 +4,8 @@ import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { LogoutActions, ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
+import { GlobalDataService } from 'src/app/services/globalData.service';
+import { GlobalData } from 'src/app/models/globalData';
 
 // The main responsibility of this component is to handle the user's logout process.
 // This is the starting point for the logout process, which is usually initiated when a
@@ -15,11 +17,16 @@ import { LogoutActions, ApplicationPaths, ReturnUrlType } from '../api-authoriza
 })
 export class LogoutComponent implements OnInit {
   public message = new BehaviorSubject<string>(null);
+  globalData: GlobalData;
 
   constructor(
     private authorizeService: AuthorizeService,
     private activatedRoute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private globalDataService: GlobalDataService
+  ) { 
+    this.globalDataService.currentGlobalData$.subscribe(globalData => this.globalData = globalData);
+  }
 
   async ngOnInit() {
     const action = this.activatedRoute.snapshot.url[1];
@@ -105,7 +112,7 @@ export class LogoutComponent implements OnInit {
     }
     return (state && state.returnUrl) ||
       fromQuery ||
-      ApplicationPaths.LoggedOut;
+      ApplicationPaths.DefaultLoginRedirectPath + "?displayMode=" + this.globalData.displayMode;
   }
 }
 

@@ -4,11 +4,15 @@
 @inject UserManager<ApplicationUser> UserManager
 
 @{
-    string returnUrl = null;
+    string returnUrl = null, displayMode = null;
     var query = ViewContext.HttpContext.Request.Query;
     if (query.ContainsKey("returnUrl"))
     {
         returnUrl = query["returnUrl"];
+    }
+    if (query.ContainsKey("displayMode"))
+    {
+        displayMode = query["displayMode"];
     }
 }
 
@@ -18,25 +22,32 @@
             <i class="fas fa-torii-gate"></i> Explore
         </a>
     </li>
-    <li class="nav-item" [routerLinkActive]="['link-active']">
-        <a class="nav-link text-light" href="~/worldmap">
+    <li class="nav-item" [routerLinkActive]="['link-active']" id="world-map">
+        <a class="nav-link text-light" href="~/worldmap" id="world-map-link">
             <i class="fas fa-globe"></i> World Map
         </a>
-    </li>    
+        <span class="nav-link text-dark d-none" id="world-map-span">
+            <i class="fas fa-globe"></i> World Map
+        </span>
+    </li>
     <li class="nav-item" [routerLinkActive]="['link-active']">
-        <a class="nav-link text-light" href="~/photos/new">
-            <i class="fas fa-plus"></i> Add Photo
+        <a class="nav-link text-light" href="~/photo/new">
+            <i class="fas fa-plus"></i> Add
         </a>
-    </li>    
+    </li>
     @if (SignInManager.IsSignedIn(User))
-    {        
-        <li class="nav-item @(ViewContext.HttpContext.Request.Path.ToString().IndexOf("Account/Manage") >= 0 ? "link-active" : "")">
-            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+    {
+        <li
+            class="nav-item @(ViewContext.HttpContext.Request.Path.ToString().IndexOf("Account/Manage") >= 0 ? "link-active" : "")">
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"
+                asp-route-displayMode="@displayMode">
                 <i class="fas fa-user-cog"></i> Manage
             </a>
         </li>
-        <li class="nav-item @(ViewContext.HttpContext.Request.Path.ToString().IndexOf("Account/Logout") >= 0 ? "link-active" : "")">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/">
+        <li
+            class="nav-item @(ViewContext.HttpContext.Request.Path.ToString().IndexOf("Account/Logout") >= 0 ? "link-active" : "")">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/"
+                asp-route-displayMode="@displayMode">
                 <button type="submit" class="nav-link btn btn-link text-light">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
@@ -45,15 +56,109 @@
     }
     else
     {
-        <li class="nav-item @(ViewContext.HttpContext.Request.Path.ToString().IndexOf("Account/Register") >= 0 ? "link-active" : "")">
-            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@returnUrl">
+        <li
+            class="nav-item @(ViewContext.HttpContext.Request.Path.ToString().IndexOf("Account/Register") >= 0 ? "link-active" : "")">
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@returnUrl"
+                asp-route-displayMode="@displayMode">
                 <i class="fas fa-user-plus"></i> Register
             </a>
         </li>
-        <li class="nav-item @(ViewContext.HttpContext.Request.Path.ToString().IndexOf("Account/Login") >= 0 ? "link-active" : "")">
-            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@returnUrl">
+        <li
+            class="nav-item @(ViewContext.HttpContext.Request.Path.ToString().IndexOf("Account/Login") >= 0 ? "link-active" : "")">
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@returnUrl"
+                asp-route-displayMode="@displayMode">
                 <i class="fas fa-sign-in-alt"></i> Login
             </a>
         </li>
     }
 </ul>
+<span class="separator"></span>
+<div class="rounded switch-toggle alert display-mode">
+    <input id="photo2" name="displayMode2" type="radio" checked value="photo">
+    <label for="photo2" onclick="changeDisplayMode('photo')">Photo</label>
+    <input id="album2" name="displayMode2" type="radio" value="album">
+    <label for="album2" onclick="changeDisplayMode('album')">Album</label>
+    <a class="btn btn-primary"></a>
+</div>
+
+@if (displayMode != null)
+{
+    <script type="text/javascript">
+        var displayMode = "@displayMode";
+    </script>
+}
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function (event) {
+        if (displayMode) {
+            changeDisplayMode(displayMode);
+        }
+    })
+    function changeDisplayMode(displayMode) {
+        var displayModeRadios = document.querySelectorAll('input[type="radio"]');
+        for (radio of displayModeRadios) {
+            if (radio.value == displayMode) {
+                radio.checked = true;
+            }
+            else {
+                radio.checked = false;
+            }
+        }
+        var links = document.getElementsByTagName("a");
+        for (link of links) {
+            if (link.href) {
+                var url = new URL(link.href);
+                switch (url.pathname) {
+                    case "/":
+                        if (displayMode == "album") {
+                            url.pathname = "album";
+                            link.href = url.href;
+                        }
+                        break;
+                    case "/photo/new":
+                        if (displayMode == "album") {
+                            url.pathname = "album/new";
+                            link.href = url.href;
+                        }
+                        break;
+                    case "/album":
+                        if (displayMode == "photo") {
+                            url.pathname = "";
+                            link.href = url.href;
+                        }
+                        break;
+                    case "/album/new":
+                        if (displayMode == "photo") {
+                            url.pathname = "photo/new";
+                            link.href = url.href;
+                        }
+                        break;
+                    default:
+                        if (url.searchParams.get("displayMode") && url.searchParams.get("displayMode") !== displayMode) {
+                            url.searchParams.set("displayMode", displayMode);
+                            link.href = url.href;
+                        }
+                        break;
+                }
+            }
+        }
+        var worldmap = document.getElementById("world-map");
+        var worldmapLink = document.getElementById("world-map-link");
+        var worldmapSpan = document.getElementById("world-map-span");
+        if (displayMode == 'album') {
+            worldmap.classList.add("disabled");
+            worldmapLink.classList.add("d-none");
+            worldmapSpan.classList.remove("d-none");
+        }
+        else {
+            worldmap.classList.remove("disabled");
+            worldmapLink.classList.remove("d-none");
+            worldmapSpan.classList.add("d-none");
+        }
+        var currentUrl = new URL(window.location.href);
+        if (currentUrl.searchParams.get("displayMode") && currentUrl.searchParams.get("displayMode") !== displayMode) {
+            currentUrl.searchParams.set("displayMode", displayMode);
+            window.location.replace(currentUrl.href);
+        }
+    }
+</script>
