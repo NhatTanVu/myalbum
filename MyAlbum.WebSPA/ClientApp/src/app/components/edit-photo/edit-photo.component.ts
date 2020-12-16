@@ -286,7 +286,7 @@ export class EditPhotoComponent implements OnInit {
   }
 
   back() {
-    this.router.navigate(['/photos/' + this.photo.id]);
+    this.router.navigate(['/photo/' + this.photo.id]);
   }
 
   delete() {
