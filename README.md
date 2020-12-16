@@ -1,4 +1,4 @@
-<p align="center"><a href="https://github.com/NhatTanVu/myalbum"><img src="https://github.com/NhatTanVu/myalbum/raw/master/MyAlbum.WebSPA/wwwroot/logo.jpg" alt="My Album logo" width="70"/></a></p>
+<p align="center"><a href="https://github.com/NhatTanVu/myalbum"><kbd><img src="https://github.com/NhatTanVu/myalbum/raw/master/MyAlbum.WebSPA/wwwroot/logo.jpg" alt="My Album logo" width="70"/></kbd></a></p>
 <h1 align="center">My Album</h1>
 <p align="center">Website to share albums and photos with Google Maps locations</p>
 
