@@ -13,7 +13,7 @@ import { ApplicationPaths, QueryParameterNames } from 'src/api-authorization/api
   providedIn: 'root'
 })
 export class CommentService {
-  private readonly commentsEndpoint = "/api/comments";
+  private readonly commentApiEndpoint = "/api/comments";
 
   private readonly httpOptions = {
     headers: new HttpHeaders({
@@ -84,7 +84,7 @@ export class CommentService {
 
   create(comment: Comment) {
     comment.connectionId = this.connectionId;
-    return this.http.post(this.commentsEndpoint, comment, this.httpOptions)
+    return this.http.post(this.commentApiEndpoint, comment, this.httpOptions)
       .pipe(map(res => {
         var comment = <Comment>res;
         setDisplayName(comment.author);
@@ -110,7 +110,7 @@ export class CommentService {
   }
 
   getReplies(commentId: number) {
-    return this.http.get(this.commentsEndpoint + "/" + commentId, this.httpOptions)
+    return this.http.get(this.commentApiEndpoint + "/" + commentId, this.httpOptions)
       .pipe(map(res => {
         var comments = <Comment[]>res;
         comments.forEach((comment) => {

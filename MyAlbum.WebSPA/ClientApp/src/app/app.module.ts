@@ -29,6 +29,7 @@ import { AddAlbumComponent } from './components/add-album/add-album.component';
 import { EditAlbumComponent } from './components/edit-album/edit-album.component';
 import { ViewAlbumComponent } from './components/view-album/view-album.component';
 import { ExploreAlbumComponent } from './components/explore-album/explore-album.component';
+import { AlbumService } from './services/album.service';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { ExploreAlbumComponent } from './components/explore-album/explore-album.
     WindowRef,
     LocationService,
     GlobalDataService,
+    AlbumService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

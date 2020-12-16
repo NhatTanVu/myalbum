@@ -1,1 +1,13 @@
-<p>add-album works!</p>
+<h1>Add Album</h1>
+<form (ngSubmit)="submit()">
+  <div class="form-group">
+    <h5 for="albumName">Name:</h5>
+    <input id="albumName" name="albumName" type="text" class="form-control col-lg-8" [(ngModel)]="album.name" />
+  </div>
+  <div class="col-lg-8">
+    <div class="row mb-3">
+      <button class="btn btn-primary mr-3" type="submit">Save</button>
+      <button class="btn btn-secondary" type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </div>
+</form>

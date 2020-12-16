@@ -11,7 +11,7 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
   providedIn: 'root'
 })
 export class PhotoService {
-  private readonly photosEndpoint = "/api/photos";
+  private readonly photoApiEndpoint = "/api/photos";
 
   private readonly httpOptions = {
     headers: new HttpHeaders({
@@ -24,7 +24,7 @@ export class PhotoService {
 
   getAll(filter) {
     this.loadingBar.start();
-    return this.http.get(this.photosEndpoint + '?' + this.toQueryString(filter), this.httpOptions)
+    return this.http.get(this.photoApiEndpoint + '?' + this.toQueryString(filter), this.httpOptions)
       .pipe(
         retryWithBackoff(1000, 5, 10000),
         catchError(error => {
@@ -63,7 +63,7 @@ export class PhotoService {
     formData.append('CenterLng', photo.centerLng ? photo.centerLng.toString() : null);
     formData.append('MapZoom', photo.mapZoom ? photo.mapZoom.toString() : null);
 
-    return this.http.post(this.photosEndpoint, formData)
+    return this.http.post(this.photoApiEndpoint, formData)
       .pipe(map(res => <SavePhoto>res));
   }
 
@@ -79,12 +79,12 @@ export class PhotoService {
     formData.append('MapZoom', photo.mapZoom ? photo.mapZoom.toString() : null);
     formData.append('PhotoCategories', photo.photoCategories ? JSON.stringify(photo.photoCategories) : null);
 
-    return this.http.post(this.photosEndpoint + '/' + photo.id, formData)
+    return this.http.post(this.photoApiEndpoint + '/' + photo.id, formData)
       .pipe(map(res => <Photo>res));
   }
 
   get(id) {
-    return this.http.get(this.photosEndpoint + '/' + id, this.httpOptions)
+    return this.http.get(this.photoApiEndpoint + '/' + id, this.httpOptions)
       .pipe(map(res => {
         var photo = <Photo>res;
         photo.comments.forEach(comment => {
@@ -96,7 +96,7 @@ export class PhotoService {
   }
 
   delete(id) {
-    return this.http.delete(this.photosEndpoint + '/' + id, this.httpOptions)
+    return this.http.delete(this.photoApiEndpoint + '/' + id, this.httpOptions)
       .pipe(map(res => {
         return res;
       }));        
