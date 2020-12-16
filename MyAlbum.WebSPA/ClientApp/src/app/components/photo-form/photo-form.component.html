@@ -1,5 +1,5 @@
 <h1>Add Photo</h1>
-<form #f="ngForm" (ngSubmit)="submit()">
+<form (ngSubmit)="submit()">
   <div class="form-group">
     <h5 for="photoName">Name:</h5>
     <input id="photoName" name="photoName" type="text" class="form-control col-lg-8" [(ngModel)]="photo.name" />

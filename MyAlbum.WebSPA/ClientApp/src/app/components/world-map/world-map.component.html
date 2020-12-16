@@ -4,7 +4,7 @@
       <div class="explore-gallery">
         <div #imageBoxes class="image-box" *ngFor="let p of viewportPhotos" (click)="panTo(p)">
           <img src="{{ p.filePath }}" alt="{{ p.name }}">
-          <a href="/photos/{{p.id}}" target="_blank" class="external-button"><i
+          <a href="/photo/{{p.id}}" target="_blank" class="external-button"><i
               class="edit-link fas fa-external-link-alt"></i></a>
         </div>
       </div>
