@@ -1,4 +1,5 @@
-import { Album } from './../models/album';
+import { Photo } from './../models/photo';
+import { Album, AlbumQuery } from './../models/album';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
@@ -28,13 +29,19 @@ export class AlbumService {
       .pipe(map(res => <Album>res));
   }
 
-  getAll(filter) {
+  getAll(filter: AlbumQuery) {
     return this.http.get(this.albumApiEndpoint + '?' + this.toQueryString(filter), this.httpOptions)
       .pipe(
         map(res => {
           var albums = <Album[]>res;
           albums.forEach(album => {
             setDisplayName(album.author);
+            album.mainPhoto = (album.photos.length > 0) ? album.photos[0] : null;
+            album.subPhotos = [];
+            album.subPhotos.push((album.photos.length > 1) ? album.photos[1] : null);
+            album.subPhotos.push((album.photos.length > 2) ? album.photos[2] : null);
+            album.subPhotos.push((album.photos.length > 3) ? album.photos[3] : null);
+            album.subPhotos.push((album.photos.length > 4) ? album.photos[4] : null);
           });
           return albums;
         }));

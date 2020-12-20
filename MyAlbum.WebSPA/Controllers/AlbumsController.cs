@@ -11,7 +11,7 @@ using System;
 
 namespace MyAlbum.WebSPA.Controllers
 {
-    [ApiExplorerSettings(GroupName = "Albums")] 
+    [ApiExplorerSettings(GroupName = "Albums")]
     [Route("/api/albums")]
     public class AlbumsController : Controller
     {
@@ -19,6 +19,15 @@ namespace MyAlbum.WebSPA.Controllers
         private readonly IAlbumRepository albumRepository;
         private readonly IUserRepository userRepository;
         private readonly IUnitOfWork unitOfWork;
+        private readonly string uploadsFolderUrl;
+
+        public string UploadFolderUrl
+        {
+            get
+            {
+                return this.uploadsFolderUrl;
+            }
+        }
 
         public AlbumsController(IMapper mapper, IAlbumRepository albumRepository, IUserRepository userRepository, IUnitOfWork unitOfWork)
         {
@@ -26,6 +35,7 @@ namespace MyAlbum.WebSPA.Controllers
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.albumRepository = albumRepository;
+            this.uploadsFolderUrl = "/uploads";
         }
 
         /// <summary>
@@ -40,6 +50,10 @@ namespace MyAlbum.WebSPA.Controllers
                 return NotFound();
 
             var albumResource = mapper.Map<Album, AlbumResource>(album);
+            foreach (var photo in albumResource.Photos)
+            {
+                photo.FilePath = string.Format("{0}/{1}", this.uploadsFolderUrl, photo.FilePath);
+            }
             return Ok(albumResource);
         }
 
@@ -52,6 +66,13 @@ namespace MyAlbum.WebSPA.Controllers
             var filter = this.mapper.Map<AlbumQueryResource, AlbumQuery>(filterResource);
             var albums = await this.albumRepository.GetAlbums(filter);
             var albumResources = mapper.Map<IEnumerable<Album>, IEnumerable<AlbumResource>>(albums);
+            foreach (var album in albumResources)
+            {
+                foreach (var photo in album.Photos)
+                {
+                    photo.FilePath = string.Format("{0}/{1}", this.uploadsFolderUrl, photo.FilePath);
+                }
+            }
             return albumResources;
         }
 
@@ -119,13 +140,13 @@ namespace MyAlbum.WebSPA.Controllers
             {
                 var userName = User.FindFirstValue(ClaimTypes.Name);
                 if (album.Author.UserName != userName)
-                    return Forbid();  
+                    return Forbid();
 
                 foreach (Photo photo in album.Photos)
                     photo.Album = null;
                 this.albumRepository.Delete(album);
                 await this.unitOfWork.CompleteAsync();
-                return Ok();              
+                return Ok();
             }
             else
                 return NotFound();

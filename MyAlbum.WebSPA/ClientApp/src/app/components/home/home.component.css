@@ -1,8 +1,12 @@
 .explore-gallery div.image-box {
   position: relative;
-  border: 0.25rem solid #f0f0f0;
   overflow: hidden;
   max-width: 100%;
+  transition: all 0.2s cubic-bezier(.165, .84, .26, .98);
+}
+
+.explore-gallery div.image-box:hover {
+  box-shadow: 0.05rem 0.05rem .5rem rgba(255, 255, 255, .85);
 }
 
 .explore-gallery div.image-box img {

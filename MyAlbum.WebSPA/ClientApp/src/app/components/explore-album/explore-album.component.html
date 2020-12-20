@@ -1,1 +1,28 @@
-<p>explore-album works!</p>
+<div class="album-gallery">
+  <a #albumBoxes *ngFor="let a of albums" href="/album/{{ a.id }}">
+    <div class="album-box rounded">
+      <div class="main-photo" [class.full]="a.subPhotos[0] == null">
+        <img src="{{ a.mainPhoto.filePath }}" alt="{{ a.name }}" *ngIf="a.mainPhoto != null">
+        <img class="default-album" src="/default_album.jpg" alt="{{ a.name }}" *ngIf="a.mainPhoto == null">
+      </div>
+      <div class="sub-photos">
+        <div class="photo" *ngFor="let p of a.subPhotos">
+          <img src="{{ p.filePath }}" alt="{{ a.name }}" *ngIf="p != null">
+        </div>
+      </div>
+      <div class="content">
+        <div class="text">
+          <div>
+            <div class="title">{{ a.name }}</div>
+            <div class="author">by {{ a.author.displayName }}</div>          
+          </div>
+        </div>
+        <div class="total-photos">
+          <div>
+            <i class="fas fa-images"></i> {{a.photos.length}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+</div>
