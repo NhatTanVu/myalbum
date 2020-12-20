@@ -50,8 +50,8 @@ export class HomeComponent implements OnInit {
         targetRowHeight: 300,
         targetRowHeightTolerance: 0.05,
         boxSpacing: {
-          horizontal: 5,
-          vertical: 5
+          horizontal: 20,
+          vertical: 20
         },
         containerPadding: 0
       }

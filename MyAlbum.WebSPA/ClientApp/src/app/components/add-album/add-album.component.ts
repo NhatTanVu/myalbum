@@ -15,7 +15,10 @@ export class AddAlbumComponent implements OnInit {
     name: null,
     createdDate: null,
     modifiedDate: null,
-    author: null
+    author: null,
+    photos: [],
+    mainPhoto: null,
+    subPhotos: []
   };
 
   constructor(private albumService: AlbumService,
