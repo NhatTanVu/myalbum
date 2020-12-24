@@ -30,7 +30,8 @@ export class ViewPhotoComponent implements OnInit {
     totalComments: 0,
     createdDate: null,
     modifiedDate: null,
-    author: null
+    author: null,
+    album: null
   };
   newComment: Comment = {
     id: 0,

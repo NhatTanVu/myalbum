@@ -1,3 +1,4 @@
+import { SaveAlbum } from './album';
 import { Comment } from './comment';
 import { User } from './user';
 
@@ -24,6 +25,7 @@ export interface Photo {
     createdDate: Date;
     modifiedDate: Date;
     author: User;
+    album: SaveAlbum;
 }
 
 export interface SavePhoto {
@@ -35,6 +37,7 @@ export interface SavePhoto {
     centerLng: number;
     mapZoom: number;
     photoCategories: PhotoCategory[];
+    album: SaveAlbum;
 }
 
 export interface PositionModel {

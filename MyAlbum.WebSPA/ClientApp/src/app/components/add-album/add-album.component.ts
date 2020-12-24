@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { ToastData, ToastyService } from 'ng2-toasty';
 import { AlbumService } from './../../services/album.service';
-import { Album } from './../../models/album';
+import { SaveAlbum } from './../../models/album';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -10,15 +10,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-album.component.css']
 })
 export class AddAlbumComponent implements OnInit {
-  album: Album = {
+  album: SaveAlbum = {
     id: 0,
-    name: null,
-    createdDate: null,
-    modifiedDate: null,
-    author: null,
-    photos: [],
-    mainPhoto: null,
-    subPhotos: []
+    name: null
   };
 
   constructor(private albumService: AlbumService,

@@ -1,5 +1,5 @@
 <div class="album-gallery">
-  <a #albumBoxes *ngFor="let a of albums" href="/album/{{ a.id }}">
+  <a #albumBoxes *ngFor="let a of albums" href="/?albumId={{ a.id }}">
     <div class="album-box rounded">
       <div class="main-photo" [class.full]="a.subPhotos[0] == null">
         <img src="{{ a.mainPhoto.filePath }}" alt="{{ a.name }}" *ngIf="a.mainPhoto != null">

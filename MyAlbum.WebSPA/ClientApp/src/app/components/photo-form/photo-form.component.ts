@@ -6,6 +6,11 @@ import { LocationService } from './../../services/location.service';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastyService, ToastData } from 'ng2-toasty';
+import { AlbumService } from './../../services/album.service';
+import { AlbumQuery, SaveAlbum } from './../../models/album';
+import { AuthorizeService } from './../../../api-authorization/authorize.service';
+import { map } from 'rxjs/operators';
+import { NameClaimType } from './../../../api-authorization/api-authorization.constants';
 
 @Component({
   selector: 'app-photo-form',
@@ -22,9 +27,17 @@ export class PhotoFormComponent implements OnInit {
     centerLat: null,
     centerLng: null,
     mapZoom: null,
-    photoCategories: []
+    photoCategories: [],
+    album: {
+      id: 0,
+      name: null
+    }
   };
   position: PositionModel = null;
+  albums: SaveAlbum[];
+  selectedAlbums: number[];
+  albumQuery: AlbumQuery;
+  userName: string;
 
   @ViewChild('gmap', { static: false }) gmapElement: any;
   map: google.maps.Map;
@@ -35,9 +48,24 @@ export class PhotoFormComponent implements OnInit {
   constructor(private photoService: PhotoService,
     private locationService: LocationService,
     private toasty: ToastyService,
-    private router: Router) { }
+    private router: Router,
+    private albumService: AlbumService,
+    private authorizeService: AuthorizeService) { }
 
   ngOnInit() {
+    this.authorizeService.getUser().pipe(map(u => u && u[NameClaimType]))
+      .subscribe(userName => {
+        this.userName = userName;
+        this.albumQuery = {
+          categoryId: null,
+          hasLocation: null,
+          authorUserName: this.userName
+        };
+        this.albumService.getAll(this.albumQuery)
+          .subscribe(albums => {
+            this.albums = albums;
+          });
+      });
   }
 
   ngAfterViewInit() {
@@ -137,6 +165,12 @@ export class PhotoFormComponent implements OnInit {
       this.photo.centerLat = this.map.getCenter().lat();
       this.photo.centerLng = this.map.getCenter().lng();
       this.photo.mapZoom = this.map.getZoom();
+    }
+
+    if (this.selectedAlbums) {
+      this.photo.album = this.albums.filter(album => {
+        return this.selectedAlbums.indexOf(album.id) >= 0;
+      })[0];
     }
 
     var result$ = this.photoService.create(this.photo, photoFile);

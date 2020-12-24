@@ -62,6 +62,7 @@ export class PhotoService {
     formData.append('CenterLat', photo.centerLat ? photo.centerLat.toString() : null);
     formData.append('CenterLng', photo.centerLng ? photo.centerLng.toString() : null);
     formData.append('MapZoom', photo.mapZoom ? photo.mapZoom.toString() : null);
+    formData.append('Album.Id', (photo.album && photo.album.id > 0) ? photo.album.id.toString() : null);
 
     return this.http.post(this.photoApiEndpoint, formData)
       .pipe(map(res => <SavePhoto>res));
@@ -78,6 +79,7 @@ export class PhotoService {
     formData.append('CenterLng', photo.centerLng ? photo.centerLng.toString() : null);
     formData.append('MapZoom', photo.mapZoom ? photo.mapZoom.toString() : null);
     formData.append('PhotoCategories', photo.photoCategories ? JSON.stringify(photo.photoCategories) : null);
+    formData.append('Album.Id', (photo.album && photo.album.id > 0) ? photo.album.id.toString() : null);
 
     return this.http.post(this.photoApiEndpoint + '/' + photo.id, formData)
       .pipe(map(res => <Photo>res));

@@ -72,3 +72,7 @@ li {
 .nav-item:not(.disabled):hover {
   border-bottom: 2px solid rgba(255, 255, 255, .85);
 }
+
+hr {
+  border-top-color: #f8f9fa;
+}
