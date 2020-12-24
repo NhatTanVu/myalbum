@@ -133,6 +133,10 @@ namespace MyAlbum.Persistence
                 else
                     query = query.Where(p => !p.LocLat.HasValue || !p.LocLng.HasValue);
             }
+            if (filter.AlbumId.HasValue)
+            {
+                query = query.Where(p => p.Album.Id == filter.AlbumId.Value);
+            }
             var photos = await query.ToListAsync();
             return photos;
         }

@@ -1,9 +1,14 @@
+import { AuthorizeService } from './../../../api-authorization/authorize.service';
+import { NameClaimType } from './../../../api-authorization/api-authorization.constants';
+import { AlbumService } from './../../services/album.service';
+import { SaveAlbum, AlbumQuery } from './../../models/album';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastData, ToastyService } from 'ng2-toasty';
 import { LocationService } from './../../services/location.service';
 import { PhotoService } from './../../services/photo.service';
 import { PositionModel, Photo, PhotoCategory } from './../../models/photo';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-photo',
@@ -110,10 +115,15 @@ export class EditPhotoComponent implements OnInit {
     totalComments: 0,
     createdDate: null,
     modifiedDate: null,
-    author: null
+    author: null,
+    album: null
   };
   photoTags: number[];
   position: PositionModel = null;
+  albums: SaveAlbum[];
+  selectedAlbums: number[];
+  albumQuery: AlbumQuery;
+  userName: string;  
 
   @ViewChild("photoFile", { static: false }) fileInput: ElementRef;
   @ViewChild('gmap', { static: false }) gmapElement: any;
@@ -127,7 +137,9 @@ export class EditPhotoComponent implements OnInit {
     private locationService: LocationService,
     private toasty: ToastyService,
     private route: ActivatedRoute,
-    private router: Router) {
+    private router: Router,
+    private albumService: AlbumService,
+    private authorizeService: AuthorizeService) {
     this.route.params.subscribe(p => {
       this.photoService.get(+p['id'])
         .subscribe(photo => {
@@ -135,7 +147,12 @@ export class EditPhotoComponent implements OnInit {
             this.photo = photo;
             this.photoTags = this.photo.photoCategories.map(c => c.id);
             this.hasMap = (photo.locLat != null) && (photo.locLng != null);
+            if (this.photo.album)
+              this.selectedAlbums = [this.photo.album.id];
+            else
+              this.selectedAlbums = [];
             this.initializeMap();
+            this.loadAlbums();
           }
           else {
             this.router.navigate(['/']);
@@ -145,6 +162,22 @@ export class EditPhotoComponent implements OnInit {
           this.router.navigate(['/']);
         });
     });
+  }
+
+  loadAlbums() {
+    this.authorizeService.getUser().pipe(map(u => u && u[NameClaimType]))
+    .subscribe(userName => {
+      this.userName = userName;
+      this.albumQuery = {
+        categoryId: null,
+        hasLocation: null,
+        authorUserName: this.userName
+      };
+      this.albumService.getAll(this.albumQuery)
+        .subscribe(albums => {
+          this.albums = albums;
+        });
+    });    
   }
 
   ngOnInit() {
@@ -266,6 +299,11 @@ export class EditPhotoComponent implements OnInit {
     this.photo.photoCategories = this.availableCategories.filter(cat => {
       return this.photoTags.indexOf(cat.id) >= 0;
     });
+    if (this.selectedAlbums) {
+      this.photo.album = this.albums.filter(album => {
+        return this.selectedAlbums.indexOf(album.id) >= 0;
+      })[0];
+    }
 
     var result$ = this.photoService.save(this.photo, photoFile);
     result$.subscribe(

@@ -1,3 +1,4 @@
+import { NameClaimType } from './../api-authorization.constants';
 import { Component, OnInit } from '@angular/core';
 import { AuthorizeService } from '../authorize.service';
 import { Observable } from 'rxjs';
@@ -16,6 +17,6 @@ export class LoginMenuComponent implements OnInit {
 
   ngOnInit() {
     this.isAuthenticated = this.authorizeService.isAuthenticated();
-    this.userName = this.authorizeService.getUser().pipe(map(u => u && u.name));
+    this.userName = this.authorizeService.getUser().pipe(map(u => u && u[NameClaimType]));
   }
 }

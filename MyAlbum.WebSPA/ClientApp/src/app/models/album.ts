@@ -17,3 +17,8 @@ export interface Album {
     subPhotos: Photo[];
     photos: Photo[];
 }
+
+export interface SaveAlbum {
+    id: number;
+    name: string;
+}

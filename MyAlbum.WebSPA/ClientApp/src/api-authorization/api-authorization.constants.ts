@@ -2,6 +2,8 @@ export const ApplicationName = 'MyAlbum';
 
 export const ReturnUrlType = 'returnUrl';
 
+export const NameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name";
+
 export const QueryParameterNames = {
   ReturnUrl: ReturnUrlType,
   Message: 'message'

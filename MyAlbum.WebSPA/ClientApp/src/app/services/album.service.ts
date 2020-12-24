@@ -1,5 +1,4 @@
-import { Photo } from './../models/photo';
-import { Album, AlbumQuery } from './../models/album';
+import { Album, SaveAlbum, AlbumQuery } from './../models/album';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
@@ -20,13 +19,13 @@ export class AlbumService {
 
   constructor(private http: HttpClient) { }
 
-  create(album: Album) {
+  create(album: SaveAlbum) {
     var formData = new FormData();
     formData.append('Id', album.id.toString());
     formData.append('Name', album.name);
 
     return this.http.post(this.albumApiEndpoint, formData)
-      .pipe(map(res => <Album>res));
+      .pipe(map(res => <SaveAlbum>res));
   }
 
   getAll(filter: AlbumQuery) {
@@ -57,13 +56,13 @@ export class AlbumService {
     return parts.join("&");
   }
 
-  save(album: Album) {
+  save(album: SaveAlbum) {
     var formData = new FormData();
     formData.append('Id', album.id.toString());
     formData.append('Name', album.name);
 
     return this.http.post(this.albumApiEndpoint + '/' + album.id, formData)
-      .pipe(map(res => <Album>res));
+      .pipe(map(res => <SaveAlbum>res));
   }
 
   get(id) {
