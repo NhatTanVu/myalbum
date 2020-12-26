@@ -2,8 +2,10 @@
   <div class="row">
     <div class="col-lg-6">
       <h3>
-        {{ photo.name }}&nbsp;
-        <a class="btn btn-secondary float-right" href="/photo/edit/{{ photo.id }}">Edit</a>
+        {{ photo.name }}
+        <span *ngIf="isEditable()">
+          &nbsp;<a class="btn btn-secondary float-right" href="/photo/edit/{{ photo.id }}">Edit</a>
+        </span>
       </h3>
       <hr />
     </div>
@@ -36,7 +38,7 @@
           <a class="btn btn-outline-secondary mr-2 mb-2" [routerLink]="['/']"
             [queryParams]="{'albumId': photo.album.id}">{{photo.album.name}}</a>
         </div>
-      </div>      
+      </div>
       <div class="row" *ngIf="photo.photoCategories && photo.photoCategories.length > 0">
         <div class="col">
           <h4>Tags</h4>

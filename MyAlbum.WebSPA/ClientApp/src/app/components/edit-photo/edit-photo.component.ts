@@ -129,7 +129,7 @@ export class EditPhotoComponent implements OnInit {
   globalData: GlobalData = {
     displayMode: DisplayMode.Photo,
     enableDisplayMode: false
-  };    
+  };
 
   @ViewChild("photoFile", { static: false }) fileInput: ElementRef;
   @ViewChild('gmap', { static: false }) gmapElement: any;
@@ -151,18 +151,24 @@ export class EditPhotoComponent implements OnInit {
   ngOnInit() {
     this.globalDataService.changeDisplayMode(this.globalData);
     this.route.params.subscribe(p => {
-      this.photoService.get(+p['id'])
-        .subscribe(photo => {
+      this.authorizeService.getUser().pipe(map(u => u && u[NameClaimType])).subscribe(userName => {
+        this.userName = userName;
+        this.photoService.get(+p['id']).subscribe(photo => {
           if (photo) {
-            this.photo = photo;
-            this.photoTags = this.photo.photoCategories.map(c => c.id);
-            this.hasMap = (photo.locLat != null) && (photo.locLng != null);
-            if (this.photo.album)
-              this.selectedAlbums = [this.photo.album.id];
-            else
-              this.selectedAlbums = [];
-            this.initializeMap();
-            this.loadAlbums();
+            if (photo.author.userName == this.userName) {
+              this.photo = photo;  
+              this.photoTags = this.photo.photoCategories.map(c => c.id);
+              this.hasMap = (photo.locLat != null) && (photo.locLng != null);
+              if (this.photo.album)
+                this.selectedAlbums = [this.photo.album.id];
+              else
+                this.selectedAlbums = [];
+              this.initializeMap();
+              this.loadAlbums();
+            }
+            else {
+              this.router.navigate(['/photo/' + photo.id]);
+            }
           }
           else {
             this.router.navigate(['/']);
@@ -171,23 +177,19 @@ export class EditPhotoComponent implements OnInit {
           err => {
             this.router.navigate(['/']);
           });
+      });
     });
   }
 
   loadAlbums() {
-    this.authorizeService.getUser().pipe(map(u => u && u[NameClaimType]))
-      .subscribe(userName => {
-        this.userName = userName;
-        this.albumQuery = {
-          categoryId: null,
-          hasLocation: null,
-          authorUserName: this.userName
-        };
-        this.albumService.getAll(this.albumQuery)
-          .subscribe(albums => {
-            this.albums = albums;
-          });
-      });
+    this.albumQuery = {
+      categoryId: null,
+      hasLocation: null,
+      authorUserName: this.userName
+    };
+    this.albumService.getAll(this.albumQuery).subscribe(albums => {
+      this.albums = albums;
+    });
   }
 
   initializeMap() {
