@@ -7,15 +7,15 @@ export interface AlbumQuery {
     authorUserName: string;
 }
 
-export interface Album {
-    id: number;
-    name: string;
-    createdDate: Date;
-    modifiedDate: Date;
-    author: User;
-    mainPhoto: Photo;
-    subPhotos: Photo[];
-    photos: Photo[];
+export class Album {
+    id: number = 0;
+    name: string = null;
+    createdDate: Date = null;
+    modifiedDate: Date = null;
+    author: User = null;
+    mainPhoto: Photo = null;
+    subPhotos: Photo[] = [];
+    photos: Photo[] = [];
 }
 
 export interface SaveAlbum {

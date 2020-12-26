@@ -1,3 +1,5 @@
+import { NameClaimType } from './../../../api-authorization/api-authorization.constants';
+import { AuthorizeService } from './../../../api-authorization/authorize.service';
 import { GlobalDataService } from 'src/app/services/globalData.service';
 import { GlobalData, DisplayMode } from 'src/app/models/globalData';
 import { Photo } from './../../models/photo';
@@ -8,6 +10,7 @@ import { Comment, findReplyInComment, mergeNewComment } from './../../models/com
 import { CommentService } from 'src/app/services/comment.service';
 import { ToastyService } from 'ng2-toasty';
 import { CommentAdded } from 'src/app/models/commentAdded';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-photo',
@@ -64,7 +67,8 @@ export class ViewPhotoComponent implements OnInit {
   globalData: GlobalData = {
     displayMode: DisplayMode.Photo,
     enableDisplayMode: false
-  };   
+  };
+  userName: string;
 
   @ViewChild('gmap', { static: false }) gmapElement: any;
   map: google.maps.Map;
@@ -75,31 +79,38 @@ export class ViewPhotoComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toasty: ToastyService,
-    private globalDataService: GlobalDataService
+    private globalDataService: GlobalDataService,
+    private authorizeService: AuthorizeService
   ) { }
 
   ngOnInit() {
     this.globalDataService.changeDisplayMode(this.globalData);
+    this.authorizeService.getUser().pipe(map(u => u && u[NameClaimType])).subscribe(userName => {
+      this.userName = userName;
+    });
     this.route.params.subscribe(p => {
       this.photoId = +p['id'];
       this.newComment.photoId = this.photoId;
-      this.photoService.get(this.photoId)
-        .subscribe(photo => {
-          if (photo) {
-            this.photo = photo;
-            this.hasMap = (photo.locLat != null) && (photo.locLng != null);
-            this.initializeMap();
-          }
-          else {
-            this.router.navigate(['/']);
-          }
-        },
-          err => {
-            this.router.navigate(['/']);
-          });
+      this.photoService.get(this.photoId).subscribe(photo => {
+        if (photo) {
+          this.photo = photo;
+          this.hasMap = (photo.locLat != null) && (photo.locLng != null);
+          this.initializeMap();
+        }
+        else {
+          this.router.navigate(['/']);
+        }
+      },
+        err => {
+          this.router.navigate(['/']);
+        });
     });
 
     this.commentService.addedComment$.subscribe(newComment => this.addedCommentSubscriber(newComment));
+  }
+
+  isEditable() {
+    return this.photo.author && this.userName == this.photo.author.userName;
   }
 
   addedCommentSubscriber(newComment: CommentAdded) {
