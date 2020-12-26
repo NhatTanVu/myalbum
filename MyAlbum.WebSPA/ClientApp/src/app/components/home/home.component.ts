@@ -76,18 +76,15 @@ export class HomeComponent implements OnInit {
 
   ngAfterViewInit() {
     this.imageBoxes.changes.subscribe(t => {
-      this.ngForRendered(document.querySelector(".explore-gallery").clientWidth);
+      this.ngForRendered();
     });
   }
 
-  containerWidth: number;
-  ngForRendered(containerWidth) {
-    this.containerWidth = containerWidth;
+  ngForRendered() {
     var tessarray = new Tessarray(".explore-gallery", ".image-box", {
       selectorClass: false,
       boxTransition: false,
       boxTransformOutTransition: false,
-      resize: true,
       flickr: {
         // http://flickr.github.io/justified-layout/
         targetRowHeight: 300,
@@ -96,32 +93,8 @@ export class HomeComponent implements OnInit {
           horizontal: 20,
           vertical: 20
         },
-        containerPadding: 0,
-        containerWidth: containerWidth
-      },
-      onRender: () => {
-        this.checkScrollbar(this.containerWidth);
+        containerPadding: 0
       }
     });
-  }
-
-  checkScrollbar(containerWidth) {
-    if (document.querySelector(".explore-gallery")) {
-      let clientWidth = document.querySelector(".explore-gallery").clientWidth;
-      let scrollWidth = document.querySelector(".explore-gallery").scrollWidth;
-      if (scrollWidth > clientWidth) {
-        console.log("containerWidth = " + containerWidth);
-        document.querySelector(".explore-gallery").classList.remove("container-is-loaded");
-        document.querySelector(".explore-gallery").removeAttribute("style");
-        document.querySelector(".image-box").classList.remove("container-is-loaded");
-        document.querySelector(".image-box").removeAttribute("style");
-        this.ngForRendered((containerWidth > clientWidth) ? clientWidth : containerWidth - 10);
-      }
-      else {
-        window.setTimeout(() => {
-          this.checkScrollbar(containerWidth);
-        }, 1000);
-      }
-    }
   }
 }
