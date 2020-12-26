@@ -46,7 +46,7 @@ export class ExploreAlbumComponent implements OnInit {
       flickr: {
         // http://flickr.github.io/justified-layout/
         targetRowHeight: 300,
-        targetRowHeightTolerance: 0,
+        targetRowHeightTolerance: 0.25,
         boxSpacing: {
           horizontal: 20,
           vertical: 20
