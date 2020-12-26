@@ -9,7 +9,7 @@ export class LocationService {
   constructor(private window: WindowRef) { }
 
   // https://stackoverflow.com/questions/42495636/angular-2-subscribe-when-coordinates-are-received
-  getLocation(): Observable<Position> {
+  getLocation(): Observable<any> {
     return Observable.create(observer => {
         if(this.window.nativeWindow.navigator && this.window.nativeWindow.navigator.geolocation) {
           this.window.nativeWindow.navigator.geolocation.getCurrentPosition(

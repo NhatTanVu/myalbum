@@ -7,7 +7,8 @@ import { DisplayMode, GlobalData } from '../models/globalData';
 })
 export class GlobalDataService {
   private globalDataSource = new BehaviorSubject<GlobalData>({
-    displayMode: DisplayMode.Photo
+    displayMode: DisplayMode.Photo,
+    enableDisplayMode: true
   });
   currentGlobalData$ = this.globalDataSource.asObservable();
 

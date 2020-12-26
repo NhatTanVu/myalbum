@@ -1,3 +1,5 @@
+import { GlobalDataService } from 'src/app/services/globalData.service';
+import { DisplayMode, GlobalData } from 'src/app/models/globalData';
 import { Router } from '@angular/router';
 import { ToastData, ToastyService } from 'ng2-toasty';
 import { AlbumService } from './../../services/album.service';
@@ -14,12 +16,18 @@ export class AddAlbumComponent implements OnInit {
     id: 0,
     name: null
   };
+  globalData: GlobalData = {
+    displayMode: DisplayMode.Album,
+    enableDisplayMode: true
+  };
 
   constructor(private albumService: AlbumService,
     private toasty: ToastyService,
-    private router: Router) { }
+    private router: Router,
+    private globalDataService: GlobalDataService) { }
 
   ngOnInit() {
+    this.globalDataService.changeDisplayMode(this.globalData);
   }
 
   submit() {

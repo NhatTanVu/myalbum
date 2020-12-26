@@ -19,7 +19,9 @@ export class NavMenuComponent {
     private location: Location,
     private router: Router,
     private route: ActivatedRoute
-  ) {
+  ) { }
+
+  ngOnInit() {
     this.globalDataService.currentGlobalData$.subscribe(globalData => {
       this.globalData = globalData;
       this.displayMode = this.globalData.displayMode;
@@ -65,7 +67,7 @@ export class NavMenuComponent {
           }
           else {
             this.router.navigate(["/"]);
-          }  
+          }
           break;
         case "/photo/new":
           if (displayMode == DisplayMode.Album) {

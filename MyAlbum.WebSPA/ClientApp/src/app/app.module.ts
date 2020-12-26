@@ -27,7 +27,6 @@ import { EditPhotoComponent } from './components/edit-photo/edit-photo.component
 import { GlobalDataService } from './services/globalData.service';
 import { AddAlbumComponent } from './components/add-album/add-album.component';
 import { EditAlbumComponent } from './components/edit-album/edit-album.component';
-import { ViewAlbumComponent } from './components/view-album/view-album.component';
 import { ExploreAlbumComponent } from './components/explore-album/explore-album.component';
 import { AlbumService } from './services/album.service';
 
@@ -44,7 +43,6 @@ import { AlbumService } from './services/album.service';
     EditPhotoComponent,
     AddAlbumComponent,
     EditAlbumComponent,
-    ViewAlbumComponent,
     ExploreAlbumComponent
   ],
   imports: [
@@ -62,8 +60,7 @@ import { AlbumService } from './services/album.service';
       
       { path: 'album', component: ExploreAlbumComponent },
       { path: 'album/new', component: AddAlbumComponent, canActivate: [AuthorizeGuard] },
-      { path: 'album/edit/:id', component: EditAlbumComponent, canActivate: [AuthorizeGuard] },
-      { path: 'album/:id', component: ViewAlbumComponent }
+      { path: 'album/edit/:id', component: EditAlbumComponent, canActivate: [AuthorizeGuard] }
     ]),
     ToastyModule.forRoot(),
     LoadingBarHttpClientModule, // for HttpClient use

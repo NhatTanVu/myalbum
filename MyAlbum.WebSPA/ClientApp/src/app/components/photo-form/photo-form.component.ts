@@ -11,6 +11,8 @@ import { AlbumQuery, SaveAlbum } from './../../models/album';
 import { AuthorizeService } from './../../../api-authorization/authorize.service';
 import { map } from 'rxjs/operators';
 import { NameClaimType } from './../../../api-authorization/api-authorization.constants';
+import { GlobalDataService } from 'src/app/services/globalData.service';
+import { DisplayMode, GlobalData } from 'src/app/models/globalData';
 
 @Component({
   selector: 'app-photo-form',
@@ -38,6 +40,10 @@ export class PhotoFormComponent implements OnInit {
   selectedAlbums: number[];
   albumQuery: AlbumQuery;
   userName: string;
+  globalData: GlobalData = {
+    displayMode: DisplayMode.Photo,
+    enableDisplayMode: true
+  };    
 
   @ViewChild('gmap', { static: false }) gmapElement: any;
   map: google.maps.Map;
@@ -50,9 +56,11 @@ export class PhotoFormComponent implements OnInit {
     private toasty: ToastyService,
     private router: Router,
     private albumService: AlbumService,
-    private authorizeService: AuthorizeService) { }
+    private authorizeService: AuthorizeService,
+    private globalDataService: GlobalDataService) { }
 
   ngOnInit() {
+    this.globalDataService.changeDisplayMode(this.globalData);
     this.authorizeService.getUser().pipe(map(u => u && u[NameClaimType]))
       .subscribe(userName => {
         this.userName = userName;

@@ -68,7 +68,7 @@ export class AlbumService {
   get(id) {
     return this.http.get(this.albumApiEndpoint + '/' + id, this.httpOptions)
       .pipe(map(res => {
-        var album = <Album>res;
+        var album = <SaveAlbum>res;
         return album;
       }));
   }

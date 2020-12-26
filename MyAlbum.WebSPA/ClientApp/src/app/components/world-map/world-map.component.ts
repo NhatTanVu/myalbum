@@ -1,3 +1,5 @@
+import { GlobalDataService } from 'src/app/services/globalData.service';
+import { GlobalData, DisplayMode } from 'src/app/models/globalData';
 import { PhotoService } from './../../services/photo.service';
 import { Photo } from './../../models/photo';
 import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
@@ -22,15 +24,19 @@ export class WorldMapComponent implements OnInit {
   allPhotos: Photo[];
   viewportPhotos: Photo[];
   query: any = {};
+  globalData: GlobalData = {
+    displayMode: DisplayMode.Photo,
+    enableDisplayMode: false
+  };  
   @ViewChildren('imageBoxes') imageBoxes: QueryList<any>;
 
   constructor(
-    private photoService: PhotoService
-  ) {
-    this.initializeMap();
-  }
+    private photoService: PhotoService,
+    private globalDataService: GlobalDataService
+  ) { }
 
   ngOnInit() {
+    this.globalDataService.changeDisplayMode(this.globalData);
   }
 
   ngAfterViewInit() {

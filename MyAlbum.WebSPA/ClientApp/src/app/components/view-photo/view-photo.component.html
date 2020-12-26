@@ -25,13 +25,25 @@
       </div>
     </div>
     <div class="col-lg-6">
-      <div class="row">
+      <div class="row" *ngIf="photo.album">
+        <div class="col">
+          <h4>Album</h4>
+          <hr />
+        </div>
+      </div>
+      <div class="row" *ngIf="photo.album">
+        <div class="col">
+          <a class="btn btn-outline-secondary mr-2 mb-2" [routerLink]="['/']"
+            [queryParams]="{'albumId': photo.album.id}">{{photo.album.name}}</a>
+        </div>
+      </div>      
+      <div class="row" *ngIf="photo.photoCategories && photo.photoCategories.length > 0">
         <div class="col">
           <h4>Tags</h4>
           <hr />
         </div>
       </div>
-      <div class="row">
+      <div class="row" *ngIf="photo.photoCategories && photo.photoCategories.length > 0">
         <div class="col">
           <a *ngFor="let cat of photo.photoCategories" class="btn btn-outline-secondary mr-2 mb-2" [routerLink]="['/']"
             [queryParams]="{'catId': cat.id}">{{cat.name}}</a>
@@ -60,23 +72,6 @@
       </div>
       <div>
         <form id="newCommentForm" #f="ngForm" (ngSubmit)="f.form.valid && submitComment()" class="container pt-2">
-          <!-- <div class="row">
-            <div class="form-group col-4">
-              <label for="newUName" class="required">User Name:</label>
-              <input id="newUName" name="newUName" type="text" class="form-control col"
-                [(ngModel)]="newComment.author.userName" required />
-            </div>
-            <div class="form-group col-4">
-              <label for="newFName">First Name:</label>
-              <input id="newFName" name="newFName" type="text" class="form-control col"
-                [(ngModel)]="newComment.author.firstName" />
-            </div>
-            <div class="form-group col-4">
-              <label for="newLName">Last Name:</label>
-              <input id="newLName" name="newLName" type="text" class="form-control col"
-                [(ngModel)]="newComment.author.lastName" />
-            </div>
-          </div> -->
           <div class="row">
             <div class="col-12">
               <label for="newComment" class="required">Comment:</label>
@@ -95,7 +90,7 @@
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="photo.comments && photo.comments.length > 0">
     <div class="col-lg-6">
       <div>
         <h4>All Comments</h4>

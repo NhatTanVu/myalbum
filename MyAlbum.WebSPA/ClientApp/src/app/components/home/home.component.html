@@ -14,11 +14,11 @@
       <div class="interaction-view">
         <div class="interaction-bar">
           <div class="text">
-            <div class="title">{{ p.name }}</div>
-            <div class="author">by {{ p.author.displayName }}</div>
+            <div class="title" title="{{ p.name }}">{{ p.name }}</div>
+            <div class="author" title="{{ p.author.displayName }}">by {{ p.author.displayName }}</div>
           </div>
           <div class="engagement">
-            <div class="total-comments">
+            <div class="total-comments" title="{{ p.totalComments }}">
                 <i class="fas fa-comments"></i> {{ p.totalComments }}
             </div>
           </div>

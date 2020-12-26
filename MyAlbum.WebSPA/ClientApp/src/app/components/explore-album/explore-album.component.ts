@@ -1,3 +1,5 @@
+import { GlobalDataService } from 'src/app/services/globalData.service';
+import { GlobalData, DisplayMode } from 'src/app/models/globalData';
 import { Album, AlbumQuery } from './../../models/album';
 import { AlbumService } from './../../services/album.service';
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
@@ -11,17 +13,22 @@ declare var Tessarray: any;
 })
 export class ExploreAlbumComponent implements OnInit {
   albums: Album[];
-  query: AlbumQuery;  
+  query: AlbumQuery;
+  globalData: GlobalData = {
+    displayMode: DisplayMode.Album,
+    enableDisplayMode: true
+  };  
   @ViewChildren('albumBoxes') albumBoxes: QueryList<any>;
 
-  constructor(private albumService: AlbumService) { 
-    this.albumService.getAll(this.query)
-    .subscribe(albums => {
-      this.albums = albums;
-    });    
-  }
+  constructor(private albumService: AlbumService,
+    private globalDataService: GlobalDataService) { }
 
   ngOnInit() {
+    this.globalDataService.changeDisplayMode(this.globalData);
+    this.albumService.getAll(this.query)
+      .subscribe(albums => {
+        this.albums = albums;
+      });
   }
 
   ngAfterViewInit() {
@@ -29,7 +36,7 @@ export class ExploreAlbumComponent implements OnInit {
       this.ngForRendered();
     });
   }
-  
+
   ngForRendered() {
     var tessarray = new Tessarray(".album-gallery", ".album-box", {
       selectorClass: false,
@@ -39,7 +46,7 @@ export class ExploreAlbumComponent implements OnInit {
       flickr: {
         // http://flickr.github.io/justified-layout/
         targetRowHeight: 300,
-        targetRowHeightTolerance: 0.05,
+        targetRowHeightTolerance: 0,
         boxSpacing: {
           horizontal: 20,
           vertical: 20
@@ -48,5 +55,5 @@ export class ExploreAlbumComponent implements OnInit {
         forceAspectRatio: 1
       }
     });
-  }  
+  }
 }
