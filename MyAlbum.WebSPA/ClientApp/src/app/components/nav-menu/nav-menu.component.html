@@ -1,19 +1,23 @@
 <header>
   <nav class="navbar navbar-expand-md navbar-toggleable-md navbar-dark box-shadow-bottom background-dark-darker">
     <div class="container-fluid">
-      <a class="navbar-brand text-light" [routerLink]="['/']">
+      <a class="navbar-brand text-light" [routerLink]="['/']" *ngIf="displayMode == 'photo'">
         <img class="rounded" src="/logo.jpg" alt="logo.jpg" height="40px" width="40px">
         My Album
       </a>
+      <a class="navbar-brand text-light" [routerLink]="['/album/']" *ngIf="displayMode == 'album'">
+        <img class="rounded" src="/logo.jpg" alt="logo.jpg" height="40px" width="40px">
+        My Album
+      </a>      
       <div class="d-inline-flex">
         <div class="rounded switch-toggle alert display-mode mobile">
-          <div class="overlay" *ngIf="router.url == '/worldmap'"></div>
+          <div class="overlay" *ngIf="!globalData.enableDisplayMode"></div>
           <div>
             <input id="photo1" name="displayMode1" type="radio" value="photo" [checked]="displayMode == 'photo'"
-              [disabled]="router.url == '/worldmap'">
+              [disabled]="!globalData.enableDisplayMode">
             <label for="photo1" (click)="changeDisplayMode('photo')">Photo</label>
             <input id="album1" name="displayMode1" type="radio" value="album" [checked]="displayMode == 'album'"
-              [disabled]="router.url == '/worldmap'">
+              [disabled]="!globalData.enableDisplayMode">
             <label for="album1" (click)="changeDisplayMode('album')">Album</label>
             <a class="btn btn-primary"></a>
           </div>
@@ -54,13 +58,13 @@
         </ul>
         <span class="separator"></span>
         <div class="rounded switch-toggle alert display-mode">
-          <div class="overlay" *ngIf="router.url == '/worldmap'"></div>
+          <div class="overlay" *ngIf="!globalData.enableDisplayMode"></div>
           <div>
             <input id="photo2" name="displayMode2" type="radio" value="photo" [checked]="displayMode == 'photo'"
-              [disabled]="router.url == '/worldmap'">
+              [disabled]="!globalData.enableDisplayMode">
             <label for="photo2" (click)="changeDisplayMode('photo')">Photo</label>
             <input id="album2" name="displayMode2" type="radio" value="album" [checked]="displayMode == 'album'"
-              [disabled]="router.url == '/worldmap'">
+              [disabled]="!globalData.enableDisplayMode">
             <label for="album2" (click)="changeDisplayMode('album')">Album</label>
             <a class="btn btn-primary"></a>
           </div>

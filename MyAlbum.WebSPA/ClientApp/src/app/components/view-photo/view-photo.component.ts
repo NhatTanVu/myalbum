@@ -1,3 +1,5 @@
+import { GlobalDataService } from 'src/app/services/globalData.service';
+import { GlobalData, DisplayMode } from 'src/app/models/globalData';
 import { Photo } from './../../models/photo';
 import { PhotoService } from './../../services/photo.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -59,6 +61,10 @@ export class ViewPhotoComponent implements OnInit {
   photoId: number = 0;
   isShownBoundingBox: boolean = false;
   hasMap: boolean = null;
+  globalData: GlobalData = {
+    displayMode: DisplayMode.Photo,
+    enableDisplayMode: false
+  };   
 
   @ViewChild('gmap', { static: false }) gmapElement: any;
   map: google.maps.Map;
@@ -68,8 +74,12 @@ export class ViewPhotoComponent implements OnInit {
     private commentService: CommentService,
     private route: ActivatedRoute,
     private router: Router,
-    private toasty: ToastyService
-  ) {
+    private toasty: ToastyService,
+    private globalDataService: GlobalDataService
+  ) { }
+
+  ngOnInit() {
+    this.globalDataService.changeDisplayMode(this.globalData);
     this.route.params.subscribe(p => {
       this.photoId = +p['id'];
       this.newComment.photoId = this.photoId;
@@ -84,20 +94,16 @@ export class ViewPhotoComponent implements OnInit {
             this.router.navigate(['/']);
           }
         },
-        err => {
-          this.router.navigate(['/']);
-        });
+          err => {
+            this.router.navigate(['/']);
+          });
     });
 
     this.commentService.addedComment$.subscribe(newComment => this.addedCommentSubscriber(newComment));
   }
 
-  ngOnInit() {
-  }
-
   addedCommentSubscriber(newComment: CommentAdded) {
     if (newComment.ancestorOrSelf.photoId == this.photoId) {
-      //console.log('addedCommentSubscriber - ' + JSON.stringify(newComment));
       this.toasty.info({
         title: "Info",
         msg: "New comment added.",

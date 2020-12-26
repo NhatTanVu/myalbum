@@ -1,5 +1,6 @@
-export interface GlobalData {
-  displayMode: DisplayMode; 
+export class GlobalData {
+  displayMode: DisplayMode;
+  enableDisplayMode: boolean = true; 
 }
 
 export enum DisplayMode {

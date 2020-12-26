@@ -47,16 +47,23 @@
 .explore-gallery div.image-box div.interaction-view div.interaction-bar div.text {
   float: left;
   height: 100%;
+  width: calc(100% - 50px);
 }
 
 .explore-gallery div.image-box div.interaction-view div.interaction-bar div.text .title {
   color: rgb(255, 255, 255);
   font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .explore-gallery div.image-box div.interaction-view div.interaction-bar div.text .author {
   font-size: 0.6rem;
   color: hsla(0, 0%, 100%, .7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .explore-gallery div.image-box div.interaction-view div.interaction-bar div.engagement {
@@ -64,11 +71,16 @@
   float: right;
   height: 100%;
   display: table;
+  width: 50px;
+  table-layout: fixed;
 }
 
 .explore-gallery div.image-box div.interaction-view div.interaction-bar div.engagement .total-comments {
   color: rgb(255, 255, 255);
   display: table-cell;
   vertical-align: middle;
-  text-align: center;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;  
 }

@@ -1,3 +1,5 @@
+import { GlobalDataService } from 'src/app/services/globalData.service';
+import { GlobalData, DisplayMode } from 'src/app/models/globalData';
 import { AuthorizeService } from './../../../api-authorization/authorize.service';
 import { NameClaimType } from './../../../api-authorization/api-authorization.constants';
 import { AlbumService } from './../../services/album.service';
@@ -49,7 +51,7 @@ export class EditPhotoComponent implements OnInit {
     {
       id: 8,
       name: "cat"
-    },{
+    }, {
       id: 9,
       name: "chair"
     },
@@ -96,7 +98,7 @@ export class EditPhotoComponent implements OnInit {
     {
       id: 20,
       name: "tvmonitor"
-    }    
+    }
   ];
   photo: Photo = {
     id: 0,
@@ -123,7 +125,11 @@ export class EditPhotoComponent implements OnInit {
   albums: SaveAlbum[];
   selectedAlbums: number[];
   albumQuery: AlbumQuery;
-  userName: string;  
+  userName: string;
+  globalData: GlobalData = {
+    displayMode: DisplayMode.Photo,
+    enableDisplayMode: false
+  };    
 
   @ViewChild("photoFile", { static: false }) fileInput: ElementRef;
   @ViewChild('gmap', { static: false }) gmapElement: any;
@@ -139,7 +145,11 @@ export class EditPhotoComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private albumService: AlbumService,
-    private authorizeService: AuthorizeService) {
+    private authorizeService: AuthorizeService,
+    private globalDataService: GlobalDataService) { }
+
+  ngOnInit() {
+    this.globalDataService.changeDisplayMode(this.globalData);
     this.route.params.subscribe(p => {
       this.photoService.get(+p['id'])
         .subscribe(photo => {
@@ -158,29 +168,26 @@ export class EditPhotoComponent implements OnInit {
             this.router.navigate(['/']);
           }
         },
-        err => {
-          this.router.navigate(['/']);
-        });
+          err => {
+            this.router.navigate(['/']);
+          });
     });
   }
 
   loadAlbums() {
     this.authorizeService.getUser().pipe(map(u => u && u[NameClaimType]))
-    .subscribe(userName => {
-      this.userName = userName;
-      this.albumQuery = {
-        categoryId: null,
-        hasLocation: null,
-        authorUserName: this.userName
-      };
-      this.albumService.getAll(this.albumQuery)
-        .subscribe(albums => {
-          this.albums = albums;
-        });
-    });    
-  }
-
-  ngOnInit() {
+      .subscribe(userName => {
+        this.userName = userName;
+        this.albumQuery = {
+          categoryId: null,
+          hasLocation: null,
+          authorUserName: this.userName
+        };
+        this.albumService.getAll(this.albumQuery)
+          .subscribe(albums => {
+            this.albums = albums;
+          });
+      });
   }
 
   initializeMap() {
