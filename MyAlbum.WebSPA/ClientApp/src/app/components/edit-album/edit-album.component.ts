@@ -64,18 +64,36 @@ export class EditAlbumComponent implements OnInit {
     var result$ = this.albumService.save(this.album);
     result$.subscribe(
       album => {
-        this.toasty.success({
-          title: "Success",
-          msg: "Saved successfully.",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500,
-          onRemove: function (toast: ToastData) {
-            this.album = album;
-          }
-        });
+        if (album) {
+          this.toasty.success({
+            title: "Success",
+            msg: "Saved successfully.",
+            theme: "bootstrap",
+            showClose: true,
+            timeout: 1500,
+            onRemove: function (toast: ToastData) {
+              this.album = album;
+            }
+          });
+        }
+        else {
+          this.toasty.error({
+            title: "Error",
+            msg: "Error occurred. Please try again!",
+            theme: "bootstrap",
+            showClose: true,
+            timeout: 1500
+          });          
+        }
       },
       err => {
+        this.toasty.error({
+          title: "Error",
+          msg: "Error occurred. Please try again!",
+          theme: "bootstrap",
+          showClose: true,
+          timeout: 1500
+        });
         console.log(err);
       }
     );
@@ -106,6 +124,13 @@ export class EditAlbumComponent implements OnInit {
         });
       },
       err => {
+        this.toasty.error({
+          title: "Error",
+          msg: "Error occurred. Please try again!",
+          theme: "bootstrap",
+          showClose: true,
+          timeout: 1500
+        });        
         console.log(err);
       }
     );
