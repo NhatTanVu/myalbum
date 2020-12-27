@@ -1,5 +1,5 @@
 import { GlobalDataService } from 'src/app/services/globalData.service';
-import { GlobalData, DisplayMode } from 'src/app/models/globalData';
+import { GlobalData, DisplayMode, MAX_FILE_LENGTH } from 'src/app/models/globalData';
 import { AuthorizeService } from './../../../api-authorization/authorize.service';
 import { NameClaimType } from './../../../api-authorization/api-authorization.constants';
 import { AlbumService } from './../../services/album.service';
@@ -290,6 +290,16 @@ export class EditPhotoComponent implements OnInit {
     var photoFile = null;
     if (nativeElement.files && nativeElement.files.length > 0) {
       photoFile = nativeElement.files[0];
+      if (nativeElement.files[0].size > MAX_FILE_LENGTH) {
+        this.toasty.error({
+          title: "Error",
+          msg: "File size must not exceed 1MB.",
+          theme: "bootstrap",
+          showClose: true,
+          timeout: 1500
+        });
+        return;
+      }      
     }
     if (this.position) {
       this.photo.locLat = this.position.latitude;
@@ -317,16 +327,35 @@ export class EditPhotoComponent implements OnInit {
     var result$ = this.photoService.save(this.photo, photoFile);
     result$.subscribe(
       photo => {
-        this.toasty.success({
-          title: "Success",
-          msg: "Saved successfully.",
+        if (photo) {
+          this.toasty.success({
+            title: "Success",
+            msg: "Saved successfully.",
+            theme: "bootstrap",
+            showClose: true,
+            timeout: 1500
+          });
+          this.photo = photo;
+          this.fileInput.nativeElement.value = "";
+        }
+        else {
+          this.toasty.error({
+            title: "Error",
+            msg: "Error occurred. Please try again!",
+            theme: "bootstrap",
+            showClose: true,
+            timeout: 1500
+          });          
+        }
+      },
+      err => {
+        this.toasty.error({
+          title: "Error",
+          msg: "Error occurred. Please try again!",
           theme: "bootstrap",
           showClose: true,
           timeout: 1500
-        });
-        this.photo = photo;
-      },
-      err => {
+        });        
         console.log(err);
       }
     );
@@ -353,6 +382,13 @@ export class EditPhotoComponent implements OnInit {
         });
       },
       err => {
+        this.toasty.error({
+          title: "Error",
+          msg: "Error occurred. Please try again!",
+          theme: "bootstrap",
+          showClose: true,
+          timeout: 1500
+        });        
         console.log(err);
       }
     );

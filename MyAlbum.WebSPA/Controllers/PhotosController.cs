@@ -133,9 +133,10 @@ namespace MyAlbum.WebSPA.Controllers
         /// </summary>
         [HttpPost]
         [Authorize]
+        [RequestFormLimits(MultipartBodyLengthLimit = 1048576)]
         public async Task<IActionResult> CreatePhoto([FromForm] PhotoResource photoResource)
         {
-            if (photoResource.FileToUpload != null)
+            if (photoResource != null && photoResource.FileToUpload != null)
             {
                 var photo = this.mapper.Map<PhotoResource, Photo>(photoResource);
                 var fileToUpload = photoResource.FileToUpload;
@@ -187,10 +188,11 @@ namespace MyAlbum.WebSPA.Controllers
         /// </summary>
         [HttpPost("{id}")]
         [Authorize()]
+        [RequestFormLimits(MultipartBodyLengthLimit = 1048576)]
         public async Task<IActionResult> UpdatePhoto([FromRoute] int id, [FromForm] PhotoResource photoResource)
         {
             Photo photo = await photoRepository.GetAsync(id);
-            if (photo != null)
+            if (photoResource != null && photo != null)
             {
                 var userName = User.FindFirstValue(ClaimTypes.Name);
                 if (photo.Author.UserName != userName)
@@ -206,18 +208,7 @@ namespace MyAlbum.WebSPA.Controllers
                     var dimensions = await this.photoRepository.GetImageDimensions(fileToUpload);
                     photo.Height = dimensions.Height;
                     photo.Width = dimensions.Width;
-                    string imageFilePath = Path.Combine(this.uploadsFolderPath, photo.FilePath);
-                    var boxDicts = this.objectDetectionService.DetectObjectsFromImages(new List<string>() { imageFilePath }, this.uploadsFolderPath, this.outputFolderPath);
-                    var labels = boxDicts[imageFilePath].Select(b => b.Label);
-                    if (labels.Any())
-                    {
-                        var categories = this.categoryRepository.GetByNames(labels);
-                        photo.PhotoCategories = categories.Select(cat => new PhotoCategory()
-                        {
-                            Category = cat,
-                            Photo = photo
-                        }).ToList();
-                    }
+                    this.photoUploadService.CopyPhoto(photo.FilePath, this.uploadsFolderPath, this.outputFolderPath);
                     if (!string.IsNullOrEmpty(originalFilePath))
                         this.photoUploadService.DeletePhoto(originalFilePath, this.uploadsFolderPath, this.outputFolderPath);
                 }

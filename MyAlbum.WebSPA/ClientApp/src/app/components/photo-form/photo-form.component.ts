@@ -12,7 +12,7 @@ import { AuthorizeService } from './../../../api-authorization/authorize.service
 import { map } from 'rxjs/operators';
 import { NameClaimType } from './../../../api-authorization/api-authorization.constants';
 import { GlobalDataService } from 'src/app/services/globalData.service';
-import { DisplayMode, GlobalData } from 'src/app/models/globalData';
+import { DisplayMode, GlobalData, MAX_FILE_LENGTH } from 'src/app/models/globalData';
 
 @Component({
   selector: 'app-photo-form',
@@ -43,7 +43,7 @@ export class PhotoFormComponent implements OnInit {
   globalData: GlobalData = {
     displayMode: DisplayMode.Photo,
     enableDisplayMode: true
-  };    
+  };
 
   @ViewChild('gmap', { static: false }) gmapElement: any;
   map: google.maps.Map;
@@ -165,6 +165,16 @@ export class PhotoFormComponent implements OnInit {
       });
       return;
     }
+    else if (nativeElement.files[0].size > MAX_FILE_LENGTH) {
+      this.toasty.error({
+        title: "Error",
+        msg: "File size must not exceed 1MB.",
+        theme: "bootstrap",
+        showClose: true,
+        timeout: 1500
+      });
+      return;
+    }
 
     var photoFile = nativeElement.files[0];
     if (this.position) {
@@ -185,18 +195,36 @@ export class PhotoFormComponent implements OnInit {
     var router = this.router;
     result$.subscribe(
       photo => {
-        this.toasty.success({
-          title: "Success",
-          msg: "Saved successfully.",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500,
-          onRemove: function (toast: ToastData) {
-            router.navigate(['/']);
-          }
-        });
+        if (photo) {
+          this.toasty.success({
+            title: "Success",
+            msg: "Saved successfully.",
+            theme: "bootstrap",
+            showClose: true,
+            timeout: 1500,
+            onRemove: function (toast: ToastData) {
+              router.navigate(['/']);
+            }
+          });
+        }
+        else {
+          this.toasty.error({
+            title: "Error",
+            msg: "Error occurred. Please try again!",
+            theme: "bootstrap",
+            showClose: true,
+            timeout: 1500
+          });
+        }
       },
       err => {
+        this.toasty.error({
+          title: "Error",
+          msg: "Error occurred. Please try again!",
+          theme: "bootstrap",
+          showClose: true,
+          timeout: 1500
+        });
         console.log(err);
       }
     );

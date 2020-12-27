@@ -30,5 +30,12 @@ namespace MyAlbum.Core
             File.Delete(uploadFilePath);
             File.Delete(outputFilePath);
         }
+
+        public void CopyPhoto(string fileName, string uploadsFolderPath, string outputFolderPath)
+        {
+            var uploadFilePath = Path.Combine(uploadsFolderPath, fileName);
+            var outputFilePath = Path.Combine(outputFolderPath, fileName);
+            File.Copy(uploadFilePath, outputFilePath);
+        }
     }
 }

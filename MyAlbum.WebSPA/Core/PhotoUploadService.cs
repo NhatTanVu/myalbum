@@ -15,9 +15,14 @@ namespace MyAlbum.Core
             return await this.photoStorage.StorePhoto(formFile, uploadsFolderPath);
         }
 
-        public void DeletePhoto(string filePath, string uploadsFolderPath, string outputFolderPath)
+        public void DeletePhoto(string fileName, string uploadsFolderPath, string outputFolderPath)
         {
-            this.photoStorage.DeletePhoto(filePath, uploadsFolderPath, outputFolderPath);
+            this.photoStorage.DeletePhoto(fileName, uploadsFolderPath, outputFolderPath);
+        }
+
+        public void CopyPhoto(string fileName, string uploadsFolderPath, string outputFolderPath)
+        {
+            this.photoStorage.CopyPhoto(fileName, uploadsFolderPath, outputFolderPath);
         }
     }
 }
