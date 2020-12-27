@@ -24,7 +24,7 @@ namespace MyAlbum.WebSPA.Core.ObjectDetection
             this.modelFilePath = Path.Combine(assetsPath, "Model", "tiny_yolov2", "Model.onnx").Replace(@"\", @"/");
         }
 
-        public IDictionary<string, IList<YoloBoundingBox>> DetectObjectsFromImages(List<string> imageFilePaths, 
+        public IDictionary<string, IList<YoloBoundingBox>> DetectObjectsFromImages(List<string> imageFilePaths,
             string uploadFolderPath, string outputFolderPath)
         {
             MLContext mlContext = new MLContext();
@@ -57,7 +57,7 @@ namespace MyAlbum.WebSPA.Core.ObjectDetection
             catch
             {
                 throw;
-            }            
+            }
         }
 
         private void DrawBoundingBox(string imageFilePath, string outputImageLocation, string imageName, IList<YoloBoundingBox> filteredBoundingBoxes)
@@ -81,27 +81,31 @@ namespace MyAlbum.WebSPA.Core.ObjectDetection
 
                 string text = $"{box.Label} ({(box.Confidence * 100).ToString("0")}%)";
 
-                using (Graphics thumbnailGraphic = Graphics.FromImage(image))
+                try
                 {
-                    thumbnailGraphic.CompositingQuality = CompositingQuality.HighQuality;
-                    thumbnailGraphic.SmoothingMode = SmoothingMode.HighQuality;
-                    thumbnailGraphic.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    using (Graphics thumbnailGraphic = Graphics.FromImage(image))
+                    {
+                        thumbnailGraphic.CompositingQuality = CompositingQuality.HighQuality;
+                        thumbnailGraphic.SmoothingMode = SmoothingMode.HighQuality;
+                        thumbnailGraphic.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-                    // Define Text Options
-                    Font drawFont = new Font("Arial", 12, FontStyle.Bold);
-                    SizeF size = thumbnailGraphic.MeasureString(text, drawFont);
-                    SolidBrush fontBrush = new SolidBrush(Color.Black);
-                    Point atPoint = new Point((int)x, (int)y - (int)size.Height - 1);
+                        // Define Text Options
+                        Font drawFont = new Font("Arial", 12, FontStyle.Bold);
+                        SizeF size = thumbnailGraphic.MeasureString(text, drawFont);
+                        SolidBrush fontBrush = new SolidBrush(Color.Black);
+                        Point atPoint = new Point((int)x, (int)y - (int)size.Height - 1);
 
-                    // Define BoundingBox options
-                    Pen pen = new Pen(box.BoxColor, 3.2f);
-                    SolidBrush colorBrush = new SolidBrush(box.BoxColor);
+                        // Define BoundingBox options
+                        Pen pen = new Pen(box.BoxColor, 3.2f);
+                        SolidBrush colorBrush = new SolidBrush(box.BoxColor);
 
-                    thumbnailGraphic.FillRectangle(colorBrush, (int)x, (int)(y - size.Height - 1), (int)size.Width, (int)size.Height);
-                    thumbnailGraphic.DrawString(text, drawFont, fontBrush, atPoint);
-                    // Draw bounding box on image
-                    thumbnailGraphic.DrawRectangle(pen, x, y, width, height);
+                        thumbnailGraphic.FillRectangle(colorBrush, (int)x, (int)(y - size.Height - 1), (int)size.Width, (int)size.Height);
+                        thumbnailGraphic.DrawString(text, drawFont, fontBrush, atPoint);
+                        // Draw bounding box on image
+                        thumbnailGraphic.DrawRectangle(pen, x, y, width, height);
+                    }
                 }
+                catch { }
             }
 
             if (!Directory.Exists(outputImageLocation))
