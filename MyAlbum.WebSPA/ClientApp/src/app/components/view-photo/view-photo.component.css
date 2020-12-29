@@ -13,34 +13,14 @@
   transform: rotateY(180deg);
 }
 
-@media(min-width:512px) {
-
-  .flip-container,
-  .flip-container .front,
-  .flip-container .back,
-  .flip-container .flipper .img-thumbnail {
-    width: 480px;
-    height: 360px;
-  }
+.flip-container {
+  height: 100%;
 }
 
-@media(max-width:511px) {
-
-  .flip-container,
-  .flip-container .front,
-  .flip-container .back,
-  .flip-container .flipper .img-thumbnail {
-    width: auto;
-    height: 360px;
-  }
-}
-
-.flip-container.portrait,
-.flip-container.portrait .front,
-.flip-container.portrait .back,
-.flip-container.portrait .flipper .img-thumbnail {
-  width: 360px;
-  height: 450px;
+.flip-container .front,
+.flip-container .back {
+  width: 100%;
+  height: 100%;
 }
 
 /* flip speed goes here */

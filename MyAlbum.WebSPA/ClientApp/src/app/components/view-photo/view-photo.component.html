@@ -11,17 +11,19 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-6" #photoContainer [style.minHeight.px]="350">
       <div class="flip-container mb-2" (click)="isShownBoundingBox = !isShownBoundingBox"
-        [class.flip]="isShownBoundingBox" [class.portrait]="photo.width < photo.height">
+        [class.flip]="isShownBoundingBox" [style.width.px]="flipContainerWidth" [hidden]="maxWidth == 0">
         <div class="flipper">
           <div class="front">
             <!-- front content -->
-            <img src="{{ photo.filePath }}" class="img-thumbnail rounded-0">
+            <img #imagePhoto src="{{ photo.filePath }}" class="img-thumbnail rounded-0" [style.maxWidth.px]="maxWidth"
+              [style.maxHeight.px]="maxHeight">
           </div>
           <div class="back">
             <!-- back content -->
-            <img src="{{ photo.boundingBoxFilePath }}" class="img-thumbnail rounded-0">
+            <img src="{{ photo.boundingBoxFilePath }}" class="img-thumbnail rounded-0" [style.maxWidth.px]="maxWidth"
+              [style.maxHeight.px]="maxHeight">
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { GlobalDataService } from 'src/app/services/globalData.service';
 import { GlobalData, DisplayMode } from 'src/app/models/globalData';
 import { Photo } from './../../models/photo';
 import { PhotoService } from './../../services/photo.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Comment, findReplyInComment, mergeNewComment } from './../../models/comment';
 import { CommentService } from 'src/app/services/comment.service';
@@ -15,7 +15,10 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-view-photo',
   templateUrl: './view-photo.component.html',
-  styleUrls: ['./view-photo.component.css']
+  styleUrls: ['./view-photo.component.css'],
+  host: {
+    '(window:resize)': 'onResize($event)'
+  }  
 })
 export class ViewPhotoComponent implements OnInit {
   photo: Photo = {
@@ -69,10 +72,16 @@ export class ViewPhotoComponent implements OnInit {
     enableDisplayMode: false
   };
   userName: string;
+  maxWidth: number = 0;
+  maxHeight: number = 0;
+  flipContainerWidth: number = 0;
 
   @ViewChild('gmap', { static: false }) gmapElement: any;
   map: google.maps.Map;
 
+  @ViewChild('photoContainer', { static: false }) photoContainer : ElementRef;
+  @ViewChild('imagePhoto', { static: false }) imageElement : ElementRef;
+  
   constructor(
     private photoService: PhotoService,
     private commentService: CommentService,
@@ -82,6 +91,36 @@ export class ViewPhotoComponent implements OnInit {
     private globalDataService: GlobalDataService,
     private authorizeService: AuthorizeService
   ) { }
+
+  calcPhotoSize() {
+    window.setTimeout(() => {
+      let element = this.photoContainer.nativeElement;
+      let computedStyle = window.getComputedStyle(element);
+      let elementHeight = element.clientHeight;  // height with padding
+      let elementWidth = element.clientWidth;   // width with padding
+      elementHeight -= parseFloat(computedStyle.paddingTop) + parseFloat(computedStyle.paddingBottom);
+      elementWidth -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
+      let maxWidth = elementWidth;
+      let maxHeight = elementHeight;
+      if (maxHeight > 10) {
+        if (this.imageElement.nativeElement.clientWidth > 0 && this.maxWidth == maxWidth && this.maxHeight == maxHeight) {
+          this.flipContainerWidth = parseFloat(this.imageElement.nativeElement.clientWidth);
+        }
+        else {
+          this.calcPhotoSize();  
+        }
+        this.maxHeight = maxHeight;
+        this.maxWidth = maxWidth;        
+      }
+      else {
+        this.calcPhotoSize();
+      }
+    }, 200);
+  }
+
+  onResize(event){
+    this.calcPhotoSize();
+  }  
 
   ngOnInit() {
     this.globalDataService.changeDisplayMode(this.globalData);
@@ -96,6 +135,7 @@ export class ViewPhotoComponent implements OnInit {
           this.photo = photo;
           this.hasMap = (photo.locLat != null) && (photo.locLng != null);
           this.initializeMap();
+          this.calcPhotoSize();
         }
         else {
           this.router.navigate(['/']);
