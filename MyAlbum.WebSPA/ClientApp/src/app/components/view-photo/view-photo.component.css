@@ -2,6 +2,18 @@
   cursor: pointer;
 }
 
+@media (max-width: 991.98px) {
+  .photo-container {
+    height: 350px;
+  }
+}
+
+@media (min-width: 992px) {
+  .photo-container {
+    height: 678.5px;
+  }
+}
+
 /* entire container, keeps perspective */
 .flip-container {
   perspective: 4000px;
