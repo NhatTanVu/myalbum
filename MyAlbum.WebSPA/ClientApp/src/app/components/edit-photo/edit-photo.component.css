@@ -1,0 +1,16 @@
+@media (max-width: 991.98px) {
+  .photo-container.portrait {
+    height: 350px;
+  }
+}
+
+@media (min-width: 992px) {
+  .photo-container.portrait {
+    height: 678.5px;
+  }
+}
+
+.photo-container img {
+  max-width: 100%;
+  max-height: 100%;
+}
