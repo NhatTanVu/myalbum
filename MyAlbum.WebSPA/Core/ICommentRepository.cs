@@ -11,5 +11,6 @@ namespace MyAlbum.Core
         IEnumerable<Comment> GetReplies(int id);
         IEnumerable<Comment> GetSelfAndAncestors(int id);
         void DeleteAll(List<Comment> comments);
+        void Delete(Comment comment);
     }
 }
