@@ -193,7 +193,8 @@ export class ViewPhotoComponent implements OnInit {
 
   initializeMap() {
     if (this.hasMap === true && this.gmapElement != undefined) {
-      this.gmapHeight = 400;
+      let windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+      this.gmapHeight = (windowWidth > 575.98) ? 400 : 300;
       // Create map
       var mapProp = {
         center: new google.maps.LatLng(this.photo.centerLat, this.photo.centerLng),

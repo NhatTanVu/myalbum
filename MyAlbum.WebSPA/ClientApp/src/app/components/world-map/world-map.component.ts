@@ -144,7 +144,7 @@ export class WorldMapComponent implements OnInit {
       flickr: {
         // http://flickr.github.io/justified-layout/
         targetRowHeight: 150,
-        targetRowHeightTolerance: 0.05,
+        targetRowHeightTolerance: 0.25,
         boxSpacing: {
           horizontal: 5,
           vertical: 5
