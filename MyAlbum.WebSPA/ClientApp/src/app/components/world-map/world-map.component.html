@@ -1,6 +1,6 @@
 <div id="world-map">
   <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-4 order-lg-1 order-2">
       <div class="explore-gallery">
         <div #imageBoxes class="image-box rounded" *ngFor="let p of viewportPhotos" (click)="panTo(p)">
           <img src="{{ p.filePath }}" alt="{{ p.name }}">
@@ -9,7 +9,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-8">
+    <div class="col-lg-8 order-lg-2 order-1 mb-lg-0 mb-2">
       <input id="gmapSearchBox" class="form-control mb-2" type="text" placeholder="Type location here..." #gmapSearchBox
         (keydown.enter)="$event.preventDefault()">
       <div id="gmap" #gmap></div>
