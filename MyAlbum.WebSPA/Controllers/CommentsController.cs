@@ -14,7 +14,7 @@ using System.Security.Claims;
 
 namespace MyAlbum.WebSPA.Controllers
 {
-    [ApiExplorerSettings(GroupName = "Comments")] 
+    [ApiExplorerSettings(GroupName = "Comments")]
     [Route("/api/comments")]
     public class CommentsController : Controller
     {
@@ -46,7 +46,7 @@ namespace MyAlbum.WebSPA.Controllers
             IEnumerable<Comment> replies = this.commentRepository.GetReplies(id);
             var replyResources = mapper.Map<IEnumerable<Comment>, IEnumerable<CommentResource>>(replies);
             return replyResources;
-        }        
+        }
 
         /// <summary>
         /// Create a new comment
@@ -59,7 +59,8 @@ namespace MyAlbum.WebSPA.Controllers
             if (photo != null)
             {
                 var comment = this.mapper.Map<CommentResource, Comment>(commentResource);
-                var currentUser = new User() {
+                var currentUser = new User()
+                {
                     UserName = User.FindFirstValue(ClaimTypes.Name)
                 };
                 comment.Author = this.userRepository.GetOrAdd(currentUser);
@@ -74,6 +75,55 @@ namespace MyAlbum.WebSPA.Controllers
             }
             else
                 return NoContent();
+        }
+
+        /// <summary>
+        /// Update a comment by ID
+        /// </summary>
+        [HttpPost("{id}")]
+        [Authorize()]
+        public async Task<IActionResult> UpdateComment([FromRoute] int id, [FromForm] CommentResource commentResource)
+        {
+            Comment comment = await commentRepository.GetAsync(id);
+            if (comment != null)
+            {
+                var userName = User.FindFirstValue(ClaimTypes.Name);
+                if (comment.Author.UserName != userName)
+                    return Forbid();
+                if (string.IsNullOrEmpty(commentResource.Content))
+                    return BadRequest();
+
+                comment.Content = commentResource.Content;
+                comment.ModifiedDate = DateTime.UtcNow;
+                await this.unitOfWork.CompleteAsync();
+
+                var outputCommentResource = mapper.Map<Comment, CommentResource>(comment);
+                return Ok(outputCommentResource);
+            }
+            else
+                return NotFound();
+        }
+
+        /// <summary>
+        /// Delete a comment by ID
+        /// </summary>
+        [HttpDelete("{id}")]
+        [Authorize()]
+        public async Task<IActionResult> DeleteComment([FromRoute] int id)
+        {
+            Comment comment = await commentRepository.GetAsync(id);
+            if (comment != null)
+            {
+                var userName = User.FindFirstValue(ClaimTypes.Name);
+                if (comment.Author.UserName != userName)
+                    return Forbid();
+
+                this.commentRepository.Delete(comment);
+                await this.unitOfWork.CompleteAsync();
+                return Ok();
+            }
+            else
+                return NotFound();
         }
 
         private async void NotifyCommentAdded(int id, string connectionId)

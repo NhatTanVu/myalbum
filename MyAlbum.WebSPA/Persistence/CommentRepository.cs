@@ -97,13 +97,18 @@ namespace MyAlbum.Persistence
         public void DeleteAll(List<Comment> comments)
         {
             List<int> deletedIds = new List<int>();
-            foreach(var comment in comments)
+            foreach (var comment in comments)
             {
                 deletedIds.AddRange(GetDeletedIds(comment));
             }
             var deletedComments = this.context.Comments.Where(c => deletedIds.Contains(c.Id));
 
             this.context.RemoveRange(deletedComments);
+        }
+
+        public void Delete(Comment comment)
+        {
+            this.context.Remove(comment);
         }
     }
 }
