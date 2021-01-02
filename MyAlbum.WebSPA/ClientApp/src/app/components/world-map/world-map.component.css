@@ -6,10 +6,13 @@
 
 .explore-gallery .image-box {
   position: relative;
-  border: 0.25rem solid #f0f0f0;
   cursor: zoom-in;
   overflow: hidden;
   max-width: 100%;
+}
+
+.explore-gallery .image-box:hover {
+  box-shadow: 0.05rem 0.05rem .25rem rgba(255, 255, 255, .85);
 }
 
 .explore-gallery .external-button {

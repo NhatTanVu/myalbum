@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-lg-4">
       <div class="explore-gallery">
-        <div #imageBoxes class="image-box" *ngFor="let p of viewportPhotos" (click)="panTo(p)">
+        <div #imageBoxes class="image-box rounded" *ngFor="let p of viewportPhotos" (click)="panTo(p)">
           <img src="{{ p.filePath }}" alt="{{ p.name }}">
           <a href="/photo/{{p.id}}" target="_blank" class="external-button"><i
               class="edit-link fas fa-external-link-alt"></i></a>

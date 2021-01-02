@@ -4,7 +4,7 @@
 }
 
 .album-gallery div.album-box:hover {
-  box-shadow: 0.05rem 0.05rem .5rem rgba(255, 255, 255, .85);
+  box-shadow: 0.05rem 0.05rem .25rem rgba(255, 255, 255, .85);
 }
 
 .album-gallery div.album-box .main-photo {

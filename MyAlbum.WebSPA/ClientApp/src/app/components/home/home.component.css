@@ -1,3 +1,22 @@
+.header-container {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.header-container .header-text {
+  display: table-cell;
+  vertical-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-container .header-button {
+  display: table-cell;
+  width: 46px;
+}
+
 .explore-gallery div.image-box {
   position: relative;
   overflow: hidden;
@@ -6,7 +25,7 @@
 }
 
 .explore-gallery div.image-box:hover {
-  box-shadow: 0.05rem 0.05rem .5rem rgba(255, 255, 255, .85);
+  box-shadow: 0.05rem 0.05rem .25rem rgba(255, 255, 255, .85);
 }
 
 .explore-gallery div.image-box img {
@@ -82,5 +101,5 @@
   text-align: right;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;  
+  text-overflow: ellipsis;
 }
