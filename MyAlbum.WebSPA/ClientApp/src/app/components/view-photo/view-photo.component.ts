@@ -75,6 +75,7 @@ export class ViewPhotoComponent implements OnInit {
   maxWidth: number = 0;
   maxHeight: number = 0;
   flipContainerWidth: number = 0;
+  gmapHeight: number = 0;
 
   @ViewChild('gmap', { static: false }) gmapElement: any;
   map: google.maps.Map;
@@ -92,35 +93,9 @@ export class ViewPhotoComponent implements OnInit {
     private authorizeService: AuthorizeService
   ) { }
 
-  calcPhotoSize() {
-    window.setTimeout(() => {
-      let element = this.photoContainer.nativeElement;
-      let computedStyle = window.getComputedStyle(element);
-      let elementHeight = element.clientHeight;  // height with padding
-      let elementWidth = element.clientWidth;   // width with padding
-      elementHeight -= parseFloat(computedStyle.paddingTop) + parseFloat(computedStyle.paddingBottom);
-      elementWidth -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
-      let maxWidth = elementWidth;
-      let maxHeight = elementHeight;
-      if (maxHeight > 10) {
-        if (this.imageElement.nativeElement.clientWidth > 0 && this.maxWidth == maxWidth && this.maxHeight == maxHeight) {
-          this.flipContainerWidth = parseFloat(this.imageElement.nativeElement.clientWidth);
-        }
-        else {
-          this.calcPhotoSize();  
-        }
-        this.maxHeight = maxHeight;
-        this.maxWidth = maxWidth;        
-      }
-      else {
-        this.calcPhotoSize();
-      }
-    }, 200);
-  }
-
   onResize(event){
     this.calcPhotoSize();
-  }  
+  }
 
   ngOnInit() {
     this.globalDataService.changeDisplayMode(this.globalData);
@@ -149,6 +124,32 @@ export class ViewPhotoComponent implements OnInit {
     this.commentService.addedComment$.subscribe(newComment => this.addedCommentSubscriber(newComment));
   }
 
+  calcPhotoSize() {
+    window.setTimeout(() => {
+      let element = this.photoContainer.nativeElement;
+      let computedStyle = window.getComputedStyle(element);
+      let elementHeight = element.clientHeight;  // height with padding
+      let elementWidth = element.clientWidth;   // width with padding
+      elementHeight -= parseFloat(computedStyle.paddingTop) + parseFloat(computedStyle.paddingBottom);
+      elementWidth -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
+      let maxWidth = elementWidth;
+      let maxHeight = elementHeight;
+      if (maxHeight > 10) {
+        if (this.imageElement.nativeElement.clientWidth > 0 && this.maxWidth == maxWidth && this.maxHeight == maxHeight) {
+          this.flipContainerWidth = parseFloat(this.imageElement.nativeElement.clientWidth);
+        }
+        else {
+          this.calcPhotoSize();  
+        }
+        this.maxHeight = maxHeight;
+        this.maxWidth = maxWidth;        
+      }
+      else {
+        this.calcPhotoSize();
+      }
+    }, 200);
+  }  
+
   isEditable() {
     return this.photo.author && this.userName == this.photo.author.userName;
   }
@@ -172,7 +173,7 @@ export class ViewPhotoComponent implements OnInit {
         this.photo.comments.push(newComment.ancestorOrSelf);
 
       let commentId: number = newComment.id;
-      setTimeout(() => {
+      window.setTimeout(() => {
         let comment: Comment = this.photo.comments.find(c => c.id == commentId);
         if (comment)
           comment.isNew = false;
@@ -192,6 +193,7 @@ export class ViewPhotoComponent implements OnInit {
 
   initializeMap() {
     if (this.hasMap === true && this.gmapElement != undefined) {
+      this.gmapHeight = 400;
       // Create map
       var mapProp = {
         center: new google.maps.LatLng(this.photo.centerLat, this.photo.centerLng),

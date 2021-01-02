@@ -1,11 +1,11 @@
 <div class="row" *ngIf="globalData.displayMode == 'album'">
   <div class="col-lg-6">
-    <h3>
-      {{ album.name }}
-      <span *ngIf="isEditable()">
-        &nbsp;
-        <a class="btn btn-secondary float-right" href="/album/edit/{{ album.id }}">Edit</a>
-      </span>
+    <h3 class="header-container">
+      <span class="header-text" title="{{ album.name }}">{{ album.name }}</span>
+      <a class="btn btn-secondary header-button" href="/album/edit/{{ album.id }}" *ngIf="isEditable()"
+        title="Edit Album">
+        <i class="fas fa-pencil-alt"></i>
+      </a>
     </h3>
     <hr />
   </div>
@@ -22,7 +22,7 @@
           </div>
           <div class="engagement">
             <div class="total-comments" title="{{ p.totalComments }}">
-                <i class="fas fa-comments"></i> {{ p.totalComments }}
+              <i class="fas fa-comments"></i> {{ p.totalComments }}
             </div>
           </div>
         </div>
