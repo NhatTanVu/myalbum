@@ -21,14 +21,6 @@ namespace MyAlbum.WebSPA.Controllers
         private readonly IUnitOfWork unitOfWork;
         private readonly string uploadsFolderUrl;
 
-        public string UploadFolderUrl
-        {
-            get
-            {
-                return this.uploadsFolderUrl;
-            }
-        }
-
         public AlbumsController(IMapper mapper, IAlbumRepository albumRepository, IUserRepository userRepository, IUnitOfWork unitOfWork)
         {
             this.userRepository = userRepository;

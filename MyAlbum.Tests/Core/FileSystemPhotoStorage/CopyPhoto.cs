@@ -1,14 +1,15 @@
 using System;
 using System.IO;
+using System.Linq;
 using MyAlbum.Core;
 using Xunit;
 
 namespace MyAlbum.Tests.Core
 {
-    public class FileSystemPhotoStorage_Test2
+    public class FileSystemPhotoStorage_Test3
     {
         [Fact]
-        public void DeletePhoto()
+        public void CopyPhoto()
         {
             // Arrange
             string originalFilePath = @".\car.jpg";
@@ -26,16 +27,16 @@ namespace MyAlbum.Tests.Core
             var uploadFilePath = Path.Combine(uploadsFolderPath, fileName);
             var outputFilePath = Path.Combine(outputFolderPath, fileName);
             File.Copy(originalFilePath, uploadFilePath);
-            File.Copy(originalFilePath, outputFilePath);
             var filePhotoStorage = new FileSystemPhotoStorage();
             // Assert #1
             Assert.True(File.Exists(uploadFilePath));
-            Assert.True(File.Exists(outputFilePath));            
+            Assert.False(File.Exists(outputFilePath));            
             // Act
-            filePhotoStorage.DeletePhoto(fileName, uploadsFolderPath, outputFolderPath);
+            filePhotoStorage.CopyPhoto(fileName, uploadsFolderPath, outputFolderPath);
             // Assert #2
-            Assert.False(File.Exists(uploadFilePath));
-            Assert.False(File.Exists(outputFilePath));
+            Assert.True(File.Exists(uploadFilePath));
+            Assert.True(File.Exists(outputFilePath));
+            Assert.True(File.ReadAllBytes(uploadFilePath).SequenceEqual(File.ReadAllBytes(outputFilePath)));
         }
     }
 }
