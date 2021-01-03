@@ -10,6 +10,7 @@ export interface Comment {
   isNew: boolean;
   isReplying: boolean;
   isViewing: boolean;
+  isEditing: boolean;
   areRepliesLoaded: boolean;
   numOfReplies: number;
   replies: Comment[];
@@ -40,6 +41,7 @@ export const mergeNewComment = (orgComment: Comment, newComment: Comment): Comme
     var isNew = orgComment.isNew;
     var isReplying = orgComment.isReplying;
     var isViewing = orgComment.isViewing;
+    var isEditing = orgComment.isEditing;
     var areRepliesLoaded = orgComment.areRepliesLoaded;
     var numOfReplies = orgComment.numOfReplies;
     var replies = orgComment.replies.slice();
@@ -53,6 +55,7 @@ export const mergeNewComment = (orgComment: Comment, newComment: Comment): Comme
     orgComment.isNew = isNew;
     orgComment.isReplying = isReplying;
     orgComment.isViewing = isViewing;
+    orgComment.isEditing = isEditing;
 
     if (areRepliesLoaded) {
       if (newComment.areRepliesLoaded) {

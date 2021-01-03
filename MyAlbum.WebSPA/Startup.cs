@@ -14,7 +14,7 @@ using System.Reflection;
 using System.IO;
 using System;
 using MyAlbum.WebSPA.Hubs;
-using MyAlbum.WebSPA.Core.Utilities;
+using Utilities = MyAlbum.WebSPA.Core.Utilities;
 using MyAlbum.Core.Models;
 using Microsoft.AspNetCore.Authentication;
 using System.Collections.Generic;
@@ -81,11 +81,10 @@ namespace MyAlbum
             services.AddScoped<IObjectDetectionService, ObjectDetectionService>(s => new ObjectDetectionService(this._env.WebRootPath));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddControllersWithViews().AddJsonOptions(options =>
-                options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter())
-            ).AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
+            services.AddControllersWithViews().AddNewtonsoftJson(options => {
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.Converters.Add(new Utilities.Newtonsoft.DateTimeNullableConverter());
+            });
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -135,7 +134,7 @@ namespace MyAlbum
 
             services.AddSignalR().AddJsonProtocol(options =>
             {
-                options.PayloadSerializerOptions.Converters.Add(new DateTimeNullableConverter());
+                options.PayloadSerializerOptions.Converters.Add(new Utilities.DateTimeNullableConverter());
             });
         }
 

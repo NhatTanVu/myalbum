@@ -109,6 +109,22 @@ export class CommentService {
       }));
   }
 
+  save(comment: Comment) {
+    var formData = new FormData();
+    formData.append('Id', comment.id.toString());
+    formData.append('Content', comment.content);
+
+    return this.http.post(this.commentApiEndpoint + '/' + comment.id, formData)
+      .pipe(map(res => <Comment>res));
+  }
+
+  delete(commentId: number) {
+    return this.http.delete(this.commentApiEndpoint + '/' + commentId, this.httpOptions)
+      .pipe(map(res => {
+        return res;
+      }));
+  }  
+
   getReplies(commentId: number) {
     return this.http.get(this.commentApiEndpoint + "/" + commentId, this.httpOptions)
       .pipe(map(res => {

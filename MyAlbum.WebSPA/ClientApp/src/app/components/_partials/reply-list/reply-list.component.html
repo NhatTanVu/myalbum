@@ -2,9 +2,19 @@
   <div>
     <b>{{reply.author.displayName}}</b>
     <span>&nbsp;- {{reply.createdDate | date : "HH:mm dd/MMM/yy"}}</span>
+    <span *ngIf="reply.modifiedDate"> (edited)</span>
     <span *ngIf="reply.isNew"><i class="fas fa-comment-medical ml-2 text-info"></i></span>
   </div>
-  <div>{{reply.content}}</div>
+  <div *ngIf="reply.author.userName == userName">
+    <a [routerLink]="" (click)="reply.isEditing = !reply.isEditing">
+      <span *ngIf="!reply.isEditing">Edit</span>
+      <span *ngIf="reply.isEditing">Close</span>
+    </a>
+    <span>&nbsp;|&nbsp;</span>
+    <a [routerLink]="" (click)="delete(reply)" title="Delete Comment">Delete</a>
+  </div>
+  <div *ngIf="!reply.isEditing">{{reply.content}}</div>
+  <app-edit-reply *ngIf="reply.isEditing" [comment]="reply"></app-edit-reply>
   <div>
     <a [routerLink]="" (click)="toggleReplies(reply)" *ngIf="reply.numOfReplies > 0">
       <span *ngIf="!reply.isViewing">View</span>
@@ -16,6 +26,6 @@
       <span *ngIf="reply.isReplying">Close</span>
     </a>
     <app-reply-form *ngIf="reply.isReplying" [parent]="reply"></app-reply-form>
-    <app-reply-list *ngIf="reply.isViewing" [replies]="reply.replies"></app-reply-list>
+    <app-reply-list *ngIf="reply.isViewing" [parent]="reply" [replies]="reply.replies" [userName]="userName"></app-reply-list>
   </div>
 </div>

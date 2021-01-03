@@ -19,6 +19,7 @@ import { WindowRef } from './models/WindowRef';
 import { CommentService } from './services/comment.service';
 import { ReplyFormComponent } from './components/_partials/reply-form/reply-form.component';
 import { ReplyListComponent } from './components/_partials/reply-list/reply-list.component';
+import { EditReplyComponent } from './components/_partials/edit-reply/edit-reply.component';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
@@ -39,6 +40,7 @@ import { AlbumService } from './services/album.service';
     ViewPhotoComponent,
     ReplyFormComponent,
     ReplyListComponent,
+    EditReplyComponent,
     WorldMapComponent,
     EditPhotoComponent,
     AddAlbumComponent,
