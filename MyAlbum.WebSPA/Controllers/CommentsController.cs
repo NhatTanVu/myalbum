@@ -118,6 +118,8 @@ namespace MyAlbum.WebSPA.Controllers
                 if (comment.Author.UserName != userName)
                     return Forbid();
 
+                List<Comment> replies = this.commentRepository.GetReplies(id).ToList();
+                this.commentRepository.DeleteAll(replies);
                 this.commentRepository.Delete(comment);
                 await this.unitOfWork.CompleteAsync();
                 return Ok();
