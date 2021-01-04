@@ -80,6 +80,7 @@
   color: #f8f9fa;
   height: 20%;
   display: table;
+  table-layout: fixed;
 }
 
 /* .album-gallery div.album-box .content * {
@@ -90,6 +91,12 @@
   height: 100%;
   display: table-cell;
   vertical-align: middle;
+}
+
+.album-gallery div.album-box .content .text .title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .album-gallery div.album-box .content .text > div {
@@ -104,6 +111,7 @@
   height: 100%;
   display: table-cell;
   vertical-align: middle;
+  width: 50px;
 }
 
 .album-gallery div.album-box .content .total-photos > div {
