@@ -2,7 +2,6 @@ MyAlbum.Tests/obj/
 MyAlbum.Tests/bin/
 .vs/
 MyAlbum.WebSPA/wwwroot/uploads/
-MyAlbum.WebSPA/sql/
 MyAlbum.Tests/TestResults/
 MyAlbum.WebSPA/appsettings.Production.json
 MyAlbum.WebSPA/appsettings.Development.json
