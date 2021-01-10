@@ -6,14 +6,6 @@ namespace MyAlbum.Core.Models
 {
     public class User
     {
-        public static readonly User AnonymousUser = new User()
-        {
-            Id = "{559d2e16-f464-4438-85d1-c8ef7776ab27}",
-            UserName = "Anonymous",
-            FirstName = "Anonymous",
-            LastName = string.Empty
-        };
-
         public string Id { get; set; }
 
         public string UserName { get; set; }

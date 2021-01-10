@@ -8,8 +8,6 @@ namespace MyAlbum.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql(string.Format("INSERT INTO Users (Id, UserName, FirstName, LastName) VALUES ('{0}', '{1}', '{2}', '{3}')", 
-                User.AnonymousUser.Id, User.AnonymousUser.UserName, User.AnonymousUser.FirstName, User.AnonymousUser.LastName));
             migrationBuilder.Sql("SET IDENTITY_INSERT Categories ON");
             migrationBuilder.Sql(string.Format("INSERT INTO Categories (Id, Name) VALUES ({0}, '{1}')",
                 1, "aeroplane"));
@@ -57,7 +55,6 @@ namespace MyAlbum.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql("DELETE FROM Categories WHERE (Id >= 1) AND (Id <= 20)");
-            migrationBuilder.Sql(string.Format("DELETE FROM Users WHERE Id = '{0}'", User.AnonymousUser.Id));
         }
     }
 }
