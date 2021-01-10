@@ -114,10 +114,6 @@ VALUES (N'20200120112149_AddPhotoWidthHeight', N'3.1.5');
 
 GO
 
-INSERT INTO Users (Id, UserName, FirstName, LastName) VALUES ('{559d2e16-f464-4438-85d1-c8ef7776ab27}', 'Anonymous', 'Anonymous', '')
-
-GO
-
 SET IDENTITY_INSERT Categories ON
 
 GO
