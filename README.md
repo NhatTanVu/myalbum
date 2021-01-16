@@ -46,3 +46,9 @@
 2. Add 2 app settings: "**ASPNETCORE_ENVIRONMENT**" and "**ConnectionStrings:Default**" to Azure App Service as below:
 <kbd>![App Settings](https://raw.githubusercontent.com/NhatTanVu/vega/master/_screenshots/Add%20App%20Settings.PNG)</kbd>
 3. Follow this [article](https://docs.microsoft.com/en-us/aspnet/core/tutorials/publish-to-azure-webapp-using-vscode?view=aspnetcore-3.1) to deploy to Azure
+# Running in Docker
+1. On Linux, open Shell in **MyAlbum.Docker** folder and run: 
+```
+bash ./build.sh
+```
+2. Browse the website at http://localhost:5001/
