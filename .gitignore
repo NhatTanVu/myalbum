@@ -7,3 +7,4 @@ MyAlbum.WebSPA/appsettings.Production.json
 MyAlbum.WebSPA/appsettings.Development.json
 publish/
 _notes.txt
+MyAlbum.Docker/db/sql/

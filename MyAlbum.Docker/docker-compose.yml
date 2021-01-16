@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+    web:
+        build: ./web
+        ports:
+            - "5001:5001"
+        depends_on:
+            - db
+        container_name: "my-album-web"
+        image: "my-album-web:latest"
+    db:
+        build: ./db
+        environment:
+            SA_PASSWORD: "IamTan86"
+            ACCEPT_EULA: "Y"
+            MSSQL_PID: "Developer"
+        container_name: "my-album-db"
+        image: "my-album-db:latest"
