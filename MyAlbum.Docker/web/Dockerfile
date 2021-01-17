@@ -4,5 +4,5 @@ RUN apt-get update && apt-get install -y libgomp1
 COPY publish /app
 COPY entrypoint.sh /app
 WORKDIR /app
-EXPOSE 5001/tcp
+#EXPOSE 80/tcp 443/tcp
 CMD /bin/bash ./entrypoint.sh

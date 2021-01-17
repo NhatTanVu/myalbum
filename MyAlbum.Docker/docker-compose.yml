@@ -3,7 +3,13 @@ services:
     web:
         build: ./web
         ports:
-            - "5001:5001"
+            - "80:80"
+            - "443:443"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Production
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=521220Ta@
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/my-album.pfx        
         depends_on:
             - db
         container_name: "my-album-web"
