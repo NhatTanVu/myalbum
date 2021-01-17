@@ -14,6 +14,12 @@ publishDir="$Dir/web/publish"
 rm -rf "$publishDir"
 mkdir "$publishDir"
 dotnet publish $webProjectFile -o $publishDir
+rm -rf "$publishDir/runtimes/linux-x86"
+rm -rf "$publishDir/runtimes/osx-x64"
+rm -rf "$publishDir/runtimes/win"
+rm -rf "$publishDir/runtimes/win-arm64"
+rm -rf "$publishDir/runtimes/win-x64"
+rm -rf "$publishDir/runtimes/win-x86"
 
 #db
 migrationScriptDir="$webProjectDir/sql/"
