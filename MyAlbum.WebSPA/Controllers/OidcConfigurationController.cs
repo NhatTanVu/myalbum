@@ -15,7 +15,7 @@ using MyAlbum.Core.Models;
 
 namespace MyAlbum.WebSPA.Controllers
 {
-    [ApiExplorerSettings(GroupName = "_JWT")]
+    [ApiExplorerSettings(GroupName = "-JWT-")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage()]
     public class OidcConfigurationController : Controller
     {
@@ -70,6 +70,8 @@ namespace MyAlbum.WebSPA.Controllers
         }
 
         [HttpPost("api/JWT/Generate")]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.OK)]
         public async Task<IActionResult> GenerateToken([FromForm] string UserName, [FromForm] string Password)
         {
             if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
@@ -88,6 +90,7 @@ namespace MyAlbum.WebSPA.Controllers
         }
 
         [HttpPost("api/JWT/Read")]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.OK)]
         public IActionResult ReadToken([FromForm] string Token)
         {
             if (string.IsNullOrEmpty(Token))

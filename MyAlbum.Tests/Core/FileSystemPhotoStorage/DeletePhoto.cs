@@ -11,10 +11,10 @@ namespace MyAlbum.Tests.Core
         public void DeletePhoto()
         {
             // Arrange
-            string originalFilePath = @".\car.jpg";
+            string originalFilePath = Path.Combine(".","car.jpg");
             string fileName = Guid.NewGuid().ToString();
-            string uploadsFolderPath = @".\uploads";
-            string outputFolderPath = @".\output";
+            string uploadsFolderPath = Path.Combine(".","uploads");
+            string outputFolderPath = Path.Combine(".","output");
             if (!Directory.Exists(uploadsFolderPath))
             {
                 Directory.CreateDirectory(uploadsFolderPath);
