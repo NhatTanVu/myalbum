@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as publish
+FROM mcr.microsoft.com/dotnet/sdk:3.1-buster as publish
 WORKDIR /src
 # update 
 RUN apt-get update
@@ -37,7 +37,7 @@ RUN rm -rf "/app/tr"
 RUN rm -rf "/app/zh-Hans"
 RUN rm -rf "/app/zh-Hant"
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 as final
+FROM mcr.microsoft.com/dotnet/aspnet:3.1-buster-slim as final
 WORKDIR /app
 RUN apt-get update && apt-get install -y libgdiplus
 RUN apt-get update && apt-get install -y libgomp1
