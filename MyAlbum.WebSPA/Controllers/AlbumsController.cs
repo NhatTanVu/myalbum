@@ -34,6 +34,8 @@ namespace MyAlbum.WebSPA.Controllers
         /// Get an album by ID
         /// </summary>
         [HttpGet("{id}")]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(AlbumResource), (int)System.Net.HttpStatusCode.OK)]
         public async Task<IActionResult> GetAlbum([FromRoute] int id)
         {
             var album = await albumRepository.GetAsync(id);
@@ -53,6 +55,7 @@ namespace MyAlbum.WebSPA.Controllers
         /// Get a list of albums by filter
         /// </summary>
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<AlbumResource>), (int)System.Net.HttpStatusCode.OK)]
         public async Task<IEnumerable<AlbumResource>> GetAlbums([FromQuery] AlbumQueryResource filterResource)
         {
             var filter = this.mapper.Map<AlbumQueryResource, AlbumQuery>(filterResource);
@@ -73,6 +76,9 @@ namespace MyAlbum.WebSPA.Controllers
         /// </summary>
         [HttpPost]
         [Authorize]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(AlbumResource), (int)System.Net.HttpStatusCode.OK)]
         public async Task<IActionResult> CreateAlbum([FromForm] AlbumResource albumResource)
         {
             if (string.IsNullOrEmpty(albumResource.Name))
@@ -98,6 +104,11 @@ namespace MyAlbum.WebSPA.Controllers
         /// </summary>
         [HttpPost("{id}")]
         [Authorize]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.Forbidden)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(AlbumResource), (int)System.Net.HttpStatusCode.OK)]
         public async Task<IActionResult> UpdateAlbum([FromRoute] int id, [FromForm] AlbumResource albumResource)
         {
             Album album = await albumRepository.GetAsync(id);
@@ -125,6 +136,10 @@ namespace MyAlbum.WebSPA.Controllers
         /// </summary>
         [HttpDelete("{id}")]
         [Authorize()]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.Forbidden)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteAlbum([FromRoute] int id)
         {
             Album album = await albumRepository.GetAsync(id);

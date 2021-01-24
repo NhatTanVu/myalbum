@@ -41,6 +41,7 @@ namespace MyAlbum.WebSPA.Controllers
         /// Get all replies for a comment by ID
         /// </summary>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(IEnumerable<CommentResource>), (int)System.Net.HttpStatusCode.OK)]
         public IEnumerable<CommentResource> GetReplies([FromRoute] int id)
         {
             IEnumerable<Comment> replies = this.commentRepository.GetReplies(id);
@@ -53,6 +54,9 @@ namespace MyAlbum.WebSPA.Controllers
         /// </summary>
         [HttpPost]
         [Authorize]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(CommentResource), (int)System.Net.HttpStatusCode.OK)]
         public async Task<IActionResult> CreateComment([FromBody] CommentResource commentResource)
         {
             Photo photo = await this.photoRepository.GetAsync(commentResource.PhotoId);
@@ -82,6 +86,11 @@ namespace MyAlbum.WebSPA.Controllers
         /// </summary>
         [HttpPost("{id}")]
         [Authorize()]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.Forbidden)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(CommentResource), (int)System.Net.HttpStatusCode.OK)]
         public async Task<IActionResult> UpdateComment([FromRoute] int id, [FromForm] CommentResource commentResource)
         {
             Comment comment = await commentRepository.GetAsync(id);
@@ -109,6 +118,10 @@ namespace MyAlbum.WebSPA.Controllers
         /// </summary>
         [HttpDelete("{id}")]
         [Authorize()]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.Forbidden)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteComment([FromRoute] int id)
         {
             Comment comment = await commentRepository.GetAsync(id);
