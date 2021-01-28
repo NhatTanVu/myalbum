@@ -35,26 +35,29 @@ docker-compose up
 1. **Explore**\
 <kbd>![Explore](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/explore.JPG?raw=true)</kbd>
 
-2. **World Map**\
+2. **Explore Album**\
+<kbd>![Explore Album](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/explore_album.jpg?raw=true)</kbd>
+
+3. **World Map**\
 <kbd>![World Map](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/world_map.jpg?raw=true)</kbd>
 
-3. **Add Photo**\
+4. **Add Photo**\
 <kbd>![Add Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/add_photo.jpg?raw=true)</kbd>
 
-4. **Edit Photo**\
+5. **Edit Photo**\
 <kbd>![Edit Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/edit_photo.jpg?raw=true)</kbd>
 
-5. **View Photo**\
+6. **View Photo**\
 <kbd>![View Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/view_photo.JPG?raw=true)</kbd>
 
-6. **View Photo >> Object Detection** (click on the photo)
+7. **View Photo >> Object Detection** (click on the photo)
 <kbd>![View Photo >> Object Detection](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/view_photo_object_detection.JPG?raw=true)</kbd>
 
-7. **View Photo >> Add Comment**
+8. **View Photo >> Add Comment**
 <kbd>![View Photo >> Add Comment](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/add_comment.JPG?raw=true)</kbd>
 
-8. **View Photo >> Notify Comment (real-time)**
+9. **View Photo >> Notify Comment (real-time)**
 <kbd>![View Photo >> Update New Comment (real-time)](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/notify_comment.jpg?raw=true)</kbd>
 
-9. **View Photo >> Reply Comment**
+10. **View Photo >> Reply Comment**
 <kbd>![View Photo >> Add & View Reply](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/reply_comment.jpg?raw=true)</kbd>
