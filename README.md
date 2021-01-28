@@ -14,18 +14,19 @@
 * **URL**: https://my-album.azurewebsites.net/
 * **Email**: guest@gmail.com (for add/edit photo, comment and reply)
 * **Password**: 2u)TAa
-# Deployment to Azure
-1. Create 1 Azure App Service and 1 Azure SQL database
-2. Add 2 app settings: "**ASPNETCORE_ENVIRONMENT**" and "**ConnectionStrings:Default**" to Azure App Service as below:
-<kbd>![App Settings](https://raw.githubusercontent.com/NhatTanVu/vega/master/_screenshots/Add%20App%20Settings.PNG)</kbd>
-3. Follow this [article](https://docs.microsoft.com/en-us/aspnet/core/tutorials/publish-to-azure-webapp-using-vscode?view=aspnetcore-3.1) to deploy to Azure
 # Run in Docker
+0. [Install](https://docs.docker.com/docker-for-windows/install/) Docker.
 1. Open **MyAlbum.Docker** folder and run: 
 ```
 docker-compose build
 docker-compose up
 ```
 2. Browse the website at https://localhost/
+# Deployment to Azure
+1. Create 1 Azure App Service and 1 Azure SQL database
+2. Add 2 app settings: "**ASPNETCORE_ENVIRONMENT**" and "**ConnectionStrings:Default**" to Azure App Service:
+<kbd>![App Settings](https://raw.githubusercontent.com/NhatTanVu/vega/master/_screenshots/Add%20App%20Settings.PNG)</kbd>
+3. [Deploy](https://docs.microsoft.com/en-us/aspnet/core/tutorials/publish-to-azure-webapp-using-vscode?view=aspnetcore-3.1) to Azure
 # Screenshots
 1. **Explore**\
 <kbd>![Explore](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/explore.JPG?raw=true)</kbd>
