@@ -3,7 +3,6 @@ MyAlbum.Tests/bin/
 .vs/
 MyAlbum.WebSPA/wwwroot/uploads/
 MyAlbum.Tests/TestResults/
-MyAlbum.WebSPA/appsettings.Development.json
 publish/
 _notes.txt
 MyAlbum.Docker/db/sql/
