@@ -14,6 +14,10 @@
 * **URL**: https://my-album.azurewebsites.net/
 * **Email**: guest@gmail.com (for add/edit photo, comment and reply)
 * **Password**: 2u)TAa
+# Run in VS Code
+1. Setup DB by running 3 scripts in **/MyAlbum.WebSPA/sql**
+2. Change **Default** connection string in **/MyAlbum.WebSPA/appsettings.json**
+3. Open workspace and press F5 to start Debugging
 # Run in Docker
 0. [Install](https://docs.docker.com/docker-for-windows/install/) Docker.
 1. Open **MyAlbum.Docker** folder and run: 
@@ -22,11 +26,7 @@ docker-compose build
 docker-compose up
 ```
 2. Browse the website at https://localhost/
-# Run in VS Code
-1. Setup DB by running 3 scripts in **/MyAlbum.WebSPA/sql**
-2. Change **Default** connection string in **/MyAlbum.WebSPA/appsettings.json**
-3. Open workspace and press F5 to start Debugging
-# Deployment to Azure
+# Deploy to Azure
 1. Create 1 Azure App Service and 1 Azure SQL database
 2. Add 2 app settings: "**ASPNETCORE_ENVIRONMENT**" and "**ConnectionStrings:Default**" to Azure App Service:
 <kbd>![App Settings](https://raw.githubusercontent.com/NhatTanVu/vega/master/_screenshots/Add%20App%20Settings.PNG)</kbd>
