@@ -14,41 +14,51 @@
 * **URL**: https://my-album.azurewebsites.net/
 * **Email**: guest@gmail.com (for add/edit photo, comment and reply)
 * **Password**: 2u)TAa
+* **Developer API**: https://my-album.azurewebsites.net/swagger/index.html
+# Run in VS Code
+1. Setup DB by running 3 scripts in **/MyAlbum.WebSPA/sql**
+2. Change **Default** connection string in **/MyAlbum.WebSPA/appsettings.json**
+3. Open workspace and press F5 to start Debugging
+# Run in Docker
+0. [Install](https://docs.docker.com/docker-for-windows/install/) Docker.
+1. Open **MyAlbum.Docker** folder and run: 
+```
+docker-compose build
+docker-compose up
+```
+2. Browse the website at https://localhost/
+# Deploy to Azure
+1. Create 1 Azure App Service and 1 Azure SQL database
+2. Add 2 app settings: "**ASPNETCORE_ENVIRONMENT**" and "**ConnectionStrings:Default**" to Azure App Service:
+<kbd>![App Settings](https://raw.githubusercontent.com/NhatTanVu/vega/master/_screenshots/Add%20App%20Settings.PNG)</kbd>
+3. [Deploy](https://docs.microsoft.com/en-us/aspnet/core/tutorials/publish-to-azure-webapp-using-vscode?view=aspnetcore-3.1) to Azure
 # Screenshots
 1. **Explore**\
 <kbd>![Explore](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/explore.JPG?raw=true)</kbd>
 
-2. **World Map**\
+2. **Explore Album**\
+<kbd>![Explore Album](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/explore_album.jpg?raw=true)</kbd>
+
+3. **World Map**\
 <kbd>![World Map](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/world_map.jpg?raw=true)</kbd>
 
-3. **Add Photo**\
+4. **Add Photo**\
 <kbd>![Add Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/add_photo.jpg?raw=true)</kbd>
 
-4. **Edit Photo**\
+5. **Edit Photo**\
 <kbd>![Edit Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/edit_photo.jpg?raw=true)</kbd>
 
-5. **View Photo**\
+6. **View Photo**\
 <kbd>![View Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/view_photo.JPG?raw=true)</kbd>
 
-6. **View Photo >> Object Detection** (click on the photo)
+7. **View Photo >> Object Detection** (click on the photo)
 <kbd>![View Photo >> Object Detection](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/view_photo_object_detection.JPG?raw=true)</kbd>
 
-7. **View Photo >> Add Comment**
+8. **View Photo >> Add Comment**
 <kbd>![View Photo >> Add Comment](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/add_comment.JPG?raw=true)</kbd>
 
-8. **View Photo >> Notify Comment (real-time)**
+9. **View Photo >> Notify Comment (real-time)**
 <kbd>![View Photo >> Update New Comment (real-time)](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/notify_comment.jpg?raw=true)</kbd>
 
-9. **View Photo >> Reply Comment**
+10. **View Photo >> Reply Comment**
 <kbd>![View Photo >> Add & View Reply](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/_screenshots/reply_comment.jpg?raw=true)</kbd>
-# Deployment to Azure
-1. Create 1 Azure App Service and 1 Azure SQL database
-2. Add 2 app settings: "**ASPNETCORE_ENVIRONMENT**" and "**ConnectionStrings:Default**" to Azure App Service as below:
-<kbd>![App Settings](https://raw.githubusercontent.com/NhatTanVu/vega/master/_screenshots/Add%20App%20Settings.PNG)</kbd>
-3. Follow this [article](https://docs.microsoft.com/en-us/aspnet/core/tutorials/publish-to-azure-webapp-using-vscode?view=aspnetcore-3.1) to deploy to Azure
-# Run in Docker
-1. On Linux, open **MyAlbum.Docker** folder in Terminal and run: 
-```
-bash ./build.sh
-```
-2. Browse the website at https://localhost/

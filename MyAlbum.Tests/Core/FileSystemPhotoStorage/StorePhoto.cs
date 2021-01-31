@@ -21,8 +21,8 @@ namespace MyAlbum.Tests.Core
         public async Task StorePhoto()
         {
             // Arrange
-            string originalFilePath = @".\car.jpg";
-            string uploadsFolderPath = @".\uploads";
+            string originalFilePath = Path.Combine(".", "car.jpg");
+            string uploadsFolderPath = Path.Combine(".", "uploads");
             if (!Directory.Exists(uploadsFolderPath))
             {
                 Directory.CreateDirectory(uploadsFolderPath);

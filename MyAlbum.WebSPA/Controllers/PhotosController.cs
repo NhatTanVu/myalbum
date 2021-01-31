@@ -91,6 +91,8 @@ namespace MyAlbum.WebSPA.Controllers
         /// Get a photo by ID
         /// </summary>
         [HttpGet("{id}")]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(PhotoResource), (int)System.Net.HttpStatusCode.OK)]
         public async Task<IActionResult> GetPhoto([FromRoute] int id)
         {
             var photo = await photoRepository.GetAsync(id);
@@ -110,6 +112,7 @@ namespace MyAlbum.WebSPA.Controllers
         /// Get a list of photos by filter
         /// </summary>
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<PhotoResource>), (int)System.Net.HttpStatusCode.OK)]
         public async Task<IEnumerable<PhotoResource>> GetPhotos([FromQuery] PhotoQueryResource filterResource)
         {
             var filter = mapper.Map<PhotoQueryResource, PhotoQuery>(filterResource);
@@ -134,6 +137,10 @@ namespace MyAlbum.WebSPA.Controllers
         [HttpPost]
         [Authorize]
         [RequestFormLimits(MultipartBodyLengthLimit = 1048576)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(PhotoResource), (int)System.Net.HttpStatusCode.OK)]
         public async Task<IActionResult> CreatePhoto([FromForm] PhotoResource photoResource)
         {
             if (photoResource != null && photoResource.FileToUpload != null)
@@ -189,6 +196,11 @@ namespace MyAlbum.WebSPA.Controllers
         [HttpPost("{id}")]
         [Authorize()]
         [RequestFormLimits(MultipartBodyLengthLimit = 1048576)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.Forbidden)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(PhotoResource), (int)System.Net.HttpStatusCode.OK)]
         public async Task<IActionResult> UpdatePhoto([FromRoute] int id, [FromForm] PhotoResource photoResource)
         {
             Photo photo = await photoRepository.GetAsync(id);
@@ -260,6 +272,10 @@ namespace MyAlbum.WebSPA.Controllers
         /// </summary>
         [HttpDelete("{id}")]
         [Authorize()]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.Forbidden)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)System.Net.HttpStatusCode.OK)]  
         public async Task<IActionResult> DeletePhoto([FromRoute] int id)
         {
             Photo photo = await photoRepository.GetAsync(id);

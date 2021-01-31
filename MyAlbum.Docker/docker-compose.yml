@@ -1,21 +1,25 @@
-version: "3.9"
+version: "2.1"
 services:
     web:
-        build: ./web
+        build: 
+            context: ..
+            dockerfile: ./MyAlbum.Docker/web/Dockerfile
         ports:
             - "80:80"
             - "443:443"
         environment:
             - ASPNETCORE_ENVIRONMENT=Production
             - ASPNETCORE_URLS=https://+:443;http://+:80
-            - ASPNETCORE_Kestrel__Certificates__Default__Password=521220Ta@
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=2u)TAa
             - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/my-album.pfx        
         depends_on:
             - db
         container_name: "my-album-web"
         image: "my-album-web:latest"
     db:
-        build: ./db
+        build:
+            context: ..
+            dockerfile: ./MyAlbum.Docker/db/Dockerfile
         environment:
             SA_PASSWORD: "IamTan86"
             ACCEPT_EULA: "Y"
