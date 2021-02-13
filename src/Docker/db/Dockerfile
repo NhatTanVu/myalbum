@@ -2,8 +2,8 @@ FROM mcr.microsoft.com/mssql/server:2019-latest
 WORKDIR /app
 ARG SSL_KEYSTORE_PASSWORD
 USER root
-COPY ./MyAlbum.WebSPA/sql .
-COPY ./MyAlbum.Docker/db/entrypoint.sh .
+COPY ./WebSPA/sql .
+COPY ./Docker/db/entrypoint.sh .
 # update 
 RUN apt-get update
 # doc2unix

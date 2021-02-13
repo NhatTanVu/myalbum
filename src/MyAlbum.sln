@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSPA", "WebSPA\WebSPA.csproj", "{F7CFE4A2-F534-4987-A90F-A76D4852F5CB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{6C5044CE-339F-445A-BAE7-E4C526EA911E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F7CFE4A2-F534-4987-A90F-A76D4852F5CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7CFE4A2-F534-4987-A90F-A76D4852F5CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7CFE4A2-F534-4987-A90F-A76D4852F5CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7CFE4A2-F534-4987-A90F-A76D4852F5CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C5044CE-339F-445A-BAE7-E4C526EA911E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C5044CE-339F-445A-BAE7-E4C526EA911E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C5044CE-339F-445A-BAE7-E4C526EA911E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C5044CE-339F-445A-BAE7-E4C526EA911E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F6DB5D8B-521D-4107-9256-54F522F3FCBB}
+	EndGlobalSection
+EndGlobal

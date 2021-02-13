@@ -13,9 +13,9 @@ RUN node -v
 # npm installs automatically 
 RUN npm -v
 # copy project files
-COPY ./MyAlbum.WebSPA .
+COPY ./WebSPA .
 RUN dotnet restore
-RUN dotnet publish MyAlbum.WebSPA.csproj -c Release -o /app
+RUN dotnet publish WebSPA.csproj -c Release -o /app
 # cleanup unused publish files
 RUN rm -rf "/app/runtimes/linux-x86"
 RUN rm -rf "/app/runtimes/osx-x64"
@@ -42,4 +42,4 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y libgdiplus
 RUN apt-get update && apt-get install -y libgomp1
 COPY --from=publish /app /app
-ENTRYPOINT [ "dotnet", "MyAlbum.WebSPA.dll" ]
+ENTRYPOINT [ "dotnet", "WebSPA.dll" ]

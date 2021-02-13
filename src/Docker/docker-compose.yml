@@ -3,7 +3,7 @@ services:
     web:
         build: 
             context: ..
-            dockerfile: ./MyAlbum.Docker/web/Dockerfile
+            dockerfile: ./Docker/web/Dockerfile
         ports:
             - "80:80"
             - "443:443"
@@ -19,7 +19,7 @@ services:
     db:
         build:
             context: ..
-            dockerfile: ./MyAlbum.Docker/db/Dockerfile
+            dockerfile: ./Docker/db/Dockerfile
         environment:
             SA_PASSWORD: "IamTan86"
             ACCEPT_EULA: "Y"
