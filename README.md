@@ -21,7 +21,7 @@
 3. Open workspace and press F5 to start Debugging
 # Run in Docker
 0. [Install](https://docs.docker.com/docker-for-windows/install/) Docker.
-1. Open **MyAlbum.Docker** folder and run: 
+1. Open **src/Docker** folder and run: 
 ```
 docker-compose build
 docker-compose up
