@@ -16,8 +16,8 @@
 * **Password**: 2u)TAa
 * **Developer API**: https://my-album.azurewebsites.net/swagger/index.html
 # Run in VS Code
-1. Setup DB by running 3 scripts in **/MyAlbum.WebSPA/sql**
-2. Change **Default** connection string in **/MyAlbum.WebSPA/appsettings.json**
+1. Setup DB by running 3 scripts in "**src/WebSPA/sql**"
+2. Change **Default** connection string in "**src/WebSPA/appsettings.json**"
 3. Open workspace and press F5 to start Debugging
 # Run in Docker
 0. [Install](https://docs.docker.com/docker-for-windows/install/) Docker.
