@@ -1,8 +1,4 @@
-MyAlbum.Tests/obj/
-MyAlbum.Tests/bin/
 .vs/
-MyAlbum.WebSPA/wwwroot/uploads/
-MyAlbum.Tests/TestResults/
-publish/
 _notes.txt
-MyAlbum.Docker/db/sql/
+src/Docker/db/sql/
+src/WebSPA/wwwroot/uploads/
