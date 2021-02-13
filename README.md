@@ -1,4 +1,4 @@
-<p align="center"><a href="https://github.com/NhatTanVu/myalbum"><kbd><img src="https://github.com/NhatTanVu/myalbum/raw/master/MyAlbum.WebSPA/wwwroot/logo.jpg" alt="My Album logo" width="70"/></kbd></a></p>
+<p align="center"><a href="https://github.com/NhatTanVu/myalbum"><kbd><img src="https://github.com/NhatTanVu/myalbum/raw/master/src/WebSPA/wwwroot/logo.jpg" alt="My Album logo" width="70"/></kbd></a></p>
 <h1 align="center">My Album</h1>
 <p align="center">Website to share albums and photos with Google Maps locations</p>
 
@@ -30,7 +30,7 @@ docker-compose up
 # Deploy to Azure
 1. Create 1 Azure App Service and 1 Azure SQL database
 2. Add 2 app settings: "**ASPNETCORE_ENVIRONMENT**" and "**ConnectionStrings:Default**" to Azure App Service:
-<kbd>![App Settings](https://raw.githubusercontent.com/NhatTanVu/vega/master/screenshots/Add%20App%20Settings.PNG)</kbd>
+<kbd>![App Settings](https://raw.githubusercontent.com/NhatTanVu/vega/master/_screenshots/Add%20App%20Settings.PNG)</kbd>
 3. [Deploy](https://docs.microsoft.com/en-us/aspnet/core/tutorials/publish-to-azure-webapp-using-vscode?view=aspnetcore-3.1) to Azure
 # Screenshots
 1. **Explore**\
