@@ -1,12 +1,18 @@
-image: Previous Visual Studio 2019
+branches:
+  # whitelist
+  only:
+    - master
+    
+image: Visual Studio 2019
 
 before_build:
+- cd ./src
 - nuget restore
 - choco install opencover.portable
 - choco install codecov
 
 build:
-  project: MyAlbum.sln
+  project: ./src/MyAlbum.sln
   verbosity: minimal
 
 test_script:
