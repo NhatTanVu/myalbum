@@ -1,0 +1,107 @@
+﻿@using Microsoft.AspNetCore.Hosting
+@using Microsoft.AspNetCore.Mvc.ViewEngines
+@inject IWebHostEnvironment Environment
+@inject ICompositeViewEngine Engine
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @* <title>@ViewData["Title"] - MyAlbum</title> *@
+    <title>My Album</title>
+    <link rel="stylesheet" type="text/css" href="~/Identity/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @* <link rel="stylesheet" href="~/Identity/css/site.css" /> *@
+    <link rel="stylesheet"  type="text/css" href="~/lib/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet"  type="text/css" href="~/lib/styles.css" />
+    <link rel="stylesheet"  type="text/css" href="~/lib/toggle-switch.css" />
+    <link rel="stylesheet"  type="text/css" href="~/lib/nav-menu.component.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark navbar-toggleable-md box-shadow-bottom background-dark-darker">
+            <div class="container-fluid">
+                <a class="navbar-brand text-light" href="https://localhost:5001/">
+                    <img class="rounded" src="~/logo.jpg" alt="logo.jpg" height="40px" width="40px">
+                    My Album
+                </a>
+                <div class="d-inline-flex">
+                    <div class="rounded switch-toggle alert display-mode mobile">
+                        <input id="photo1" name="displayMode1" type="radio" checked value="photo">
+                        <label for="photo1" onclick="changeDisplayMode('photo')">Photo</label>
+                        <input id="album1" name="displayMode1" type="radio" value="album" [(ngModel)]="displayMode">
+                        <label for="album1" onclick="changeDisplayMode('album')">Album</label>
+                        <a class="btn btn-primary"></a>
+                    </div>
+                    <span class="separator mobile"></span>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>                
+                <div class="navbar-collapse collapse d-md-inline-flex flex-md-row-reverse">
+                    @{
+                        var result = Engine.FindView(ViewContext, "_LoginPartial", isMainPage: false);
+                    }
+                    @if (result.Success)
+                    {
+                        await Html.RenderPartialAsync("_LoginPartial");
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("The default Identity UI layout requires a partial view '_LoginPartial' " +
+                            "usually located at '/Pages/_LoginPartial' or at '/Views/Shared/_LoginPartial' to work. Based on your configuration " +
+                            $"we have looked at it in the following locations: {System.Environment.NewLine}{string.Join(System.Environment.NewLine, result.SearchedLocations)}.");
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid background-dark-lighter text-light pt-3 pb-3" id="container-body">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+    <footer id="footer">
+        <div class="container-fluid text-light box-shadow-top background-dark-darker">
+        <div class="row">
+            <div class="col-6">
+            <div class="row">
+                <div class="col-12 pt-3">
+                <h5 class="border-bottom d-inline-block">Documentation</h5>
+                </div>
+            </div>
+            <div class="row">
+                <ul class="unstyled">
+                    <li><a class="nav-link text-light pt-0 pb-0" href="https://localhost:5009/swagger" target="_blank">Identity API</a></li>
+                    <li><a class="nav-link text-light pt-0 pb-0" href="https://localhost:5003/swagger" target="_blank">Album API</a></li>
+                    <li><a class="nav-link text-light pt-0 pb-0" href="https://localhost:5007/swagger" target="_blank">Photo API</a></li>
+                    <li><a class="nav-link text-light pt-0 pb-0" href="https://localhost:5005/swagger" target="_blank">Comment API</a></li>
+                </ul>
+            </div>
+            </div>
+            <div class="col-6">
+            <div class="row">
+                <div class="col-12 pt-3">
+                <h5 class="border-bottom d-inline-block">About me</h5>
+                </div>
+            </div>
+            <div class="row">
+                <ul class="unstyled">
+                <li><a class="nav-link text-light pt-0 pb-0" href="https://github.com/NhatTanVu"
+                    target="_blank">GitHub</a>
+                </li>
+                <li><a class="nav-link text-light pt-0 pb-0" href="https://www.linkedin.com/in/tanvu/"
+                    target="_blank">LinkedIn</a></li>
+                </ul>
+            </div>
+            </div>
+        </div>
+        </div>
+    </footer> 
+    <script src="~/Identity/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/Identity/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Identity/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
