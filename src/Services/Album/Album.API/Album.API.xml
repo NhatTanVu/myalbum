@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Album.API</name>
+    </assembly>
+    <members>
+        <member name="M:MyAlbum.Services.Album.API.Controllers.AlbumsController.GetAlbum(System.Int32)">
+            <summary>
+            Get an album by ID
+            </summary>
+        </member>
+        <member name="M:MyAlbum.Services.Album.API.Controllers.AlbumsController.GetAlbums(MyAlbum.Services.Album.API.Controllers.Resources.AlbumQueryResource)">
+            <summary>
+            Get a list of albums by filter
+            </summary>
+        </member>
+        <member name="M:MyAlbum.Services.Album.API.Controllers.AlbumsController.CreateAlbum(MyAlbum.Services.Album.API.Controllers.Resources.AddAlbumResource)">
+            <summary>
+            Create an album
+            </summary>
+        </member>
+        <member name="M:MyAlbum.Services.Album.API.Controllers.AlbumsController.UpdateAlbum(System.Int32,MyAlbum.Services.Album.API.Controllers.Resources.AlbumResource)">
+            <summary>
+            Update an album by ID
+            </summary>
+        </member>
+        <member name="M:MyAlbum.Services.Album.API.Controllers.AlbumsController.DeleteAlbum(System.Int32)">
+            <summary>
+            Delete an album by ID
+            </summary>
+        </member>
+    </members>
+</doc>

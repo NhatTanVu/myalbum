@@ -3,3 +3,4 @@ _notes.txt
 src/Docker/db/sql/
 src/WebSPA/wwwroot/uploads/
 _notes_JwtToken.txt
+src/Services/Photo/Photo.API/wwwroot/uploads/

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Photo.API</name>
+    </assembly>
+    <members>
+        <member name="M:MyAlbum.Services.Photo.API.Controllers.PhotosController.GetPhoto(System.Int32)">
+            <summary>
+            Get a photo by ID
+            </summary>
+        </member>
+        <member name="M:MyAlbum.Services.Photo.API.Controllers.PhotosController.GetPhotos(MyAlbum.Services.Photo.API.Controllers.Resources.PhotoQueryResource)">
+            <summary>
+            Get a list of photos by filter
+            </summary>
+        </member>
+        <member name="M:MyAlbum.Services.Photo.API.Controllers.PhotosController.CreatePhoto(MyAlbum.Services.Photo.API.Controllers.Resources.PhotoResource)">
+            <summary>
+            Create a photo
+            </summary>
+        </member>
+        <member name="M:MyAlbum.Services.Photo.API.Controllers.PhotosController.UpdatePhoto(System.Int32,MyAlbum.Services.Photo.API.Controllers.Resources.PhotoResource)">
+            <summary>
+            Update a photo by ID
+            </summary>
+        </member>
+        <member name="M:MyAlbum.Services.Photo.API.Controllers.PhotosController.DeletePhoto(System.Int32)">
+            <summary>
+            Delete a photo by ID
+            </summary>
+        </member>
+    </members>
+</doc>

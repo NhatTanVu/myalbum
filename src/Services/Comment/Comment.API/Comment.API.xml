@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Comment.API</name>
+    </assembly>
+    <members>
+        <member name="M:MyAlbum.Services.Comment.API.Controllers.CommentsController.GetReplies(System.Int32)">
+            <summary>
+            Get all replies for a comment by ID
+            </summary>
+        </member>
+        <member name="M:MyAlbum.Services.Comment.API.Controllers.CommentsController.CreateComment(MyAlbum.Services.Comment.API.Controllers.Resources.AddCommentResource)">
+            <summary>
+            Create a comment
+            </summary>
+        </member>
+        <member name="M:MyAlbum.Services.Comment.API.Controllers.CommentsController.UpdateComment(System.Int32,MyAlbum.Services.Comment.API.Controllers.Resources.CommentResource)">
+            <summary>
+            Update a comment by ID
+            </summary>
+        </member>
+        <member name="M:MyAlbum.Services.Comment.API.Controllers.CommentsController.DeleteComment(System.Int32)">
+            <summary>
+            Delete a comment by ID
+            </summary>
+        </member>
+    </members>
+</doc>
