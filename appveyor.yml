@@ -12,7 +12,7 @@ before_build:
 - choco install codecov
 
 build:
-  project: ./src/MyAlbum.sln
+  project: ./src/MyAlbum.Single.sln
   verbosity: minimal
 
 test_script:
