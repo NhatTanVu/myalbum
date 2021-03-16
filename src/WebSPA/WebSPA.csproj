@@ -86,8 +86,8 @@
     </Content> 
   </ItemGroup>
 
-  <!-- <Target Name="PreBuild" BeforeTargets="PreBuildEvent"> -->
-    <!-- <Exec Command="cd &quot;$(ProjectDir)\ClientApp&quot;&#xD;&#xA;npm install" /> -->
-  <!-- </Target> -->
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="cd &quot;$(ProjectDir)\ClientApp&quot;&#xD;&#xA;npm install" />
+  </Target>
 
 </Project>
