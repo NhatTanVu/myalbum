@@ -23,6 +23,7 @@
 0. [Install](https://docs.docker.com/docker-for-windows/install/) Docker.
 1. Open "**src/Docker**" folder and run: 
 ```
+docker-compose down
 docker-compose build
 docker-compose up
 ```
