@@ -7,7 +7,7 @@ image: Previous Visual Studio 2019
 
 before_build:
 - cd ./src
-- nuget restore
+- nuget restore MyAlbum.Single.sln
 - choco install opencover.portable
 - choco install codecov
 
