@@ -14,7 +14,10 @@
 * **URL**: https://my-album.azurewebsites.net/
 * **Email**: guest@gmail.com (for add/edit photo, comment and reply)
 * **Password**: 2u)TAa
-* **Developer API**: https://my-album.azurewebsites.net/swagger/index.html
+* **Identity API**: https://my-album.azurewebsites.net/swagger/index.html
+* **Album API**: https://my-album-album-api.azurewebsites.net/swagger/index.html
+* **Photo API**: https://my-album-photo-api.azurewebsites.net/swagger/index.html
+* **Comment API**: https://my-album-comment-api.azurewebsites.net/swagger/index.html
 # Run in VS Code
 1. Setup DB by running 3 scripts in "**src/WebSPA/sql**"
 2. Change **Default** connection string in "**src/WebSPA/appsettings.json**"
