@@ -4,11 +4,25 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <StartupObject></StartupObject>
     <OutputType>Exe</OutputType>
+    <UserSecretsId>a3ff6416-aadc-4efb-b809-16c36235bfba</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>C:\_code\MyAlbum\src\Services\Photo\Photo.API\Photo.API.xml</DocumentationFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Photo.API.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ResolvedFileToPublish Include="Services\ObjectDetection\assets\Model\tiny_yolov2\Model.onnx">
+      <RelativePath>Services\ObjectDetection\assets\Model\tiny_yolov2\Model.onnx</RelativePath>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </ResolvedFileToPublish>    
+  </ItemGroup>  
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
@@ -23,144 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\uploads\02444f2a-baf3-4155-81a4-9fe1a1ec12b0.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\0debcc01-0151-4d38-8470-09bbb0505346.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\0f51944b-869a-4104-b6c2-1710cadfe807.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\1cae2dee-a858-45b4-a09c-27ff0750d846.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\242dfc13-6298-4c08-bb54-c0b17e8df9d5.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\27db8aec-569b-4cea-99da-2a3d64ba3808.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\551858a4-3ef4-48dd-8a91-b8cba83b6e7e.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\566e43b9-1b8c-4827-83cb-d882b7f205c1.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\5ab6d4a3-7a6e-4806-9bb6-b93d8103838b.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\700b72fa-5c14-4d04-a485-f2287bcee20e.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\7a1fe5c3-cf16-4282-a422-583a3e87a451.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\846ffbd8-5613-49fb-abf5-2d3db43aea7a.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\8bff14bc-9dfc-43bb-99a5-f195069bb9fb.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\8de77c6d-115a-4113-8fda-4c919a2ccff0.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\92673da5-f472-4a15-9880-b384eda4d284.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\946304a6-39b5-493f-8fe2-957e40e5921f.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\a7052093-31b6-42c1-8cc9-d35fef1ef9fc.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\a8586839-842d-433f-a170-a855aa709c43.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\a86efc32-858f-42ec-93c7-d39fc3c11373.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\ae205608-2616-453f-8c69-e27ef29beb69.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\b8c9239c-90d6-4ae9-957e-75612565ae0e.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\db0ca8a5-c6e9-40a1-9c05-479ed216bfc7.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\dec096ca-82be-4aee-9541-c19533a0e1fd.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\02444f2a-baf3-4155-81a4-9fe1a1ec12b0.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\0debcc01-0151-4d38-8470-09bbb0505346.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\0f51944b-869a-4104-b6c2-1710cadfe807.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\1cae2dee-a858-45b4-a09c-27ff0750d846.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\242dfc13-6298-4c08-bb54-c0b17e8df9d5.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\27db8aec-569b-4cea-99da-2a3d64ba3808.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\551858a4-3ef4-48dd-8a91-b8cba83b6e7e.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\566e43b9-1b8c-4827-83cb-d882b7f205c1.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\5ab6d4a3-7a6e-4806-9bb6-b93d8103838b.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\700b72fa-5c14-4d04-a485-f2287bcee20e.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\7a1fe5c3-cf16-4282-a422-583a3e87a451.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\846ffbd8-5613-49fb-abf5-2d3db43aea7a.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\8bff14bc-9dfc-43bb-99a5-f195069bb9fb.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\8de77c6d-115a-4113-8fda-4c919a2ccff0.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\92673da5-f472-4a15-9880-b384eda4d284.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\946304a6-39b5-493f-8fe2-957e40e5921f.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\a7052093-31b6-42c1-8cc9-d35fef1ef9fc.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\a8586839-842d-433f-a170-a855aa709c43.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\a86efc32-858f-42ec-93c7-d39fc3c11373.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\ae205608-2616-453f-8c69-e27ef29beb69.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\b8c9239c-90d6-4ae9-957e-75612565ae0e.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\db0ca8a5-c6e9-40a1-9c05-479ed216bfc7.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\uploads\output\dec096ca-82be-4aee-9541-c19533a0e1fd.jpg">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </Content>
+    <Content Update="wwwroot/uploads/**" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
 

@@ -1,0 +1,94 @@
+#view-photo a:hover {
+  cursor: pointer;
+}
+
+.header-container {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.header-container .header-text {
+  display: table-cell;
+  vertical-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-container .header-button {
+  display: table-cell;
+  width: 46px;
+}
+
+@media (max-width: 991.98px) {
+  .photo-container {
+    height: 350px;
+  }
+}
+
+@media (min-width: 992px) {
+  .photo-container {
+    height: 678.5px;
+  }
+}
+
+/* entire container, keeps perspective */
+.photo-container .flip-container {
+  perspective: 4000px;
+  cursor: pointer;
+}
+
+/* flip the pane when hovered */
+.photo-container .flip-container.flip .flipper {
+  transform: rotateY(180deg);
+}
+
+.photo-container .flip-container {
+  height: 100%;
+}
+
+.photo-container .flip-container .front,
+.photo-container .flip-container .back {
+  width: 100%;
+  height: 100%;
+}
+
+.photo-container .flip-container .front img,
+.photo-container .flip-container .back img {
+  border-width: 0px;
+  padding: 0px;
+  box-shadow: 0.05rem 0.05rem .25rem rgba(255, 255, 255, .85);
+}
+
+/* flip speed goes here */
+.photo-container .flip-container .flipper {
+  transition: 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+/* hide back of pane during swap */
+.photo-container .flip-container .front,
+.photo-container .flip-container .back {
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* front pane, placed above back */
+.photo-container .flip-container .front {
+  z-index: 2;
+  /* for firefox 31 */
+  transform: rotateY(0deg);
+}
+
+/* back, initially hidden pane */
+.photo-container .flip-container .back {
+  transform: rotateY(180deg);
+}
+
+#newCommentForm {
+  background: grey;
+}

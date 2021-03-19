@@ -1,0 +1,33 @@
+<div class="newReplyForm mb-2">
+  <form #r="ngForm" (ngSubmit)="r.form.valid && submitReply()" class="container pt-2">
+    <!-- <div class="row">
+      <div class="form-group col-4">
+        <label for="newUName2" class="required">User Name:</label>
+        <input name="newUName2" type="text" class="form-control col" [(ngModel)]="newReply.author.userName"
+          required />
+      </div>
+      <div class="form-group col-4">
+        <label for="newFName2">First Name:</label>
+        <input name="newFName2" type="text" class="form-control col" [(ngModel)]="newReply.author.firstName" />
+      </div>
+      <div class="form-group col-4">
+        <label for="newLName2">Last Name:</label>
+        <input name="newLName2" type="text" class="form-control col" [(ngModel)]="newReply.author.lastName" />
+      </div>
+    </div> -->
+    <div class="row">
+      <div class="col-12">
+        <label for="newComment2" class="required">Comment:</label>
+      </div>
+      <div class="col-12">
+        <div class="form-group">
+            <textarea name="newComment2" type="text" class="form-control" [(ngModel)]="newReply.content"
+              required></textarea>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" type="submit" [disabled]="!r.valid">Post</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
