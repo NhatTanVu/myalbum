@@ -57,24 +57,11 @@
     </ItemGroup>
   </Target>
 
-  <ItemGroup>
-    <Content Update="wwwroot/uploads/**" CopyToPublishDirectory="Never" />
-    <ResolvedFileToPublish Include="Core\ObjectDetection\assets\Model\tiny_yolov2\Model.onnx">
-      <RelativePath>Core\ObjectDetection\assets\Model\tiny_yolov2\Model.onnx</RelativePath>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </ResolvedFileToPublish>    
-  </ItemGroup>
-
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
+    <UserSecretsId>ab7ebbf2-6b25-4217-851a-1fdb630cb4f4</UserSecretsId>
   </PropertyGroup>
-
-  <ItemGroup> 
-    <Content Include="my-album.pfx"> 
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
-    </Content> 
-  </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="cd &quot;$(ProjectDir)\ClientApp&quot;&#xD;&#xA;npm install" />
