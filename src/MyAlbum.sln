@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Photo.API", "Services\Photo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.API", "Services\Identity\Identity.API\Identity.API.csproj", "{E1145144-0F03-4EE9-A4EC-30EE9F7B379A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSPA.Identity", "WebSPA.Identity\WebSPA.Identity.csproj", "{FED281B4-09A9-444B-94DF-60B98EC3564E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSPA.Slim", "WebSPA.Slim\WebSPA.Slim.csproj", "{420C5F4E-DE46-4ABE-8DE2-A1598C74FD1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,10 +79,10 @@ Global
 		{E1145144-0F03-4EE9-A4EC-30EE9F7B379A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1145144-0F03-4EE9-A4EC-30EE9F7B379A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1145144-0F03-4EE9-A4EC-30EE9F7B379A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FED281B4-09A9-444B-94DF-60B98EC3564E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FED281B4-09A9-444B-94DF-60B98EC3564E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FED281B4-09A9-444B-94DF-60B98EC3564E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FED281B4-09A9-444B-94DF-60B98EC3564E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{420C5F4E-DE46-4ABE-8DE2-A1598C74FD1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{420C5F4E-DE46-4ABE-8DE2-A1598C74FD1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{420C5F4E-DE46-4ABE-8DE2-A1598C74FD1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{420C5F4E-DE46-4ABE-8DE2-A1598C74FD1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
