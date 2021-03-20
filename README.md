@@ -14,7 +14,7 @@
 * **URL**: https://my-album.azurewebsites.net/
 * **Email**: guest@gmail.com (for add/edit photo, comment and reply)
 * **Password**: 2u)TAa
-* **Identity API**: https://my-album.azurewebsites.net/swagger/index.html
+* **Identity API**: https://my-album-identity-api.azurewebsites.net/swagger/index.html
 * **Album API**: https://my-album-album-api.azurewebsites.net/swagger/index.html
 * **Photo API**: https://my-album-photo-api.azurewebsites.net/swagger/index.html
 * **Comment API**: https://my-album-comment-api.azurewebsites.net/swagger/index.html
