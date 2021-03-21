@@ -104,7 +104,8 @@ namespace Comment.API
                         ValidAudiences = new List<string>
                         {
                             "MyAlbum.DeveloperAPI",
-                            "Identity.APIAPI"
+                            "Identity.APIAPI",
+                            "WebSPA.IdentityAPI"
                         }
                     };
                 });

@@ -45,21 +45,6 @@ namespace Identity.API
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>()
                 .AddProfileService<ProfileService>();
             services.AddAuthentication().AddIdentityServerJwt();
-            //services.Configure<JwtBearerOptions>(
-            //    IdentityServerJwtConstants.IdentityServerJwtBearerScheme,
-            //    options =>
-            //    {
-            //        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-            //        {
-            //            ValidateIssuer = true,
-            //            ValidateAudience = true,
-            //            ValidAudiences = new List<string>
-            //            {
-            //                "MyAlbum.DeveloperAPI",
-            //                "MyAlbum.WebSPAAPI"
-            //            }
-            //        };
-            //    });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

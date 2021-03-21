@@ -78,20 +78,6 @@ namespace MyAlbum.WebSPA.Identity
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            //var identityUrl = _config.GetValue<string>("IdentityUrl");
-
-            //// Add Authentication services
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-            //}).AddJwtBearer(options =>
-            //{
-            //    options.Authority = identityUrl;
-            //    options.RequireHttpsMetadata = false;
-            //});
-
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
