@@ -129,6 +129,7 @@ namespace MyAlbum.WebSPA.Identity
 
             app.UseRouting();
             app.UseCors("CorsPolicy");
+            app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
 
             app.UseAuthentication();
 
