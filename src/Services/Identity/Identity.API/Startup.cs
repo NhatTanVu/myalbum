@@ -41,7 +41,11 @@ namespace Identity.API
                 }));
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddIdentityServer()
+            
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+            services.AddIdentityServer(options => {
+                options.IssuerUri = identityUrl;
+            })
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>()
                 .AddProfileService<ProfileService>();
             services.AddAuthentication().AddIdentityServerJwt();
@@ -93,8 +97,11 @@ namespace Identity.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
+            else
+            {
+                app.UseHttpsRedirection();
+            }
+            
             app.UseStaticFiles();
 
             app.UseRouting();

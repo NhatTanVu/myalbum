@@ -32,7 +32,7 @@ export enum AuthenticationResultStatus {
 }
 
 export interface IUser {
-  name: string;
+  name?: string;
 }
 
 @Injectable({

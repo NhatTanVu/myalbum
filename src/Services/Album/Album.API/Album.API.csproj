@@ -17,6 +17,9 @@
     <Content Include="Album.API.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="my-album.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>    
   </ItemGroup>
 
   <ItemGroup>

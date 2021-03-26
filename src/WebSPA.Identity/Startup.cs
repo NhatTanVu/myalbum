@@ -37,6 +37,7 @@ namespace MyAlbum.WebSPA.Identity
         private readonly IWebHostEnvironment _env;
         private readonly IConfiguration _config;
 
+        // REF: https://github.com/dotnet-architecture/eShopOnContainers/blob/dev/src/Services/Identity/Identity.API/Startup.cs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -51,10 +52,15 @@ namespace MyAlbum.WebSPA.Identity
                 }));
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddIdentityServer()
+            
+            var issuerUrl = _config.GetValue<string>("IssuerUri");
+            services.AddIdentityServer(options => {
+                options.IssuerUri = issuerUrl;
+            })
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>()
                 .AddProfileService<ProfileService>();
             services.AddAuthentication().AddIdentityServerJwt();
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddControllers().AddNewtonsoftJson(options => {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
@@ -114,7 +120,7 @@ namespace MyAlbum.WebSPA.Identity
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {

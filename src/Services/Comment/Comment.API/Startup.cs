@@ -50,6 +50,7 @@ namespace Comment.API
             });
 
             var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+            var issuerUri = Configuration.GetValue<string>("IssuerUri");
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Comment API", Version = "1.0" });
@@ -95,6 +96,8 @@ namespace Comment.API
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
+                    options.RequireHttpsMetadata = false; // TODO: Development environment only
+
                     options.Authority = identityUrl;
 
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -106,7 +109,8 @@ namespace Comment.API
                             "MyAlbum.DeveloperAPI",
                             "Identity.APIAPI",
                             "WebSPA.IdentityAPI"
-                        }
+                        },
+                        ValidIssuer = issuerUri
                     };
                 });
 

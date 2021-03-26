@@ -18,6 +18,9 @@
     <Content Include="Comment.API.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="my-album.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>    
   </ItemGroup>
 
   <ItemGroup>
