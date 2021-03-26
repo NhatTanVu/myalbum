@@ -1,21 +1,5 @@
 version: "2.1"
 services:
-    web:
-        build: 
-            context: ..
-            dockerfile: ./Docker/web/Dockerfile
-        ports:
-            - "80:80"
-            - "443:443"
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Production
-            - ASPNETCORE_URLS=https://+:443;http://+:80
-            - ASPNETCORE_Kestrel__Certificates__Default__Password=2u)TAa
-            - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/my-album.pfx        
-        depends_on:
-            - db
-        container_name: "my-album-web"
-        image: "my-album-web:latest"
     db:
         build:
             context: ..
@@ -26,3 +10,81 @@ services:
             MSSQL_PID: "Developer"
         container_name: "my-album-db"
         image: "my-album-db:latest"
+    WebSPA.Identity:
+        build: 
+            context: ..
+            dockerfile: ./Docker/WebSPA.Identity/Dockerfile
+        ports:
+            - "5000:80"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Production
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=2u)TAa
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/my-album.pfx
+            - ConnectionStrings__Default=Server=my-album-db;Database=myalbum;User Id=sa;Password=IamTan86
+            - IdentityServer__Clients__MyAlbum__RedirectUri=http://localhost:5000/authentication/login-callback
+            - IdentityServer__Clients__MyAlbum__LogoutUri=http://localhost:5000/authentication/logout-callback
+            - IssuerUri=http://localhost:5000
+        depends_on:
+            - db
+        container_name: "my-album-webspa-identity"
+        image: "my-album-webspa-identity:latest"
+    Photo.API:
+        build: 
+            context: ..
+            dockerfile: ./Docker/Services/Photo.API/Dockerfile
+        ports:
+            - "5002:443"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Production
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=2u)TAa
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/my-album.pfx
+            - ConnectionStrings__Default=Server=my-album-db;Database=myalbum;User Id=sa;Password=IamTan86
+            - IdentityUrl=http://my-album-webspa-identity
+            - IssuerUri=http://my-album-webspa-identity
+        depends_on:
+            - db
+            - WebSPA.Identity
+        container_name: "my-album-photo-api"
+        image: "my-album-photo-api:latest"
+    Album.API:
+        build: 
+            context: ..
+            dockerfile: ./Docker/Services/Album.API/Dockerfile
+        ports:
+            - "5003:443"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Production
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=2u)TAa
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/my-album.pfx
+            - ConnectionStrings__Default=Server=my-album-db;Database=myalbum;User Id=sa;Password=IamTan86
+            - IdentityUrl=http://my-album-webspa-identity
+            - IssuerUri=http://my-album-webspa-identity
+            - PhotoUrl=https://localhost:5002
+        depends_on:
+            - db
+            - WebSPA.Identity
+            - Photo.API
+        container_name: "my-album-album-api"
+        image: "my-album-album-api:latest"
+    Comment.API:
+        build: 
+            context: ..
+            dockerfile: ./Docker/Services/Comment.API/Dockerfile
+        ports:
+            - "5004:443"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Production
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=2u)TAa
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/my-album.pfx
+            - ConnectionStrings__Default=Server=my-album-db;Database=myalbum;User Id=sa;Password=IamTan86
+            - IdentityUrl=http://my-album-webspa-identity
+            - IssuerUri=http://my-album-webspa-identity
+        depends_on:
+            - db
+            - WebSPA.Identity
+        container_name: "my-album-comment-api"
+        image: "my-album-comment-api:latest"

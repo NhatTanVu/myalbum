@@ -13,7 +13,7 @@ import { ApplicationPaths, QueryParameterNames } from 'src/api-authorization/api
   providedIn: 'root'
 })
 export class CommentService {
-  private readonly commentApiEndpoint = "https://localhost:5005/api/comments";
+  private readonly commentApiEndpoint = "https://localhost:5004/api/comments";
 
   private readonly httpOptions = {
     headers: new HttpHeaders({
@@ -31,7 +31,7 @@ export class CommentService {
 
   private startConnection = () => {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:5005/commentHub')
+      .withUrl('https://localhost:5004/commentHub')
       .build();
 
     this.hubConnection

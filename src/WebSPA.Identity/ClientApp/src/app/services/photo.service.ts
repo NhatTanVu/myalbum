@@ -11,7 +11,7 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
   providedIn: 'root'
 })
 export class PhotoService {
-  private readonly photoApiEndpoint = "https://localhost:5007/api/photos";
+  private readonly photoApiEndpoint = "https://localhost:5002/api/photos";
 
   private readonly httpOptions = {
     headers: new HttpHeaders({

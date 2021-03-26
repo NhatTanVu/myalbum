@@ -8,15 +8,16 @@ RUN apt-get install curl
 RUN curl -sL https://deb.nodesource.com/setup_15.x | bash
 # and install node 
 RUN apt-get install -y nodejs
-RUN apt-get install -y npm
+# and install npm
+RUN npm install
 # confirm that it was successful 
 RUN node -v
 # npm installs automatically 
 RUN npm -v
 # copy project files
-COPY ./WebSPA .
+COPY ./WebSPA.Slim .
 RUN dotnet restore
-RUN dotnet publish WebSPA.csproj -c Release -o /app
+RUN dotnet publish WebSPA.Slim.csproj -c Release -o /app
 # cleanup unused publish files
 RUN rm -rf "/app/runtimes/linux-x86"
 RUN rm -rf "/app/runtimes/osx-x64"
@@ -40,7 +41,5 @@ RUN rm -rf "/app/zh-Hant"
 
 FROM mcr.microsoft.com/dotnet/aspnet:3.1-buster-slim as final
 WORKDIR /app
-RUN apt-get update && apt-get install -y libgdiplus
-RUN apt-get update && apt-get install -y libgomp1
 COPY --from=publish /app /app
-ENTRYPOINT [ "dotnet", "WebSPA.dll" ]
+ENTRYPOINT [ "dotnet", "WebSPA.Slim.dll" ]

@@ -47,6 +47,7 @@ namespace Album.API
             });
 
             var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+            var issuerUri = Configuration.GetValue<string>("IssuerUri");
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Album API", Version = "1.0" });
@@ -91,6 +92,8 @@ namespace Album.API
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
+                    options.RequireHttpsMetadata = false; // TODO: Development environment only
+
                     options.Authority = identityUrl;
 
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -102,7 +105,8 @@ namespace Album.API
                             "MyAlbum.DeveloperAPI",
                             "Identity.APIAPI",
                             "WebSPA.IdentityAPI"
-                        }
+                        },
+                        ValidIssuer = issuerUri
                     };
                 });
 
