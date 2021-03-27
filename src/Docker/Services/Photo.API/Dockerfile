@@ -9,7 +9,8 @@ RUN curl -sL https://deb.nodesource.com/setup_15.x | bash
 # and install node 
 RUN apt-get install -y nodejs
 # and install npm
-RUN npm install
+RUN apt-get install -y npm; exit 0
+RUN npm install; exit 0
 # confirm that it was successful 
 RUN node -v
 # npm installs automatically 
