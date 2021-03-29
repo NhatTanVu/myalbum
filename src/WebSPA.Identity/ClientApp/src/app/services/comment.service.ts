@@ -8,12 +8,14 @@ import * as signalR from "@aspnet/signalr";
 import { Observable, Subscriber, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { ApplicationPaths, QueryParameterNames } from 'src/api-authorization/api-authorization.constants';
+import { GlobalDataService } from './globalData.service';
+import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
-  private readonly commentApiEndpoint = "https://localhost:5004/api/comments";
+  private commentApiEndpoint = "";
 
   private readonly httpOptions = {
     headers: new HttpHeaders({
@@ -24,14 +26,19 @@ export class CommentService {
 
   private hubConnection: signalR.HubConnection;
 
-  constructor(private http: HttpClient, private router: Router) {
-    this.startConnection();
-    this.addCommentAddedListener();
+  constructor(private http: HttpClient, private router: Router, private globalDataService: GlobalDataService) {
+    this.globalDataService.currentGlobalConfiguration$.subscribe(globalConfiguration => {
+      if (globalConfiguration.CommentUrl) {
+        this.commentApiEndpoint = globalConfiguration.CommentUrl + "/api/comments";
+        this.startConnection(globalConfiguration.CommentUrl);
+        this.addCommentAddedListener();
+      }
+    });
   }
 
-  private startConnection = () => {
+  private startConnection = (commentUrl: string) => {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:5004/commentHub')
+      .withUrl(commentUrl + '/commentHub')
       .build();
 
     this.hubConnection
@@ -84,28 +91,38 @@ export class CommentService {
 
   create(comment: Comment) {
     comment.connectionId = this.connectionId;
-    return this.http.post(this.commentApiEndpoint, comment, this.httpOptions)
-      .pipe(map(res => {
-        var comment = <Comment>res;
-        setDisplayName(comment.author);
-        return comment;
-      }), catchError((error: HttpErrorResponse) => {
-        let errorMessage = 'Unknown error!';
-        if (error.error instanceof ErrorEvent) {
-          // Client-side errors
-          errorMessage = `Error: ${error.error.message}`;
-        } else {
-          // Server-side errors
-          if (error.status == 401) {
-            this.router.navigate(ApplicationPaths.LoginPathComponents, {
-              queryParams: {
-                [QueryParameterNames.ReturnUrl]: this.router.url
+
+    return this.globalDataService.currentGlobalConfiguration$.pipe(
+      map(globalConfiguration => {
+        if (globalConfiguration.CommentUrl) {
+          this.commentApiEndpoint = globalConfiguration.CommentUrl + "/api/comments";
+          return this.http.post(this.commentApiEndpoint, comment, this.httpOptions)
+            .pipe(map(res => {
+              var comment = <Comment>res;
+              setDisplayName(comment.author);
+              return comment;
+            }), catchError((error: HttpErrorResponse) => {
+              let errorMessage = 'Unknown error!';
+              if (error.error instanceof ErrorEvent) {
+                // Client-side errors
+                errorMessage = `Error: ${error.error.message}`;
+              } else {
+                // Server-side errors
+                if (error.status == 401) {
+                  this.router.navigate(ApplicationPaths.LoginPathComponents, {
+                    queryParams: {
+                      [QueryParameterNames.ReturnUrl]: this.router.url
+                    }
+                  });
+                }
+                errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
               }
-            });
-          }
-          errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+              return throwError(errorMessage);
+            }));
         }
-        return throwError(errorMessage);
+        else {
+          return new EmptyObservable<Comment>();
+        }
       }));
   }
 
@@ -114,26 +131,53 @@ export class CommentService {
     formData.append('Id', comment.id.toString());
     formData.append('Content', comment.content);
 
-    return this.http.post(this.commentApiEndpoint + '/' + comment.id, formData)
-      .pipe(map(res => <Comment>res));
+    return this.globalDataService.currentGlobalConfiguration$.pipe(
+      map(globalConfiguration => {
+        if (globalConfiguration.CommentUrl) {
+          this.commentApiEndpoint = globalConfiguration.CommentUrl + "/api/comments";
+          return this.http.post(this.commentApiEndpoint + '/' + comment.id, formData)
+            .pipe(map(res => <Comment>res));
+        }
+        else {
+          return new EmptyObservable<Comment>();
+        }
+      }));
   }
 
   delete(commentId: number) {
-    return this.http.delete(this.commentApiEndpoint + '/' + commentId, this.httpOptions)
-      .pipe(map(res => {
-        return res;
+    return this.globalDataService.currentGlobalConfiguration$.pipe(
+      map(globalConfiguration => {
+        if (globalConfiguration.CommentUrl) {
+          this.commentApiEndpoint = globalConfiguration.CommentUrl + "/api/comments";
+          return this.http.delete(this.commentApiEndpoint + '/' + commentId, this.httpOptions)
+            .pipe(map(res => {
+              return res;
+            }));
+        }
+        else {
+          return new EmptyObservable<Object>();
+        }
       }));
   }  
 
   getReplies(commentId: number) {
-    return this.http.get(this.commentApiEndpoint + "/" + commentId, this.httpOptions)
-      .pipe(map(res => {
-        var comments = <Comment[]>res;
-        comments.forEach((comment) => {
-          setDisplayName(comment.author);
-          comment.replies = [];
-        });
-        return comments;
+    return this.globalDataService.currentGlobalConfiguration$.pipe(
+      map(globalConfiguration => {
+        if (globalConfiguration.CommentUrl) {
+          this.commentApiEndpoint = globalConfiguration.CommentUrl + "/api/comments";
+          return this.http.get(this.commentApiEndpoint + "/" + commentId, this.httpOptions)
+            .pipe(map(res => {
+              var comments = <Comment[]>res;
+              comments.forEach((comment) => {
+                setDisplayName(comment.author);
+                comment.replies = [];
+              });
+              return comments;
+            }));
+        }
+        else {
+          return new EmptyObservable<Comment[]>();
+        }
       }));
   }
 }

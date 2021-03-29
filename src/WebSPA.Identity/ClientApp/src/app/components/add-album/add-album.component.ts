@@ -34,28 +34,32 @@ export class AddAlbumComponent implements OnInit {
     var result$ = this.albumService.create(this.album);
     var router = this.router;
     result$.subscribe(
-      album => {
-        if (album) {
-          this.toasty.success({
-            title: "Success",
-            msg: "Saved successfully.",
-            theme: "bootstrap",
-            showClose: true,
-            timeout: 1500,
-            onRemove: function (toast: ToastData) {
-              router.navigate(['/album']);
+      observable$ => {
+        observable$.subscribe(
+          album => {
+            if (album) {
+              this.toasty.success({
+                title: "Success",
+                msg: "Saved successfully.",
+                theme: "bootstrap",
+                showClose: true,
+                timeout: 1500,
+                onRemove: function (toast: ToastData) {
+                  router.navigate(['/album']);
+                }
+              });
             }
-          });
-        }
-        else {
-          this.toasty.error({
-            title: "Error",
-            msg: "Error occurred. Please try again!",
-            theme: "bootstrap",
-            showClose: true,
-            timeout: 1500
-          });          
-        }
+            else {
+              this.toasty.error({
+                title: "Error",
+                msg: "Error occurred. Please try again!",
+                theme: "bootstrap",
+                showClose: true,
+                timeout: 1500
+              });
+            }
+          }
+        );
       },
       err => {
         this.toasty.error({
@@ -64,10 +68,9 @@ export class AddAlbumComponent implements OnInit {
           theme: "bootstrap",
           showClose: true,
           timeout: 1500
-        });        
+        });
         console.log(err);
-      }
-    );
+      });
   }
 
   cancel() {

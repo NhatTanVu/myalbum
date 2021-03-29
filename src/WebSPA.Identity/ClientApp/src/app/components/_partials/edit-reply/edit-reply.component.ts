@@ -27,20 +27,22 @@ export class EditReplyComponent implements OnInit {
   submitReply() {
     var result$ = this.commentService.save(this.comment);
     result$.subscribe(
-      comment => {
-        this.toasty.success({
-          title: "Success",
-          msg: "Updated successfully.",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500
-        });
-        this.comment.isEditing = false;
-        this.comment.modifiedDate = comment.modifiedDate;
+      observable$ => {
+        observable$.subscribe(
+          comment => {
+            this.toasty.success({
+              title: "Success",
+              msg: "Updated successfully.",
+              theme: "bootstrap",
+              showClose: true,
+              timeout: 1500
+            });
+            this.comment.isEditing = false;
+            this.comment.modifiedDate = comment.modifiedDate;
+          });
       },
       err => {
         console.log(err);
-      }
-    );
+      });
   }
 }

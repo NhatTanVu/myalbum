@@ -34,25 +34,28 @@ export class EditAlbumComponent implements OnInit {
     this.route.params.subscribe(p => {
       this.authorizeService.getUser().pipe(map(u => u && u[NameClaimType])).subscribe(userName => {
         this.userName = userName;
-        this.albumService.get(+p['id']).subscribe(album => {
-          if (album) {
-            if (album.author.userName == this.userName)
-            {
-              this.album = album;
-            }
-            else
-            {
-              this.router.navigate(["/"], {
-                queryParams: {
-                  ["albumId"]: album.id
+        this.albumService.get(+p['id']).subscribe(
+          observable$ => {
+            observable$.subscribe(
+              album => {
+                if (album) {
+                  if (album.author.userName == this.userName) {
+                    this.album = album;
+                  }
+                  else {
+                    this.router.navigate(["/"], {
+                      queryParams: {
+                        ["albumId"]: album.id
+                      }
+                    });
+                  }
                 }
-              });
-            }
-          }
-          else {
-            this.router.navigate(['/album']);
-          }
-        },
+                else {
+                  this.router.navigate(['/album']);
+                }
+              }
+            );
+          },
           err => {
             this.router.navigate(['/album']);
           });
@@ -63,28 +66,32 @@ export class EditAlbumComponent implements OnInit {
   submit() {
     var result$ = this.albumService.save(this.album);
     result$.subscribe(
-      album => {
-        if (album) {
-          this.toasty.success({
-            title: "Success",
-            msg: "Saved successfully.",
-            theme: "bootstrap",
-            showClose: true,
-            timeout: 1500,
-            onRemove: function (toast: ToastData) {
-              this.album = album;
+      observable$ => {
+        observable$.subscribe(
+          album => {
+            if (album) {
+              this.toasty.success({
+                title: "Success",
+                msg: "Saved successfully.",
+                theme: "bootstrap",
+                showClose: true,
+                timeout: 1500,
+                onRemove: function (toast: ToastData) {
+                  this.album = album;
+                }
+              });
             }
-          });
-        }
-        else {
-          this.toasty.error({
-            title: "Error",
-            msg: "Error occurred. Please try again!",
-            theme: "bootstrap",
-            showClose: true,
-            timeout: 1500
-          });          
-        }
+            else {
+              this.toasty.error({
+                title: "Error",
+                msg: "Error occurred. Please try again!",
+                theme: "bootstrap",
+                showClose: true,
+                timeout: 1500
+              });
+            }
+          }
+        )
       },
       err => {
         this.toasty.error({
@@ -95,8 +102,7 @@ export class EditAlbumComponent implements OnInit {
           timeout: 1500
         });
         console.log(err);
-      }
-    );
+      });
   }
 
   back() {
@@ -111,17 +117,21 @@ export class EditAlbumComponent implements OnInit {
     var result$ = this.albumService.delete(this.album.id);
     var router = this.router;
     result$.subscribe(
-      res => {
-        this.toasty.success({
-          title: "Success",
-          msg: "Deleted successfully.",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500,
-          onRemove: function (toast: ToastData) {
-            router.navigate(['/album']);
+      observable$ => {
+        observable$.subscribe(
+          res => {
+            this.toasty.success({
+              title: "Success",
+              msg: "Deleted successfully.",
+              theme: "bootstrap",
+              showClose: true,
+              timeout: 1500,
+              onRemove: function (toast: ToastData) {
+                router.navigate(['/album']);
+              }
+            });
           }
-        });
+        );
       },
       err => {
         this.toasty.error({
@@ -130,9 +140,8 @@ export class EditAlbumComponent implements OnInit {
           theme: "bootstrap",
           showClose: true,
           timeout: 1500
-        });        
+        });
         console.log(err);
-      }
-    );
+      });
   }
 }

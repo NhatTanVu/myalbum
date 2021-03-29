@@ -38,6 +38,17 @@ namespace MyAlbum.Services.Indentity.API.Controllers
         public IClientRequestParametersProvider ClientRequestParametersProvider { get; }
 
         [ApiExplorerSettings(IgnoreApi = true)]
+        [HttpGet("GetConfiguration")]
+        public IActionResult GetConfiguration()
+        {
+            var parameters = new Dictionary<string, string>();
+            parameters.Add("AlbumUrl", config.GetValue<string>("AlbumUrl"));
+            parameters.Add("CommentUrl", config.GetValue<string>("CommentUrl"));
+            parameters.Add("PhotoUrl", config.GetValue<string>("PhotoUrl"));
+            return Ok(parameters);
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet("_configuration/{clientId}")]
         public IActionResult GetClientRequestParameters([FromRoute] string clientId)
         {

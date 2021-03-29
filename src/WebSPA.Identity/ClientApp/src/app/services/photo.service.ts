@@ -4,14 +4,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { retryWithBackoff } from './retryWithBackoff.operator';
 import { EMPTY } from 'rxjs';
+import { EmptyObservable } from "rxjs/observable/EmptyObservable";
 import { setDisplayName } from '../models/user';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { GlobalDataService } from './globalData.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PhotoService {
-  private readonly photoApiEndpoint = "https://localhost:5002/api/photos";
+  private photoApiEndpoint: string = "";
 
   private readonly httpOptions = {
     headers: new HttpHeaders({
@@ -20,26 +22,37 @@ export class PhotoService {
     })
   };
 
-  constructor(private http: HttpClient, private loadingBar: LoadingBarService) { }
+  constructor(private http: HttpClient, private loadingBar: LoadingBarService, private globalDataService: GlobalDataService) {
+  }
 
   getAll(filter) {
     this.loadingBar.start();
-    return this.http.get(this.photoApiEndpoint + '?' + this.toQueryString(filter), this.httpOptions)
-      .pipe(
-        retryWithBackoff(1000, 5, 10000),
-        catchError(error => {
-          this.loadingBar.stop();
-          console.error(error);
-          return EMPTY;
-        }),
-        map(res => {
-          this.loadingBar.stop();
-          var photos = <Photo[]>res;
-          photos.forEach(photo => {
-            setDisplayName(photo.author);
-          });
-          return photos;
-        }));
+
+    return this.globalDataService.currentGlobalConfiguration$.pipe(
+      map(globalConfiguration => {
+        if (globalConfiguration.PhotoUrl) {
+          this.photoApiEndpoint = globalConfiguration.PhotoUrl + "/api/photos";
+          return this.http.get(this.photoApiEndpoint + '?' + this.toQueryString(filter), this.httpOptions)
+            .pipe(
+              retryWithBackoff(1000, 5, 10000),
+              catchError(error => {
+                this.loadingBar.stop();
+                console.error(error);
+                return EMPTY;
+              }),
+              map(res => {
+                this.loadingBar.stop();
+                var photos = <Photo[]>res;
+                photos.forEach(photo => {
+                  setDisplayName(photo.author);
+                });
+                return photos;
+              }));
+        }
+        else {
+          return new EmptyObservable<Photo[]>();
+        }
+      }));
   }
 
   toQueryString(obj) {
@@ -64,8 +77,17 @@ export class PhotoService {
     formData.append('MapZoom', photo.mapZoom ? photo.mapZoom.toString() : null);
     formData.append('Album.Id', (photo.album && photo.album.id > 0) ? photo.album.id.toString() : null);
 
-    return this.http.post(this.photoApiEndpoint, formData)
-      .pipe(map(res => <SavePhoto>res));
+    return this.globalDataService.currentGlobalConfiguration$.pipe(
+      map(globalConfiguration => {
+        if (globalConfiguration.PhotoUrl) {
+          this.photoApiEndpoint = globalConfiguration.PhotoUrl + "/api/photos";
+          return this.http.post(this.photoApiEndpoint, formData)
+            .pipe(map(res => <SavePhoto>res))
+        }
+        else {
+          return new EmptyObservable<SavePhoto>();
+        }
+      }));
   }
 
   save(photo: SavePhoto, file) {
@@ -81,26 +103,53 @@ export class PhotoService {
     formData.append('PhotoCategories', photo.photoCategories ? JSON.stringify(photo.photoCategories) : null);
     formData.append('Album.Id', (photo.album && photo.album.id > 0) ? photo.album.id.toString() : null);
 
-    return this.http.post(this.photoApiEndpoint + '/' + photo.id, formData)
-      .pipe(map(res => <Photo>res));
+    return this.globalDataService.currentGlobalConfiguration$.pipe(
+      map(globalConfiguration => {
+        if (globalConfiguration.PhotoUrl) {
+          this.photoApiEndpoint = globalConfiguration.PhotoUrl + "/api/photos";
+          return this.http.post(this.photoApiEndpoint + '/' + photo.id, formData)
+            .pipe(map(res => <Photo>res))
+        }
+        else {
+          return new EmptyObservable<Photo>();
+        }
+      }));
   }
 
   get(id) {
-    return this.http.get(this.photoApiEndpoint + '/' + id, this.httpOptions)
-      .pipe(map(res => {
-        var photo = <Photo>res;
-        photo.comments.forEach(comment => {
-          setDisplayName(comment.author);
-          comment.isNew = false;
-        });
-        return photo;
+    return this.globalDataService.currentGlobalConfiguration$.pipe(
+      map(globalConfiguration => {
+        if (globalConfiguration.PhotoUrl) {
+          this.photoApiEndpoint = globalConfiguration.PhotoUrl + "/api/photos";
+          return this.http.get(this.photoApiEndpoint + '/' + id, this.httpOptions)
+            .pipe(map(res => {
+              var photo = <Photo>res;
+              photo.comments.forEach(comment => {
+                setDisplayName(comment.author);
+                comment.isNew = false;
+              });
+              return photo;
+            }));
+        }
+        else {
+          return new EmptyObservable<Photo>();
+        }
       }));
   }
 
   delete(id) {
-    return this.http.delete(this.photoApiEndpoint + '/' + id, this.httpOptions)
-      .pipe(map(res => {
-        return res;
-      }));        
+    return this.globalDataService.currentGlobalConfiguration$.pipe(
+      map(globalConfiguration => {
+        if (globalConfiguration.PhotoUrl) {
+          this.photoApiEndpoint = globalConfiguration.PhotoUrl + "/api/photos";
+          return this.http.delete(this.photoApiEndpoint + '/' + id, this.httpOptions)
+            .pipe(map(res => {
+              return res;
+            }));
+        }
+        else {
+          return new EmptyObservable<Object>();
+        }
+      }));
   }
 }

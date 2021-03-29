@@ -1,7 +1,15 @@
 ﻿@using Microsoft.AspNetCore.Hosting
 @using Microsoft.AspNetCore.Mvc.ViewEngines
+@using Microsoft.Extensions.Configuration 
 @inject IWebHostEnvironment Environment
 @inject ICompositeViewEngine Engine
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
+@{ 
+    string albumUrl = Configuration.GetValue<string>("AlbumUrl");
+    string commentUrl = Configuration.GetValue<string>("CommentUrl");
+    string photoUrl = Configuration.GetValue<string>("PhotoUrl");
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,16 +19,16 @@
     <title>My Album</title>
     <link rel="stylesheet" type="text/css" href="~/Identity/lib/bootstrap/dist/css/bootstrap.min.css" />
     @* <link rel="stylesheet" href="~/Identity/css/site.css" /> *@
-    <link rel="stylesheet"  type="text/css" href="~/lib/fontawesome-free/css/all.min.css" />
-    <link rel="stylesheet"  type="text/css" href="~/lib/styles.css" />
-    <link rel="stylesheet"  type="text/css" href="~/lib/toggle-switch.css" />
-    <link rel="stylesheet"  type="text/css" href="~/lib/nav-menu.component.css" />
+    <link rel="stylesheet" type="text/css" href="~/lib/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/lib/styles.css" />
+    <link rel="stylesheet" type="text/css" href="~/lib/toggle-switch.css" />
+    <link rel="stylesheet" type="text/css" href="~/lib/nav-menu.component.css" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-md navbar-dark navbar-toggleable-md box-shadow-bottom background-dark-darker">
             <div class="container-fluid">
-                <a class="navbar-brand text-light" href="http://localhost:5000/">
+                <a class="navbar-brand text-light" href="/">
                     <img class="rounded" src="~/logo.jpg" alt="logo.jpg" height="40px" width="40px">
                     My Album
                 </a>
@@ -34,10 +42,10 @@
                     </div>
                     <span class="separator mobile"></span>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                            aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                </div>                
+                </div>
                 <div class="navbar-collapse collapse d-md-inline-flex flex-md-row-reverse">
                     @{
                         var result = Engine.FindView(ViewContext, "_LoginPartial", isMainPage: false);
@@ -64,41 +72,44 @@
     </div>
     <footer id="footer">
         <div class="container-fluid text-light box-shadow-top background-dark-darker">
-        <div class="row">
-            <div class="col-6">
             <div class="row">
-                <div class="col-12 pt-3">
-                <h5 class="border-bottom d-inline-block">Documentation</h5>
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-12 pt-3">
+                            <h5 class="border-bottom d-inline-block">Documentation</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <ul class="unstyled">
+                            <li><a class="nav-link text-light pt-0 pb-0" href="/swagger" target="_blank">Identity API</a></li>
+                            <li><a class="nav-link text-light pt-0 pb-0" href="@photoUrl/swagger" target="_blank">Photo API</a></li>
+                            <li><a class="nav-link text-light pt-0 pb-0" href="@albumUrl/swagger" target="_blank">Album API</a></li>
+                            <li><a class="nav-link text-light pt-0 pb-0" href="@commentUrl/swagger" target="_blank">Comment API</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-12 pt-3">
+                            <h5 class="border-bottom d-inline-block">About me</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <ul class="unstyled">
+                            <li>
+                                <a class="nav-link text-light pt-0 pb-0" href="https://github.com/NhatTanVu"
+                                   target="_blank">GitHub</a>
+                            </li>
+                            <li>
+                                <a class="nav-link text-light pt-0 pb-0" href="https://www.linkedin.com/in/tanvu/"
+                                   target="_blank">LinkedIn</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <ul class="unstyled">
-                    <li><a class="nav-link text-light pt-0 pb-0" href="http://localhost:5000/swagger" target="_blank">Identity API</a></li>
-                    <li><a class="nav-link text-light pt-0 pb-0" href="https://localhost:5002/swagger" target="_blank">Photo API</a></li>
-                    <li><a class="nav-link text-light pt-0 pb-0" href="https://localhost:5003/swagger" target="_blank">Album API</a></li>
-                    <li><a class="nav-link text-light pt-0 pb-0" href="https://localhost:5004/swagger" target="_blank">Comment API</a></li>
-                </ul>
-            </div>
-            </div>
-            <div class="col-6">
-            <div class="row">
-                <div class="col-12 pt-3">
-                <h5 class="border-bottom d-inline-block">About me</h5>
-                </div>
-            </div>
-            <div class="row">
-                <ul class="unstyled">
-                <li><a class="nav-link text-light pt-0 pb-0" href="https://github.com/NhatTanVu"
-                    target="_blank">GitHub</a>
-                </li>
-                <li><a class="nav-link text-light pt-0 pb-0" href="https://www.linkedin.com/in/tanvu/"
-                    target="_blank">LinkedIn</a></li>
-                </ul>
-            </div>
-            </div>
         </div>
-        </div>
-    </footer> 
+    </footer>
     <script src="~/Identity/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/Identity/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/Identity/js/site.js" asp-append-version="true"></script>

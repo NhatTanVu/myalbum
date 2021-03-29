@@ -29,15 +29,19 @@ export class ReplyListComponent implements OnInit {
     if (!reply.areRepliesLoaded) {
       var result$ = this.commentService.getReplies(reply.id);
       result$.subscribe(
-        replies => {
-          reply.replies = replies;
-          reply.areRepliesLoaded = true;
-          reply.isViewing = true;
+        observable$ => {
+          observable$.subscribe(
+            replies => {
+              reply.replies = replies;
+              reply.areRepliesLoaded = true;
+              reply.isViewing = true;
+            }
+          );
         },
         err => {
           console.log(err);
         }
-      )
+      );
     }
     else {
       reply.isViewing = !reply.isViewing;
@@ -47,23 +51,26 @@ export class ReplyListComponent implements OnInit {
   delete(reply: Comment) {
     var result$ = this.commentService.delete(reply.id);
     result$.subscribe(
-      res => {
-        this.toasty.success({
-          title: "Success",
-          msg: "Deleted successfully.",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500,
-        });
-        for (var i = 0; i < this.replies.length; i++) {
-          if (this.replies[i].id === reply.id) {
-            this.replies.splice(i, 1);
-            if (this.parent) {
-              this.parent.numOfReplies--;
+      observable => {
+        observable.subscribe(
+          res => {
+            this.toasty.success({
+              title: "Success",
+              msg: "Deleted successfully.",
+              theme: "bootstrap",
+              showClose: true,
+              timeout: 1500,
+            });
+            for (var i = 0; i < this.replies.length; i++) {
+              if (this.replies[i].id === reply.id) {
+                this.replies.splice(i, 1);
+                if (this.parent) {
+                  this.parent.numOfReplies--;
+                }
+                break;
+              }
             }
-            break;
-          }
-        }
+          });
       },
       err => {
         this.toasty.error({
@@ -74,7 +81,6 @@ export class ReplyListComponent implements OnInit {
           timeout: 1500
         });
         console.log(err);
-      }
-    );
+      });
   }
 }

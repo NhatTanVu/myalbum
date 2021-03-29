@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
     this.globalDataService.changeDisplayMode(this.globalData);
     this.authorizeService.getUser().pipe(map(u => u && u[NameClaimType])).subscribe(userName => {
       this.userName = userName;
-    });    
+    });
     this.route.queryParams.subscribe(p => {
       if (+p['catId']) {
         this.globalData.displayMode = DisplayMode.Photo;
@@ -54,15 +54,19 @@ export class HomeComponent implements OnInit {
         this.globalData.displayMode = DisplayMode.Album;
         this.globalData.enableDisplayMode = false;
         this.query.albumId = +p['albumId'];
-        this.albumService.get(this.query.albumId).subscribe(album => {
-          if (album) {
-            this.album = album;
-            this.globalData.displayMode = DisplayMode.Album;
-          }
-          else
-            this.globalData.displayMode = DisplayMode.Photo;
-          this.globalDataService.changeDisplayMode(this.globalData);
-        },
+        this.albumService.get(this.query.albumId).subscribe(
+          observable$ => {
+            observable$.subscribe(
+              album => {
+                if (album) {
+                  this.album = album;
+                  this.globalData.displayMode = DisplayMode.Album;
+                }
+                else
+                  this.globalData.displayMode = DisplayMode.Photo;
+                this.globalDataService.changeDisplayMode(this.globalData);
+              });
+          },
           err => {
             this.router.navigate(['/album']);
           });
@@ -73,15 +77,17 @@ export class HomeComponent implements OnInit {
         this.globalDataService.changeDisplayMode(this.globalData);
       }
       this.photoService.getAll(this.query)
-        .subscribe(photos => {
-          this.photos = photos;
+        .subscribe(observable$ => {
+          observable$.subscribe(photos => {
+            this.photos = photos;
+          });
         });
     });
   }
 
   isEditable() {
     return this.album.author && this.userName == this.album.author.userName;
-  }  
+  }
 
   ngAfterViewInit() {
     this.imageBoxes.changes.subscribe(t => {

@@ -153,31 +153,36 @@ export class EditPhotoComponent implements OnInit {
     this.route.params.subscribe(p => {
       this.authorizeService.getUser().pipe(map(u => u && u[NameClaimType])).subscribe(userName => {
         this.userName = userName;
-        this.photoService.get(+p['id']).subscribe(photo => {
-          if (photo) {
-            if (photo.author.userName == this.userName) {
-              this.photo = photo;  
-              this.photoTags = this.photo.photoCategories.map(c => c.id);
-              this.hasMap = (photo.locLat != null) && (photo.locLng != null);
-              if (this.photo.album)
-                this.selectedAlbums = [this.photo.album.id];
-              else
-                this.selectedAlbums = [];
-              this.initializeMap();
-              this.loadAlbums();
+        this.photoService.get(+p['id']).subscribe(observable$ => {
+          observable$.subscribe(photo => {
+            if (photo) {
+              if (photo.author.userName == this.userName) {
+                this.photo = photo;
+                this.photoTags = this.photo.photoCategories.map(c => c.id);
+                this.hasMap = (photo.locLat != null) && (photo.locLng != null);
+                if (this.photo.album)
+                  this.selectedAlbums = [this.photo.album.id];
+                else
+                  this.selectedAlbums = [];
+                this.initializeMap();
+                this.loadAlbums();
+              }
+              else {
+                this.router.navigate(['/photo/' + photo.id]);
+              }
             }
             else {
-              this.router.navigate(['/photo/' + photo.id]);
+              this.router.navigate(['/']);
             }
-          }
-          else {
-            this.router.navigate(['/']);
-          }
+          });
         },
           err => {
             this.router.navigate(['/']);
           });
-      });
+      },
+        err => {
+          this.router.navigate(['/']);
+        });
     });
   }
 
@@ -187,9 +192,13 @@ export class EditPhotoComponent implements OnInit {
       hasLocation: null,
       authorUserName: this.userName
     };
-    this.albumService.getAll(this.albumQuery).subscribe(albums => {
-      this.albums = albums;
-    });
+    this.albumService.getAll(this.albumQuery).subscribe(
+      observable$ => {
+        observable$.subscribe(
+          albums => {
+            this.albums = albums;
+          })
+      });
   }
 
   initializeMap() {
@@ -299,7 +308,7 @@ export class EditPhotoComponent implements OnInit {
           timeout: 1500
         });
         return;
-      }      
+      }
     }
     if (this.position) {
       this.photo.locLat = this.position.latitude;
@@ -326,27 +335,29 @@ export class EditPhotoComponent implements OnInit {
 
     var result$ = this.photoService.save(this.photo, photoFile);
     result$.subscribe(
-      photo => {
-        if (photo) {
-          this.toasty.success({
-            title: "Success",
-            msg: "Saved successfully.",
-            theme: "bootstrap",
-            showClose: true,
-            timeout: 1500
-          });
-          this.photo = photo;
-          this.fileInput.nativeElement.value = "";
-        }
-        else {
-          this.toasty.error({
-            title: "Error",
-            msg: "Error occurred. Please try again!",
-            theme: "bootstrap",
-            showClose: true,
-            timeout: 1500
-          });          
-        }
+      observable$ => {
+        observable$.subscribe(photo => {
+          if (photo) {
+            this.toasty.success({
+              title: "Success",
+              msg: "Saved successfully.",
+              theme: "bootstrap",
+              showClose: true,
+              timeout: 1500
+            });
+            this.photo = photo;
+            this.fileInput.nativeElement.value = "";
+          }
+          else {
+            this.toasty.error({
+              title: "Error",
+              msg: "Error occurred. Please try again!",
+              theme: "bootstrap",
+              showClose: true,
+              timeout: 1500
+            });
+          }
+        });
       },
       err => {
         this.toasty.error({
@@ -355,7 +366,7 @@ export class EditPhotoComponent implements OnInit {
           theme: "bootstrap",
           showClose: true,
           timeout: 1500
-        });        
+        });
         console.log(err);
       }
     );
@@ -369,17 +380,20 @@ export class EditPhotoComponent implements OnInit {
     var result$ = this.photoService.delete(this.photo.id);
     var router = this.router;
     result$.subscribe(
-      res => {
-        this.toasty.success({
-          title: "Success",
-          msg: "Deleted successfully.",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500,
-          onRemove: function (toast: ToastData) {
-            router.navigate(['/']);
-          }
-        });
+      observable$ => {
+        observable$.subscribe(
+          res => {
+            this.toasty.success({
+              title: "Success",
+              msg: "Deleted successfully.",
+              theme: "bootstrap",
+              showClose: true,
+              timeout: 1500,
+              onRemove: function (toast: ToastData) {
+                router.navigate(['/']);
+              }
+            });
+          });
       },
       err => {
         this.toasty.error({
@@ -388,9 +402,8 @@ export class EditPhotoComponent implements OnInit {
           theme: "bootstrap",
           showClose: true,
           timeout: 1500
-        });        
+        });
         console.log(err);
-      }
-    );
+      });
   }
 }

@@ -70,9 +70,13 @@ export class PhotoFormComponent implements OnInit {
           authorUserName: this.userName
         };
         this.albumService.getAll(this.albumQuery)
-          .subscribe(albums => {
-            this.albums = albums;
-          });
+          .subscribe(
+            observable$ => {
+              observable$.subscribe(
+                albums => {
+                  this.albums = albums;
+                });
+            });
       });
   }
 
@@ -194,28 +198,31 @@ export class PhotoFormComponent implements OnInit {
     var result$ = this.photoService.create(this.photo, photoFile);
     var router = this.router;
     result$.subscribe(
-      photo => {
-        if (photo) {
-          this.toasty.success({
-            title: "Success",
-            msg: "Saved successfully.",
-            theme: "bootstrap",
-            showClose: true,
-            timeout: 1500,
-            onRemove: function (toast: ToastData) {
-              router.navigate(['/']);
+      observable$ => {
+        observable$.subscribe(
+          photo => {
+            if (photo) {
+              this.toasty.success({
+                title: "Success",
+                msg: "Saved successfully.",
+                theme: "bootstrap",
+                showClose: true,
+                timeout: 1500,
+                onRemove: function (toast: ToastData) {
+                  router.navigate(['/']);
+                }
+              });
+            }
+            else {
+              this.toasty.error({
+                title: "Error",
+                msg: "Error occurred. Please try again!",
+                theme: "bootstrap",
+                showClose: true,
+                timeout: 1500
+              });
             }
           });
-        }
-        else {
-          this.toasty.error({
-            title: "Error",
-            msg: "Error occurred. Please try again!",
-            theme: "bootstrap",
-            showClose: true,
-            timeout: 1500
-          });
-        }
       },
       err => {
         this.toasty.error({

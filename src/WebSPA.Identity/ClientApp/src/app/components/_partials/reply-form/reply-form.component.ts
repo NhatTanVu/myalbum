@@ -81,29 +81,37 @@ export class ReplyFormComponent implements OnInit {
   submitReply() {
     var result$ = this.commentService.create(this.newReply);
     result$.subscribe(
-      comment => {
-        this.toasty.success({
-          title: "Success",
-          msg: "Posted successfully.",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500
-        });
-        this.resetNewReply();
-        var result2$ = this.commentService.getReplies(comment.parentId);
-        result2$.subscribe(
-          replies => {
-            this.parent.replies = replies;
-            this.parent.numOfReplies = replies.length;
-            this.parent.isReplying = false;
-            this.parent.isViewing = true;
-            this.parent.areRepliesLoaded = true;
-          }
-        );
+      observable$ => {
+        observable$.subscribe(
+          comment => {
+            this.toasty.success({
+              title: "Success",
+              msg: "Posted successfully.",
+              theme: "bootstrap",
+              showClose: true,
+              timeout: 1500
+            });
+            this.resetNewReply();
+            var result2$ = this.commentService.getReplies(comment.parentId);
+            result2$.subscribe(
+              observable2$ => {
+                observable2$.subscribe(
+                  replies => {
+                    this.parent.replies = replies;
+                    this.parent.numOfReplies = replies.length;
+                    this.parent.isReplying = false;
+                    this.parent.isViewing = true;
+                    this.parent.areRepliesLoaded = true;
+                  }
+                );
+              },
+              err => {
+                console.log(err);
+              });
+          });
       },
       err => {
         console.log(err);
-      }
-    );
+      });
   }
 }
