@@ -18,7 +18,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./view-photo.component.css'],
   host: {
     '(window:resize)': 'onResize($event)'
-  }  
+  }
 })
 export class ViewPhotoComponent implements OnInit {
   photo: Photo = {
@@ -81,9 +81,9 @@ export class ViewPhotoComponent implements OnInit {
   @ViewChild('gmap', { static: false }) gmapElement: any;
   map: google.maps.Map;
 
-  @ViewChild('photoContainer', { static: false }) photoContainer : ElementRef;
-  @ViewChild('imagePhoto', { static: false }) imageElement : ElementRef;
-  
+  @ViewChild('photoContainer', { static: false }) photoContainer: ElementRef;
+  @ViewChild('imagePhoto', { static: false }) imageElement: ElementRef;
+
   constructor(
     private photoService: PhotoService,
     private commentService: CommentService,
@@ -94,7 +94,7 @@ export class ViewPhotoComponent implements OnInit {
     private authorizeService: AuthorizeService
   ) { }
 
-  onResize(event){
+  onResize(event) {
     this.calcPhotoSize();
   }
 
@@ -106,17 +106,21 @@ export class ViewPhotoComponent implements OnInit {
     this.route.params.subscribe(p => {
       this.photoId = +p['id'];
       this.newComment.photoId = this.photoId;
-      this.photoService.get(this.photoId).subscribe(photo => {
-        if (photo) {
-          this.photo = photo;
-          this.hasMap = (photo.locLat != null) && (photo.locLng != null);
-          this.initializeMap();
-          this.calcPhotoSize();
-        }
-        else {
-          this.router.navigate(['/']);
-        }
-      },
+      this.photoService.get(this.photoId).subscribe(
+        observable$ => {
+          observable$.subscribe(
+            photo => {
+              if (photo) {
+                this.photo = photo;
+                this.hasMap = (photo.locLat != null) && (photo.locLng != null);
+                this.initializeMap();
+                this.calcPhotoSize();
+              }
+              else {
+                this.router.navigate(['/']);
+              }
+            });
+        },
         err => {
           this.router.navigate(['/']);
         });
@@ -140,16 +144,16 @@ export class ViewPhotoComponent implements OnInit {
           this.flipContainerWidth = parseFloat(this.imageElement.nativeElement.clientWidth);
         }
         else {
-          this.calcPhotoSize();  
+          this.calcPhotoSize();
         }
         this.maxHeight = maxHeight;
-        this.maxWidth = maxWidth;        
+        this.maxWidth = maxWidth;
       }
       else {
         this.calcPhotoSize();
       }
     }, 200);
-  }  
+  }
 
   isEditable() {
     return this.photo.author && this.userName == this.photo.author.userName;
@@ -241,20 +245,22 @@ export class ViewPhotoComponent implements OnInit {
   submitComment() {
     var result$ = this.commentService.create(this.newComment);
     result$.subscribe(
-      comment => {
-        this.toasty.success({
-          title: "Success",
-          msg: "Posted successfully.",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500
-        });
-        this.photo.comments.push(comment);
-        this.resetNewComment();
+      observable$ => {
+        observable$.subscribe(
+          comment => {
+            this.toasty.success({
+              title: "Success",
+              msg: "Posted successfully.",
+              theme: "bootstrap",
+              showClose: true,
+              timeout: 1500
+            });
+            this.photo.comments.push(comment);
+            this.resetNewComment();
+          });
       },
       err => {
         console.log(err);
-      }
-    );
+      });
   }
 }

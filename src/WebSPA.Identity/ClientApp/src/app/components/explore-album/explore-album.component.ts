@@ -17,7 +17,7 @@ export class ExploreAlbumComponent implements OnInit {
   globalData: GlobalData = {
     displayMode: DisplayMode.Album,
     enableDisplayMode: true
-  };  
+  };
   @ViewChildren('albumBoxes') albumBoxes: QueryList<any>;
 
   constructor(private albumService: AlbumService,
@@ -26,9 +26,13 @@ export class ExploreAlbumComponent implements OnInit {
   ngOnInit() {
     this.globalDataService.changeDisplayMode(this.globalData);
     this.albumService.getAll(this.query)
-      .subscribe(albums => {
-        this.albums = albums;
-      });
+      .subscribe(
+        observable$ => {
+          observable$.subscribe(
+            albums => {
+              this.albums = albums;
+            });
+        });
   }
 
   ngAfterViewInit() {
