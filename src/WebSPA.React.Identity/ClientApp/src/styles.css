@@ -1,0 +1,90 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Provide sufficient contrast against white background */
+a {
+    color: #0366d6;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+body,
+html {
+    height: 100%;
+}
+
+#container-body {
+    min-height: 80%;
+}
+
+/* Add-Photo + View-Photo map */
+#gmap {
+    height: 400px;
+}
+
+@media (max-width: 575.98px) {
+    #gmap {
+        height: 300px;
+    }
+}
+
+.required:after {
+    content: " *";
+    color: red;
+}
+
+.explore-gallery img:hover {
+    transform: scale(1.025, 1.025);
+}
+
+img {
+    transition: transform 0.6s cubic-bezier(.165, .84, .26, .98);
+    transform: scale(1);
+}
+
+.background-dark-darker {
+    background: #131417;
+}
+
+.background-dark-lighter {
+    background: #1e1f26;
+}
+
+#footer ul,
+li {
+    list-style: none;
+    padding: 0px;
+}
+
+.box-shadow-bottom {
+    box-shadow: 0 0.05rem .5rem rgba(255, 255, 255, .85);
+}
+
+.box-shadow-top {
+    box-shadow: 0 -0.05rem .5rem rgba(255, 255, 255, .85);
+}
+
+.nav-item.link-active {
+    border-bottom: 2px solid grey;
+}
+
+    .nav-item.link-active a {
+        color: grey !important;
+    }
+
+.nav-item:not(.disabled):hover {
+    border-bottom: 2px solid rgba(255, 255, 255, .85);
+}
+
+hr {
+    border-top-color: #f8f9fa;
+}
+
+@media (min-width: 768px) and (max-width: 820px) {
+    nav *, footer * {
+        font-size: 0.8rem !important;
+    }
+}
