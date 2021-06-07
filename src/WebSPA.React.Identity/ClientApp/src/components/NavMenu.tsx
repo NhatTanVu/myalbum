@@ -4,10 +4,13 @@ import { Link } from 'react-router-dom';
 import './NavMenu.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export class NavMenu extends Component {
-  static displayName = NavMenu.name;
+interface INavMenuProps { }
+interface INavMenuState {
+    collapsed: boolean
+}
 
-  constructor (props) {
+export class NavMenu extends Component<INavMenuProps, INavMenuState> {
+  constructor(props: INavMenuProps) {
     super(props);
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
@@ -47,17 +50,17 @@ export class NavMenu extends Component {
             <Collapse className="d-md-inline-flex flex-md-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
                 <NavItem>
-                  <NavLink tag={Link} className="text-light" to="/">
+                  <NavLink tag={Link} className="text-light" to="/counter"> {/* TODO: Fix later */}
                     <FontAwesomeIcon icon="torii-gate" /> Explore
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-light" to="/worldmap">
+                  <NavLink tag={Link} className="text-light" to="/fetch-data"> {/* TODO: Fix later */}
                     <FontAwesomeIcon icon="globe" /> World Map
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-light" to="/photo/new">
+                  <NavLink tag={Link} className="text-light" to="/"> {/* TODO: Fix later */}
                     <FontAwesomeIcon icon="plus" /> Add
                   </NavLink>
                 </NavItem>

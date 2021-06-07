@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 
-export class Counter extends Component {
-  static displayName = Counter.name;
+interface ICounterProps { }
+interface ICounterState {
+    currentCount: number
+}
 
-  constructor(props) {
+export class Counter extends Component<ICounterProps, ICounterState> {
+  constructor(props: ICounterProps) {
     super(props);
     this.state = { currentCount: 0 };
     this.incrementCounter = this.incrementCounter.bind(this);
