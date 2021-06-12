@@ -1,24 +1,76 @@
 import React, { Component } from 'react';
+import { Photo } from '../models/photo';
+import { PhotoService } from '../services/photo.service';
+import './Home.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export class Home extends Component {
-  render () {
-    return (
-      <div>
-        <h1>Hello, world!</h1>
-        <p>Welcome to your new single-page application, built with:</p>
-        <ul>
-          <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-          <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-          <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-        </ul>
-        <p>To help you get started, we have also set up:</p>
-        <ul>
-          <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-          <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-          <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-        </ul>
-        <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-      </div>
-    );
-  }
+declare var Tessarray: any;
+
+interface IHomeProps { }
+interface IHomeState {
+    photos: Photo[];
+}
+
+export class Home extends Component<IHomeProps, IHomeState> {
+    private photoService = new PhotoService();
+
+    constructor(props: IHomeProps) {
+        super(props);
+        this.state = {
+            photos: []
+        };
+    }
+
+    componentDidMount() {
+        this.photoService.getAll([]).then(data => {
+            this.setState({
+                photos: data
+            });
+        });
+    }
+
+    render() {
+        return (
+            <div className="explore-gallery">
+                {this.state.photos.map(photo =>
+                    <a href={"/photo/" + photo.id} key={photo.id}>
+                        <div className="image-box rounded">
+                            <img src={photo.filePath} alt={photo.name} />
+                            <div className="interaction-view">
+                                <div className="interaction-bar">
+                                    <div className="text">
+                                        <div className="title" title={photo.name}>{photo.name}</div>
+                                        <div className="author" title={photo.author.displayName}>by {photo.author.displayName}</div>
+                                    </div>
+                                    <div className="engagement">
+                                        <div className="total-comments" title={photo.totalComments.toString()}>
+                                            <FontAwesomeIcon icon="comments" /> {photo.totalComments}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                )}
+            </div>
+        );
+    }
+
+    componentDidUpdate(prevProps: IHomeProps, prevState: IHomeState) {
+        var tessarray = new Tessarray(".explore-gallery", ".image-box", {
+            selectorClass: false,
+            boxTransition: false,
+            boxTransformOutTransition: false,
+            flickr: {
+                // http://flickr.github.io/justified-layout/
+                targetRowHeight: 300,
+                targetRowHeightTolerance: 0.25,
+                boxSpacing: {
+                    horizontal: 20,
+                    vertical: 20
+                },
+                containerPadding: 0
+            }
+        });
+    }
 }
