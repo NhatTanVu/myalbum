@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-interface IFetchDataProps { }
-interface IFetchDataState {
+interface IAddPhotoProps { }
+interface IAddPhotoState {
     forecasts: any[]
     loading: boolean
 }
 
-export class FetchData extends Component<IFetchDataProps, IFetchDataState> {
-  constructor(props: IFetchDataProps) {
+export class AddPhoto extends Component<IAddPhotoProps, IAddPhotoState> {
+  constructor(props: IAddPhotoProps) {
     super(props);
     this.state = { forecasts: [], loading: true };
   }
@@ -44,7 +44,7 @@ export class FetchData extends Component<IFetchDataProps, IFetchDataState> {
   render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : FetchData.renderForecastsTable(this.state.forecasts);
+      : AddPhoto.renderForecastsTable(this.state.forecasts);
 
     return (
       <div>

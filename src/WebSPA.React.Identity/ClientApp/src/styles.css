@@ -36,10 +36,6 @@ html {
     color: red;
 }
 
-.explore-gallery img:hover {
-    transform: scale(1.025, 1.025);
-}
-
 img {
     transition: transform 0.6s cubic-bezier(.165, .84, .26, .98);
     transform: scale(1);

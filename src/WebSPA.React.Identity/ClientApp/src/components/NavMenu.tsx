@@ -50,17 +50,17 @@ export class NavMenu extends Component<INavMenuProps, INavMenuState> {
             <Collapse className="d-md-inline-flex flex-md-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
                 <NavItem>
-                  <NavLink tag={Link} className="text-light" to="/counter"> {/* TODO: Fix later */}
+                  <NavLink tag={Link} className="text-light" to="/"> {/* TODO: Fix later */}
                     <FontAwesomeIcon icon="torii-gate" /> Explore
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-light" to="/fetch-data"> {/* TODO: Fix later */}
+                  <NavLink tag={Link} className="text-light" to="/worldmap"> {/* TODO: Fix later */}
                     <FontAwesomeIcon icon="globe" /> World Map
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-light" to="/"> {/* TODO: Fix later */}
+                  <NavLink tag={Link} className="text-light" to="/photo/new"> {/* TODO: Fix later */}
                     <FontAwesomeIcon icon="plus" /> Add
                   </NavLink>
                 </NavItem>

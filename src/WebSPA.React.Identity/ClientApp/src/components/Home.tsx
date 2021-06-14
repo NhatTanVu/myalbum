@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Photo } from '../models/photo';
 import { PhotoService } from '../services/photo.service';
-import './Home.css';
+import styles from './Home.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 declare var Tessarray: any;
@@ -31,7 +31,7 @@ export class Home extends Component<IHomeProps, IHomeState> {
 
     render() {
         return (
-            <div className="explore-gallery">
+            <div className={styles["explore-gallery"]}>
                 {this.state.photos.map(photo =>
                     <a href={"/photo/" + photo.id} key={photo.id}>
                         <div className="image-box rounded">
@@ -57,7 +57,7 @@ export class Home extends Component<IHomeProps, IHomeState> {
     }
 
     componentDidUpdate(prevProps: IHomeProps, prevState: IHomeState) {
-        var tessarray = new Tessarray(".explore-gallery", ".image-box", {
+        var tessarray = new Tessarray("." + styles["explore-gallery"], ".image-box", {
             selectorClass: false,
             boxTransition: false,
             boxTransformOutTransition: false,
