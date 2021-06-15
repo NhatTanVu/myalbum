@@ -4,6 +4,8 @@ import { Photo } from '../models/photo';
 import { PhotoService } from '../services/photo.service';
 import styles from './WorldMap.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import GoogleMapReact from 'google-map-react';
+import MarkerClusterer from '@googlemaps/markerclustererplus';
 
 declare var Tessarray: any;
 
@@ -15,6 +17,7 @@ interface IWorldMapState {
 
 export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
     private photoService = new PhotoService();
+    private googleMapRef: any;
 
     constructor(props: IWorldMapProps) {
         super(props);
@@ -22,14 +25,8 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
             allPhotos: [],
             viewportPhotos: []
         };
-        //this.incrementCounter = this.incrementCounter.bind(this);
+        this.setGoogleMapRef = this.setGoogleMapRef.bind(this);
     }
-
-    //incrementCounter() {
-    //  this.setState({
-    //    currentCount: this.state.currentCount + 1
-    //  });
-    //}
 
     componentDidMount() {
         this.photoService.getAll([]).then(data => {
@@ -38,6 +35,22 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
                 viewportPhotos: data
             });
         });
+    }
+
+    setGoogleMapRef(map: google.maps.Map) {
+        this.googleMapRef = map;
+
+        let locations = [
+            { lat: -31.563910, lng: 147.154312 },
+            { lat: -33.718234, lng: 150.363181 },
+            { lat: -33.727111, lng: 150.371124 }]
+        let markers = locations && locations.map((location) => {
+            return new google.maps.Marker({ position: location })
+        })
+        let markerCluster = new MarkerClusterer(map, markers, {
+            imagePath: '/lib/@googlemaps/markerclustererplus/m'
+        })
+        this.googleMapRef.setCenter({ lat: -31.563910, lng: 147.154312 });
     }
 
     render() {
@@ -58,7 +71,16 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
                     </Col>
                     <Col lg={{ size: 8, order: 2 }} className="mb-lg-0 mb-2 order-1">
                         <input id="gmapSearchBox" className="form-control mb-2" type="text" placeholder="Type location here..." />
-                        <div id="gmap"></div>
+                        <div id="gmap">
+                            <GoogleMapReact 
+                                bootstrapURLKeys={{ key: "" }}
+                                yesIWantToUseGoogleMapApiInternals
+                                onGoogleApiLoaded={({ map }) => this.setGoogleMapRef(map)}
+                                defaultCenter={{ lat: 3.140853, lng: 101.693207 }} /* KUL */
+                                defaultZoom={ 12 }
+                                options={{ mapTypeId: 'roadmap' }}
+                            />
+                        </div>
                     </Col>
                 </Row>
             </div>
