@@ -18,7 +18,7 @@ export class Album {
     photos: Photo[] = [];
 }
 
-export interface SaveAlbum {
-    id: number;
-    name: string;
+export class SaveAlbum {
+    id: number = 0;
+    name: string | null = null;
 }

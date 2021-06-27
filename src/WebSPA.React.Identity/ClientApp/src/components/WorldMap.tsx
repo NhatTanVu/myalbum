@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import { Photo } from '../models/photo';
 import { PhotoService } from '../services/photo.service';
 import styles from './WorldMap.module.css';
@@ -7,50 +7,102 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import GoogleMapReact from 'google-map-react';
 import MarkerClusterer from '@googlemaps/markerclustererplus';
 
-declare var Tessarray: any;
+declare const Tessarray: any;
 
 interface IWorldMapProps { }
 interface IWorldMapState {
-    allPhotos: Photo[],
     viewportPhotos: Photo[]
 }
 
 export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
     private photoService = new PhotoService();
-    private googleMapRef: any;
+    private allPhotos: Photo[] = [];
+    private gmapSearchBoxRef: React.RefObject<HTMLInputElement>;
 
     constructor(props: IWorldMapProps) {
         super(props);
         this.state = {
-            allPhotos: [],
             viewportPhotos: []
         };
-        this.setGoogleMapRef = this.setGoogleMapRef.bind(this);
+        this.GoogleApiLoadedHandler = this.GoogleApiLoadedHandler.bind(this);
+        this.gmapSearchBoxRef = React.createRef();
     }
 
-    componentDidMount() {
+    GoogleApiLoadedHandler(map: google.maps.Map) {
         this.photoService.getAll([]).then(data => {
-            this.setState({
-                allPhotos: data,
-                viewportPhotos: data
+            this.allPhotos = data;
+            if (this.allPhotos.length > 0) {
+                let allBounds = new google.maps.LatLngBounds();
+                let markers = this.allPhotos.filter((photo) => photo.locLat && photo.locLng).map((photo, i) => {
+                    let markerPosition = new google.maps.LatLng(photo.locLat, photo.locLng);
+                    let marker = new google.maps.Marker({
+                        position: markerPosition,
+                        label: "",
+                    });
+                    google.maps.event.addListener(marker, 'click', () => {
+                        map.setCenter(marker.getPosition() as google.maps.LatLng);
+                        map.setZoom(map.getZoom() as number + 1);
+                    });
+                    google.maps.event.addListener(marker, 'rightclick', () => {
+                        map.setCenter(marker.getPosition() as google.maps.LatLng);
+                        map.setZoom((map.getZoom() as number - 1) > 1 ? (map.getZoom() as number - 1) : 1);
+                    });
+                    allBounds.extend(markerPosition);
+                    return marker;
+                });
+                map.fitBounds(allBounds);
+                let markerCluster = new MarkerClusterer(map, markers, {
+                    imagePath: "/lib/@googlemaps/markerclustererplus/m"
+                });
+            }
+            google.maps.event.addListener(map, 'bounds_changed', (e: any) => {
+                let bound = map.getBounds();
+                this.setState({
+                    viewportPhotos: this.allPhotos.filter((photo) => {
+                        return photo.locLat && photo.locLng && bound?.contains({ lat: photo.locLat, lng: photo.locLng });
+                    })
+                });
+            });
+            google.maps.event.addListener(map, 'click', (e: any) => {
+                map.setCenter(e.latLng);
+                map.setZoom(map.getZoom() as number + 2);
+            });
+            google.maps.event.addListener(map, 'rightclick', (e: any) => {
+                map.setCenter(e.latLng);
+                map.setZoom((map.getZoom() as number - 2) > 2 ? (map.getZoom() as number - 2) : 2);
+            });
+            // Create the search box and link it to the UI element.
+            let searchBox = new google.maps.places.SearchBox(this.gmapSearchBoxRef.current as HTMLInputElement);
+            searchBox.addListener('places_changed', (e: any) => {
+                let places = searchBox.getPlaces();
+                if (places && places.length > 0) {
+                    let bounds = new google.maps.LatLngBounds();
+                    // For each place, get the icon, name and location.
+
+                    places.forEach(function (place) {
+                        if (!place.geometry) {
+                            console.log("Returned place contains no geometry");
+                            return;
+                        }
+
+                        if (place.geometry.viewport) {
+                            // Only geocodes have viewport.
+                            bounds.union(place.geometry.viewport);
+                        } else {
+                            bounds.extend(place.geometry.location as google.maps.LatLng);
+                        }
+                    });
+
+                    map.fitBounds(bounds);
+
+                    this.setState({
+                        viewportPhotos: this.allPhotos.filter((photo) => {
+                            return bounds.contains({ lat: photo.locLat, lng: photo.locLng });
+                        })
+                    });
+                }
             });
         });
-    }
-
-    setGoogleMapRef(map: google.maps.Map) {
-        this.googleMapRef = map;
-
-        let locations = [
-            { lat: -31.563910, lng: 147.154312 },
-            { lat: -33.718234, lng: 150.363181 },
-            { lat: -33.727111, lng: 150.371124 }]
-        let markers = locations && locations.map((location) => {
-            return new google.maps.Marker({ position: location })
-        })
-        let markerCluster = new MarkerClusterer(map, markers, {
-            imagePath: '/lib/@googlemaps/markerclustererplus/m'
-        })
-        this.googleMapRef.setCenter({ lat: -31.563910, lng: 147.154312 });
     }
 
     render() {
@@ -70,12 +122,19 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
                         </div>
                     </Col>
                     <Col lg={{ size: 8, order: 2 }} className="mb-lg-0 mb-2 order-1">
-                        <input id="gmapSearchBox" className="form-control mb-2" type="text" placeholder="Type location here..." />
+                        <input id="gmapSearchBox"
+                            className="form-control mb-2"
+                            type="text"
+                            placeholder="Type location here..."
+                            ref={this.gmapSearchBoxRef} />
                         <div id="gmap">
                             <GoogleMapReact 
-                                bootstrapURLKeys={{ key: "" }}
+                                bootstrapURLKeys={{
+                                    key: "",
+                                    libraries: 'places'
+                                }}
                                 yesIWantToUseGoogleMapApiInternals
-                                onGoogleApiLoaded={({ map }) => this.setGoogleMapRef(map)}
+                                onGoogleApiLoaded={({ map }) => this.GoogleApiLoadedHandler(map)}
                                 defaultCenter={{ lat: 3.140853, lng: 101.693207 }} /* KUL */
                                 defaultZoom={ 12 }
                                 options={{ mapTypeId: 'roadmap' }}
@@ -88,7 +147,7 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
     }
 
     componentDidUpdate(prevProps: IWorldMapProps, prevState: IWorldMapState) {
-        var tessarray = new Tessarray("." + styles["explore-gallery"], ".image-box", {
+        const tessarray = new Tessarray("." + styles["explore-gallery"], ".image-box", {
             selectorClass: false,
             boxTransition: false,
             boxTransformOutTransition: false,

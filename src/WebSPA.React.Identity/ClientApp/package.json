@@ -15,6 +15,7 @@
     "google-map-react": "^2.1.9",
     "jquery": "^3.4.1",
     "merge": "^1.2.1",
+    "moment": "^2.29.1",
     "node-sass": "^4.14.1",
     "oidc-client": "^1.9.0",
     "react": "^16.0.0",

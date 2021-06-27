@@ -4,7 +4,7 @@ import { PhotoService } from '../services/photo.service';
 import styles from './Home.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-declare var Tessarray: any;
+declare const Tessarray: any;
 
 interface IHomeProps { }
 interface IHomeState {
@@ -40,7 +40,7 @@ export class Home extends Component<IHomeProps, IHomeState> {
                                 <div className="interaction-bar">
                                     <div className="text">
                                         <div className="title" title={photo.name}>{photo.name}</div>
-                                        <div className="author" title={photo.author.displayName}>by {photo.author.displayName}</div>
+                                        <div className="author" title={photo?.author.displayName}>by {photo.author.displayName}</div>
                                     </div>
                                     <div className="engagement">
                                         <div className="total-comments" title={photo.totalComments.toString()}>
@@ -57,7 +57,7 @@ export class Home extends Component<IHomeProps, IHomeState> {
     }
 
     componentDidUpdate(prevProps: IHomeProps, prevState: IHomeState) {
-        var tessarray = new Tessarray("." + styles["explore-gallery"], ".image-box", {
+        const tessarray = new Tessarray("." + styles["explore-gallery"], ".image-box", {
             selectorClass: false,
             boxTransition: false,
             boxTransformOutTransition: false,

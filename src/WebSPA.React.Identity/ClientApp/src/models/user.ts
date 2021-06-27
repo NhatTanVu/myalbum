@@ -1,10 +1,10 @@
-export interface User {
-  userName: string;
-  firstName: string;
-  lastName: string;
-  displayName: string;
-  createdDate: Date;
-  modifiedDate: Date;
+export class User {
+  userName: string = "";
+  firstName: string = "";
+  lastName: string = "";
+  displayName: string = "";
+  createdDate: Date = new Date();
+  modifiedDate: Date = new Date();
 }
 
 export function setDisplayName(user: User) {
