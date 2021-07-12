@@ -4,6 +4,7 @@ import { CommentService } from '../services/comment.service';
 import './ReplyList.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Moment from 'moment';
+import { ReplyForm } from './ReplyForm';
 
 interface IReplyListProps {
     parent?: Comment,
@@ -49,23 +50,23 @@ export class ReplyList extends Component<IReplyListProps, IReplyListState> {
                             {reply.isNew && <span><FontAwesomeIcon icon="comment-medical" className="ml-2 text-info"></FontAwesomeIcon></span>}
                         </div>
                         {(reply.author.userName === this.props.userName) && <div>
-                            <button className="btn btn-link" onClick={(e: any) => { reply.isEditing = !reply.isEditing }}>
+                            <button className="btn btn-link p-0" onClick={(e: any) => { reply.isEditing = !reply.isEditing; this.forceUpdate(); }}>
                                 {!reply.isEditing ? <span>Edit</span> : <span>Close</span >}
                             </button>
                             <span>&nbsp;|&nbsp;</span>
-                            <button className="btn btn-link" onClick={(e: any) => { this.delete(reply) }} title="Delete Comment">Delete</button>
+                            <button className="btn btn-link p-0" onClick={(e: any) => { this.delete(reply) }} title="Delete Comment">Delete</button>
                         </div>}
-                        {!reply.isEditing ? <div>{reply.content}</div> : ""/*<app-edit-reply *ngIf="reply.isEditing" [comment]="reply"></app-edit-reply>*/}
+                        {!reply.isEditing ? <div>{reply.content}</div> : <ReplyForm></ReplyForm>/*<app-edit-reply *ngIf="reply.isEditing" [comment]="reply"></app-edit-reply>*/}
                         <div>
                             {(reply.numOfReplies > 0) &&
-                                <button className="btn btn-link" onClick={(e: any) => { this.toggleReplies(reply) }}>
+                                <button className="btn btn-link p-0" onClick={(e: any) => { this.toggleReplies(reply) }}>
                                     {!reply.isViewing ? <span>View</span> : <span>Hide</span>} {reply.numOfReplies} replies
                                 </button>}
                             {(reply.numOfReplies > 0) && <span>&nbsp;|&nbsp;</span>}
-                            <button className="btn btn-link" onClick={(e: any) => { reply.isReplying = !reply.isReplying }}>
+                            <button className="btn btn-link p-0" onClick={(e: any) => { reply.isReplying = !reply.isReplying; this.forceUpdate(); }}>
                                 {!reply.isReplying ? <span>Reply</span> : <span>Close</span>}
                             </button>
-                            {/*<app-reply-form *ngIf="reply.isReplying" [parent]="reply"></app-reply-form>*/}
+                            {reply.isReplying && <ReplyForm></ReplyForm> /*<app-reply-form *ngIf="reply.isReplying" [parent]="reply"></app-reply-form>*/}
                             {reply.isViewing && <ReplyList parent={reply} replies={reply.replies} userName={this.props.userName}></ReplyList>}
                         </div>
                     </div>

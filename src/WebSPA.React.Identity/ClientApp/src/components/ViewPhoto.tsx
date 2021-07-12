@@ -10,6 +10,9 @@ import GoogleMapReact from 'google-map-react';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 import { ReplyList } from './ReplyList';
+import { ReplyForm } from './ReplyForm';
+import { DisplayMode } from '../models/globalData';
+import { GlobalDataContext } from '../context/GlobalDataContext';
 
 interface IViewPhotoProps { }
 interface IViewPhotoState {
@@ -28,6 +31,9 @@ interface IViewPhotoParams {
 }
 
 export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<IViewPhotoParams>, IViewPhotoState> {
+    static contextType = GlobalDataContext;
+    context!: React.ContextType<typeof GlobalDataContext>;
+
     private photoService = new PhotoService();
     private photoId: number;
     private photoContainerRef: React.RefObject<HTMLDivElement>;
@@ -146,7 +152,9 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                 this.props.history.push('/');
             }
         });
+        this.context?.setDisplayMode(DisplayMode.Photo);
     }
+
     componentWillUnmount() {
         window.removeEventListener("resize", this.handleResize);
     }
@@ -247,31 +255,17 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                         </Row>
                     </Col>
                 </Row>
-                {/*<Row>
-                    <div className="col-lg-6 mb-2">
+                <Row>
+                    <Col lg={{ size: 6 }}>
                         <div>
                             <h4>New Comment</h4>
                             <hr />
                         </div>
                         <div>
-                            <form id="newCommentForm" className="container pt-2">
-                                <div className="row">
-                                    <div className="col-12">
-                                        <label htmlFor="newComment" className="required">Comment:</label>
-                                    </div>
-                                    <div className="col-12">
-                                        <div className="form-group">
-                                            <textarea id="newComment" name="newComment" className="form-control" required></textarea>
-                                        </div>
-                                        <div className="form-group">
-                                            <button className="btn btn-primary" type="submit">Post</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                            <ReplyForm></ReplyForm>
                         </div>
-                    </div>
-                </Row>*/}
+                    </Col>
+                </Row>
                 {this.state.photo.comments && this.state.photo.comments.length > 0 &&
                     <Row>
                         <Col lg={{ size: 6 }}>
@@ -280,7 +274,7 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                                 <hr />
                             </div>
                             <div>
-                                {<ReplyList replies={this.state.photo.comments} userName={this.state.userName}></ReplyList>}
+                                <ReplyList replies={this.state.photo.comments} userName={this.state.userName}></ReplyList>
                             </div>
                          </Col>
                     </Row>

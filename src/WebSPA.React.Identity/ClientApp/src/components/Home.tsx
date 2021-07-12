@@ -3,6 +3,8 @@ import { Photo } from '../models/photo';
 import { PhotoService } from '../services/photo.service';
 import styles from './Home.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { GlobalDataContext } from '../context/GlobalDataContext';
+import { DisplayMode } from '../models/globalData';
 
 declare const Tessarray: any;
 
@@ -12,13 +14,16 @@ interface IHomeState {
 }
 
 export class Home extends Component<IHomeProps, IHomeState> {
+    static contextType = GlobalDataContext;
+    context!: React.ContextType<typeof GlobalDataContext>;
+
     private photoService = new PhotoService();
 
     constructor(props: IHomeProps) {
         super(props);
         this.state = {
             photos: []
-        };
+        };   
     }
 
     componentDidMount() {
@@ -27,6 +32,7 @@ export class Home extends Component<IHomeProps, IHomeState> {
                 photos: data
             });
         });
+        this.context?.setDisplayMode(DisplayMode.Photo);
     }
 
     render() {

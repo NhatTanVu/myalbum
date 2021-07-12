@@ -14,7 +14,7 @@ export class Album {
     modifiedDate: Date | null = null;
     author: User | null = null;
     mainPhoto: Photo | null = null;
-    subPhotos: Photo[] = [];
+    subPhotos: (Photo | null)[] = [];
     photos: Photo[] = [];
 }
 
