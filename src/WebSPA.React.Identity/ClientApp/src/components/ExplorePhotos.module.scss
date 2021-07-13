@@ -1,23 +1,4 @@
 :global {
-    .header-container {
-        display: table;
-        table-layout: fixed;
-        width: 100%;
-    }
-
-    .header-container .header-text {
-        display: table-cell;
-        vertical-align: center;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .header-container .header-button {
-        display: table-cell;
-        width: 46px;
-    }
-
     :local(.explore-gallery) div.image-box {
         position: relative;
         overflow: hidden;

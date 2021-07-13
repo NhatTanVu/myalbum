@@ -13,11 +13,11 @@ a {
 
 body,
 html {
-    height: 100%;
+    height: 100vh;
 }
 
 #container-body {
-    min-height: 80%;
+    min-height: 80vh;
 }
 
 /* Add-Photo + View-Photo map */

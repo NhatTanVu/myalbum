@@ -1,25 +1,27 @@
 import React, { Component } from 'react';
 import { Photo } from '../models/photo';
 import { PhotoService } from '../services/photo.service';
-import styles from './Home.module.scss';
+import styles from './ExplorePhotos.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GlobalDataContext } from '../context/GlobalDataContext';
 import { DisplayMode } from '../models/globalData';
 
 declare const Tessarray: any;
 
-interface IHomeProps { }
-interface IHomeState {
+interface IExplorePhotosProps {
+    albumId: number;
+}
+interface IExplorePhotosState {
     photos: Photo[];
 }
 
-export class Home extends Component<IHomeProps, IHomeState> {
+export class ExplorePhotos extends Component<IExplorePhotosProps, IExplorePhotosState> {
     static contextType = GlobalDataContext;
     context!: React.ContextType<typeof GlobalDataContext>;
 
     private photoService = new PhotoService();
 
-    constructor(props: IHomeProps) {
+    constructor(props: IExplorePhotosProps) {
         super(props);
         this.state = {
             photos: []
@@ -27,12 +29,19 @@ export class Home extends Component<IHomeProps, IHomeState> {
     }
 
     componentDidMount() {
-        this.photoService.getAll([]).then(data => {
+        let filter: any = {};
+        if (this.props.albumId) {
+            filter.albumId = this.props.albumId;
+            this.context?.setDisplayMode(DisplayMode.Album);
+        }
+        else {
+            this.context?.setDisplayMode(DisplayMode.Photo);
+        }
+        this.photoService.getAll(filter).then(data => {
             this.setState({
                 photos: data
             });
         });
-        this.context?.setDisplayMode(DisplayMode.Photo);
     }
 
     render() {
@@ -62,7 +71,7 @@ export class Home extends Component<IHomeProps, IHomeState> {
         );
     }
 
-    componentDidUpdate(prevProps: IHomeProps, prevState: IHomeState) {
+    componentDidUpdate(prevProps: IExplorePhotosProps, prevState: IExplorePhotosState) {
         const tessarray = new Tessarray("." + styles["explore-gallery"], ".image-box", {
             selectorClass: false,
             boxTransition: false,

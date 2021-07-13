@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router';
 import { Layout } from './components/Layout';
-import { Home } from './components/Home';
+import { ExplorePhotos } from './components/ExplorePhotos';
 import { ExploreAlbum } from './components/ExploreAlbum';
 import { AddPhoto } from './components/AddPhoto';
 import { WorldMap } from './components/WorldMap';
@@ -23,7 +23,7 @@ export default class App extends Component {
             <GlobalDataContextProvider>
                 <Layout>
                     <Switch>
-                        <Route exact path='/' component={Home} />
+                        <Route exact path='/' component={ExplorePhotos} />
                         <Route exact path='/album' component={ExploreAlbum} />
                         <Route path='/worldmap' component={WorldMap} />
                         <Route path='/photo/new' component={AddPhoto} />

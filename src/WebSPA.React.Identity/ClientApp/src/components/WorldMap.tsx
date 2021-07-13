@@ -6,6 +6,8 @@ import styles from './WorldMap.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import GoogleMapReact from 'google-map-react';
 import MarkerClusterer from '@googlemaps/markerclustererplus';
+import { GlobalDataContext } from '../context/GlobalDataContext';
+import { DisplayMode } from '../models/globalData';
 
 declare const Tessarray: any;
 
@@ -15,6 +17,9 @@ interface IWorldMapState {
 }
 
 export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
+    static contextType = GlobalDataContext;
+    context!: React.ContextType<typeof GlobalDataContext>;
+
     private photoService = new PhotoService();
     private allPhotos: Photo[] = [];
     private gmapSearchBoxRef: React.RefObject<HTMLInputElement>;
@@ -144,6 +149,10 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
                 </Row>
             </div>
         );
+    }
+
+    componentDidMount() {
+        this.context?.setDisplayMode(DisplayMode.Photo);
     }
 
     componentDidUpdate(prevProps: IWorldMapProps, prevState: IWorldMapState) {

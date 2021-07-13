@@ -6,10 +6,12 @@ import './ViewAlbum.css';
 import { RouteComponentProps } from 'react-router';
 import { DisplayMode } from '../models/globalData';
 import { GlobalDataContext } from '../context/GlobalDataContext';
+import { ExplorePhotos } from "./ExplorePhotos"
+import { AlbumService } from '../services/album.service';
 
 interface IViewAlbumProps { }
 interface IViewAlbumState {
-    album: Album
+    album: Album | null
 }
 
 interface IViewAlbumParams {
@@ -20,23 +22,28 @@ export class ViewAlbum extends Component<IViewAlbumProps & RouteComponentProps<I
     static contextType = GlobalDataContext;
     context!: React.ContextType<typeof GlobalDataContext>;
 
+    private albumService = new AlbumService();
+    private albumId: number;
+
     constructor(props: IViewAlbumProps & RouteComponentProps<IViewAlbumParams>) {
         super(props);
+        this.albumId = parseInt(this.props.match.params.id);
         this.state = {
-            album: {
-                id: -1,
-                name: "Test",
-                createdDate: null,
-                modifiedDate: null,
-                author: null,
-                mainPhoto: null,
-                subPhotos: [],
-                photos: []
-            }
+            album: null
         };
     }
 
     componentDidMount() {
+        this.albumService.get(this.albumId).then(album => {
+            if (album) {
+                this.setState({
+                    album: album
+                });
+            }
+            else {
+                this.props.history.push('/album');
+            }
+        });
         this.context?.setDisplayMode(DisplayMode.Album);
     }
 
@@ -45,20 +52,22 @@ export class ViewAlbum extends Component<IViewAlbumProps & RouteComponentProps<I
 
     render() {
         return (
-            <div>
-                <div className="row">
-                    <div className="col-lg-6">
-                        <h3 className="header-container">
-                            <span className="header-text" title={this.state.album.name as string}>{this.state.album.name as string}</span>
-                            {/*<a className="btn btn-secondary header-button" href="/album/edit/{{ album.id }}" *ngIf="isEditable()"
-                                title="Edit Album">
-                                <i class="fas fa-pencil-alt"></i>
-                            </a>*/}
-                        </h3>
-                        <hr />
-                    </div>
+            this.state.album &&
+                <div>
+                    <Row>
+                        <Col lg={{ size: 6 }}>
+                            <h3 className="header-container">
+                                <span className="header-text" title={this.state.album.name as string}>{this.state.album.name as string}</span>
+                                {/*<a className="btn btn-secondary header-button" href="/album/edit/{{ album.id }}" *ngIf="isEditable()"
+                                    title="Edit Album">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>*/}
+                            </h3>
+                            <hr />
+                        </Col>
+                    </Row>
+                    <ExplorePhotos albumId={this.state.album.id} />
                 </div>
-            </div>
         );
     }
 }
