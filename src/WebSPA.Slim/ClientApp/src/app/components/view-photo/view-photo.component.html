@@ -4,7 +4,7 @@
       <h3 class="header-container">
         <span class="header-text" title="{{ photo.name }}">{{ photo.name }}</span>
         <a class="btn btn-secondary header-button" href="/photo/edit/{{ photo.id }}" *ngIf="isEditable()"
-          title="Edit Photo">
+           title="Edit Photo">
           <i class="fas fa-pencil-alt"></i>
         </a>
       </h3>
@@ -14,17 +14,17 @@
   <div class="row">
     <div class="col-lg-6 photo-container" #photoContainer>
       <div class="flip-container mb-2" (click)="isShownBoundingBox = !isShownBoundingBox"
-        [class.flip]="isShownBoundingBox" [style.width.px]="flipContainerWidth" [hidden]="maxWidth == 0">
+           [class.flip]="isShownBoundingBox" [style.width.px]="flipContainerWidth" [hidden]="maxWidth == 0">
         <div class="flipper">
           <div class="front">
             <!-- front content -->
             <img #imagePhoto src="{{ photo.filePath }}" class="img-thumbnail" [style.maxWidth.px]="maxWidth"
-              [style.maxHeight.px]="maxHeight">
+                 [style.maxHeight.px]="maxHeight">
           </div>
           <div class="back">
             <!-- back content -->
             <img src="{{ photo.boundingBoxFilePath }}" class="img-thumbnail" [style.maxWidth.px]="maxWidth"
-              [style.maxHeight.px]="maxHeight">
+                 [style.maxHeight.px]="maxHeight">
           </div>
         </div>
       </div>
@@ -39,7 +39,7 @@
       <div class="row" *ngIf="photo.album">
         <div class="col">
           <a class="btn btn-outline-secondary mr-2 mb-2" [routerLink]="['/']"
-            [queryParams]="{'albumId': photo.album.id}">{{photo.album.name}}</a>
+             [queryParams]="{'albumId': photo.album.id}">{{photo.album.name}}</a>
         </div>
       </div>
       <div class="row" [class.mb-5]="!photo.photoCategories || photo.photoCategories.length == 0">
@@ -51,20 +51,18 @@
       <div class="row" *ngIf="photo.photoCategories && photo.photoCategories.length > 0">
         <div class="col">
           <a *ngFor="let cat of photo.photoCategories" class="btn btn-outline-secondary mr-2 mb-2" [routerLink]="['/']"
-            [queryParams]="{'catId': cat.id}">{{cat.name}}</a>
+             [queryParams]="{'catId': cat.id}">{{cat.name}}</a>
         </div>
       </div>
-      <div>
-        <div class="row" [class.mb-5]="!hasMap">
-          <div class="col">
-            <h4>Location</h4>
-            <hr />
-          </div>
+      <div class="row" [class.mb-5]="!hasMap">
+        <div class="col">
+          <h4>Location</h4>
+          <hr />
         </div>
-        <div class="row">
-          <div class="col">
-            <div id="gmap-edit" #gmap [style.height.px]="gmapHeight"></div>
-          </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div id="gmap-edit" #gmap [style.height.px]="gmapHeight"></div>
         </div>
       </div>
     </div>
@@ -84,7 +82,7 @@
             <div class="col-12">
               <div class="form-group">
                 <textarea id="newComment" name="newComment" type="text" class="form-control"
-                  [(ngModel)]="newComment.content" required></textarea>
+                          [(ngModel)]="newComment.content" required></textarea>
               </div>
               <div class="form-group">
                 <button class="btn btn-primary" type="submit" [disabled]="!f.valid">Post</button>

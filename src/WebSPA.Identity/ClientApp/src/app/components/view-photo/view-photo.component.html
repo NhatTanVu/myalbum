@@ -54,17 +54,15 @@
             [queryParams]="{'catId': cat.id}">{{cat.name}}</a>
         </div>
       </div>
-      <div>
-        <div class="row" [class.mb-5]="!hasMap">
-          <div class="col">
-            <h4>Location</h4>
-            <hr />
-          </div>
+      <div class="row" [class.mb-5]="!hasMap">
+        <div class="col">
+          <h4>Location</h4>
+          <hr />
         </div>
-        <div class="row">
-          <div class="col">
-            <div id="gmap-edit" #gmap [style.height.px]="gmapHeight"></div>
-          </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div id="gmap-edit" #gmap [style.height.px]="gmapHeight"></div>
         </div>
       </div>
     </div>

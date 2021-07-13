@@ -37,6 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web Apps", "Web Apps", "{18
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSPA.Identity", "WebSPA.Identity\WebSPA.Identity.csproj", "{26560FC4-7CE4-4E49-AD5B-7F6C160970A2}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSPA.React.Identity", "WebSPA.React.Identity\WebSPA.React.Identity.csproj", "{5FFCBB14-A361-404D-A9DF-0114CC6C9A4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{26560FC4-7CE4-4E49-AD5B-7F6C160970A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26560FC4-7CE4-4E49-AD5B-7F6C160970A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26560FC4-7CE4-4E49-AD5B-7F6C160970A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FFCBB14-A361-404D-A9DF-0114CC6C9A4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FFCBB14-A361-404D-A9DF-0114CC6C9A4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FFCBB14-A361-404D-A9DF-0114CC6C9A4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FFCBB14-A361-404D-A9DF-0114CC6C9A4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,6 +116,7 @@ Global
 		{E1145144-0F03-4EE9-A4EC-30EE9F7B379A} = {57362679-8357-482C-B3BB-BBDA594AEBD4}
 		{420C5F4E-DE46-4ABE-8DE2-A1598C74FD1C} = {18961CF2-0EE6-45E0-BF40-6E5CBD3C93C2}
 		{26560FC4-7CE4-4E49-AD5B-7F6C160970A2} = {18961CF2-0EE6-45E0-BF40-6E5CBD3C93C2}
+		{5FFCBB14-A361-404D-A9DF-0114CC6C9A4C} = {18961CF2-0EE6-45E0-BF40-6E5CBD3C93C2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F6DB5D8B-521D-4107-9256-54F522F3FCBB}
