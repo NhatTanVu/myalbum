@@ -37,32 +37,35 @@ docker-compose up
 <kbd>![App Settings](https://raw.githubusercontent.com/NhatTanVu/vega/master/_screenshots/Add%20App%20Settings.PNG)</kbd>
 3. [Deploy](https://docs.microsoft.com/en-us/aspnet/core/tutorials/publish-to-azure-webapp-using-vscode?view=aspnetcore-3.1) to Azure
 # Screenshots
-1. **Explore**\
-<kbd>![Explore](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/explore.JPG?raw=true)</kbd>
+1. **[Photo] Explore**\
+<kbd>![Explore Photos](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/explore.JPG?raw=true)</kbd>
 
-2. **Explore Album**\
-<kbd>![Explore Album](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/explore_album.jpg?raw=true)</kbd>
-
-3. **World Map**\
+2. **[Photo] World Map**\
 <kbd>![World Map](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/world_map.jpg?raw=true)</kbd>
 
-4. **Add Photo**\
+3. **[Album] Explore**\
+<kbd>![Explore Albums](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/explore_album.jpg?raw=true)</kbd>
+
+4. **[Album] View**\
+<kbd>![View Album](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/view_album.jpg?raw=true)</kbd>
+
+5. **[Photo] Add**\
 <kbd>![Add Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/add_photo.jpg?raw=true)</kbd>
 
-5. **Edit Photo**\
+6. **[Photo] Edit**\
 <kbd>![Edit Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/edit_photo.jpg?raw=true)</kbd>
 
-6. **View Photo**\
+7. **[Photo] View**\
 <kbd>![View Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/view_photo.JPG?raw=true)</kbd>
 
-7. **View Photo >> Object Detection** (click on the photo)
+8. **[Photo] View >> Object Detection** (click on the photo)\
 <kbd>![View Photo >> Object Detection](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/view_photo_object_detection.JPG?raw=true)</kbd>
 
-8. **View Photo >> Add Comment**
+9. **[Photo] View >> Add Comment**
 <kbd>![View Photo >> Add Comment](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/add_comment.JPG?raw=true)</kbd>
 
-9. **View Photo >> Notify Comment (real-time)**
+10. **[Photo] View >> Notify Comment (real-time)**\
 <kbd>![View Photo >> Update New Comment (real-time)](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/notify_comment.jpg?raw=true)</kbd>
 
-10. **View Photo >> Reply Comment**
+11. **[Photo] View >> Reply Comment**\
 <kbd>![View Photo >> Add & View Reply](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/reply_comment.jpg?raw=true)</kbd>
