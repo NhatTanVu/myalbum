@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
 import { Album } from '../models/album';
 import { AlbumService } from '../services/album.service';
-import './ExploreAlbum.css';
+import './ExploreAlbums.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GlobalDataContext } from '../context/GlobalDataContext';
 import { DisplayMode } from '../models/globalData';
 
 declare const Tessarray: any;
 
-interface IExploreAlbumProps { }
-interface IExlploreAlbumState {
+interface IExploreAlbumsProps { }
+interface IExlploreAlbumsState {
     albums: Album[];
 }
 
-export class ExploreAlbum extends Component<IExploreAlbumProps, IExlploreAlbumState> {
+export class ExploreAlbums extends Component<IExploreAlbumsProps, IExlploreAlbumsState> {
     static contextType = GlobalDataContext;
     context!: React.ContextType<typeof GlobalDataContext>;
 
     private albumService = new AlbumService();
 
-    constructor(props: IExploreAlbumProps) {
+    constructor(props: IExploreAlbumsProps) {
         super(props);
         this.state = {
             albums: []
@@ -33,6 +33,7 @@ export class ExploreAlbum extends Component<IExploreAlbumProps, IExlploreAlbumSt
             });
         });
         this.context?.setDisplayMode(DisplayMode.Album);
+        this.context?.setEnableDisplayMode(true);
     }
 
     render() {
@@ -73,7 +74,7 @@ export class ExploreAlbum extends Component<IExploreAlbumProps, IExlploreAlbumSt
         );
     }
 
-    componentDidUpdate(prevProps: IExploreAlbumProps, prevState: IExlploreAlbumState) {
+    componentDidUpdate(prevProps: IExploreAlbumsProps, prevState: IExlploreAlbumsState) {
         const tessarray = new Tessarray(".album-gallery", ".album-box", {
             selectorClass: false,
             imageClass: ".album-box .main-photo img",

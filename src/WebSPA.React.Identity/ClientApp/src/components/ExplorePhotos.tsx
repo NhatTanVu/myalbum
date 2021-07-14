@@ -29,13 +29,16 @@ export class ExplorePhotos extends Component<IExplorePhotosProps, IExplorePhotos
     }
 
     componentDidMount() {
+        console.log("React.version = " + React.version);
         let filter: any = {};
         if (this.props.albumId) {
             filter.albumId = this.props.albumId;
             this.context?.setDisplayMode(DisplayMode.Album);
+            this.context?.setEnableDisplayMode(false);
         }
         else {
             this.context?.setDisplayMode(DisplayMode.Photo);
+            this.context?.setEnableDisplayMode(true);
         }
         this.photoService.getAll(filter).then(data => {
             this.setState({

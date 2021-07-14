@@ -37,35 +37,30 @@ class NavMenu extends Component<INavMenuProps & RouteComponentProps, INavMenuSta
     changeDisplayMode(displayMode: DisplayMode) {
         let currentPath = window.location.pathname;
 
-        if (currentPath == "/worldmap") {
-            this.context?.setDisplayMode(DisplayMode.Photo);
-        }
-        else {
-            switch (currentPath) {
-                case "/":
-                    if (displayMode == DisplayMode.Album) {
-                        this.props.history.push('/album');
-                    }
-                    else {
-                        this.props.history.push('/');
-                    }
-                    break;
-                case "/photo/new":
-                    if (displayMode == DisplayMode.Album) {
-                        this.props.history.push('/album/new');
-                    }
-                    break;
-                case "/album":
-                    if (displayMode == DisplayMode.Photo) {
-                        this.props.history.push('/');
-                    }
-                    break;
-                case "/album/new":
-                    if (displayMode == DisplayMode.Photo) {
-                        this.props.history.push('/photo/new');
-                    }
-                    break;
-            }
+        switch (currentPath) {
+            case "/":
+                if (displayMode == DisplayMode.Album) {
+                    this.props.history.push('/album');
+                }
+                else {
+                    this.props.history.push('/');
+                }
+                break;
+            case "/photo/new":
+                if (displayMode == DisplayMode.Album) {
+                    this.props.history.push('/album/new');
+                }
+                break;
+            case "/album":
+                if (displayMode == DisplayMode.Photo) {
+                    this.props.history.push('/');
+                }
+                break;
+            case "/album/new":
+                if (displayMode == DisplayMode.Photo) {
+                    this.props.history.push('/photo/new');
+                }
+                break;
         }
 
         console.log("currentPath = " + currentPath);
@@ -83,13 +78,16 @@ class NavMenu extends Component<INavMenuProps & RouteComponentProps, INavMenuSta
                         </NavbarBrand>
                         <div className="d-inline-flex">
                             <div className="rounded switch-toggle alert display-mode mobile">
+                                {!this.context?.globalData.enableDisplayMode && <div className="overlay"></div>}
                                 <div>
                                     <input id="photo_mobile" name="displayMode_mobile" type="radio" value="photo"
                                         checked={this.context?.globalData.displayMode === DisplayMode.Photo}
+                                        disabled={!this.context?.globalData.enableDisplayMode}
                                         onChange={(e) => this.changeDisplayMode(DisplayMode.Photo)} />
                                     <label htmlFor="photo_mobile">Photo</label>
                                     <input id="album_mobile" name="displayMode_mobile" type="radio" value="album" 
                                         checked={this.context?.globalData.displayMode === DisplayMode.Album}
+                                        disabled={!this.context?.globalData.enableDisplayMode}
                                         onChange={(e) => this.changeDisplayMode(DisplayMode.Album)} />
                                     <label htmlFor="album_mobile">Album</label>
                                     <a className="btn btn-primary"></a>
@@ -113,26 +111,37 @@ class NavMenu extends Component<INavMenuProps & RouteComponentProps, INavMenuSta
                                     }
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-light" to="/worldmap"> {/* TODO: Fix later */}
-                                        <FontAwesomeIcon icon="globe" /> World Map
-                                    </NavLink>
+                                    {this.context?.globalData.displayMode === DisplayMode.Photo &&
+                                        <NavLink tag={Link} className="text-light" to="/worldmap">
+                                            <FontAwesomeIcon icon="globe" /> World Map
+                                        </NavLink>
+                                    }
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-light" to="/photo/new"> {/* TODO: Fix later */}
-                                        <FontAwesomeIcon icon="plus" /> Add
-                                    </NavLink>
+                                    {this.context?.globalData.displayMode === DisplayMode.Photo &&
+                                        <NavLink tag={Link} className="text-light" to="/photo/new">
+                                            <FontAwesomeIcon icon="plus" /> Add
+                                        </NavLink>
+                                    }
+                                    {this.context?.globalData.displayMode === DisplayMode.Album &&
+                                        <NavLink tag={Link} className="text-light" to="/album/new">
+                                            <FontAwesomeIcon icon="plus" /> Add
+                                        </NavLink>
+                                    }
                                 </NavItem>
                             </ul>
                             <span className="separator"></span>
                             <div className="rounded switch-toggle alert display-mode">
-                                {/* <div className="overlay"></div> */}
+                                {!this.context?.globalData.enableDisplayMode && <div className="overlay"></div>}
                                 <div>
                                     <input id="photo" name="displayMode" type="radio" value="photo"
                                         checked={this.context?.globalData.displayMode === DisplayMode.Photo}
+                                        disabled={!this.context?.globalData.enableDisplayMode}
                                         onChange={(e) => this.changeDisplayMode(DisplayMode.Photo)} />
                                     <label htmlFor="photo">Photo</label>
                                     <input id="album" name="displayMode" type="radio" value="album"
                                         checked={this.context?.globalData.displayMode === DisplayMode.Album}
+                                        disabled={!this.context?.globalData.enableDisplayMode}
                                         onChange={(e) => this.changeDisplayMode(DisplayMode.Album)} />
                                     <label htmlFor="album">Album</label>
                                     <a className="btn btn-primary"></a>
