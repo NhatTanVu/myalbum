@@ -45,6 +45,7 @@ export class ViewAlbum extends Component<IViewAlbumProps & RouteComponentProps<I
             }
         });
         this.context?.setDisplayMode(DisplayMode.Album);
+        this.context?.setEnableDisplayMode(false);
     }
 
     componentWillUnmount() {

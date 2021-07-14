@@ -153,6 +153,7 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
 
     componentDidMount() {
         this.context?.setDisplayMode(DisplayMode.Photo);
+        this.context?.setEnableDisplayMode(false);
     }
 
     componentDidUpdate(prevProps: IWorldMapProps, prevState: IWorldMapState) {

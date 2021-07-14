@@ -153,6 +153,7 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
             }
         });
         this.context?.setDisplayMode(DisplayMode.Photo);
+        this.context?.setEnableDisplayMode(false);
     }
 
     componentWillUnmount() {
@@ -207,7 +208,7 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                             <Row>
                                 <Col>
                                     {this.state.photo.album.name &&
-                                        <Link className="btn btn-outline-secondary mr-2 mb-2" to={"/?albumId=" + this.state.photo.album.id}>{this.state.photo.album.name}</Link>
+                                        <Link className="btn btn-outline-secondary mr-2 mb-2" to={"/album/" + this.state.photo.album.id}>{this.state.photo.album.name}</Link>
                                     }
                                 </Col>
                             </Row>
@@ -238,7 +239,8 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                                 <div id="gmap-edit" style={{ height: this.state.gmapHeight }}>
                                     <GoogleMapReact
                                         bootstrapURLKeys={{
-                                            key: ""
+                                            key: "",
+                                            libraries: 'places'
                                         }}
                                         yesIWantToUseGoogleMapApiInternals
                                         defaultCenter={{ lat: 3.140853, lng: 101.693207 }} /* KUL */

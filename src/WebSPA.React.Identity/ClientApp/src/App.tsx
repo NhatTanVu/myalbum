@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router';
 import { Layout } from './components/Layout';
 import { ExplorePhotos } from './components/ExplorePhotos';
-import { ExploreAlbum } from './components/ExploreAlbum';
+import { ExploreAlbums } from './components/ExploreAlbums';
 import { AddPhoto } from './components/AddPhoto';
 import { WorldMap } from './components/WorldMap';
 import { ViewPhoto } from './components/ViewPhoto';
@@ -24,7 +24,7 @@ export default class App extends Component {
                 <Layout>
                     <Switch>
                         <Route exact path='/' component={ExplorePhotos} />
-                        <Route exact path='/album' component={ExploreAlbum} />
+                        <Route exact path='/album' component={ExploreAlbums} />
                         <Route path='/worldmap' component={WorldMap} />
                         <Route path='/photo/new' component={AddPhoto} />
                         <Route path='/photo/:id' component={ViewPhoto} />
