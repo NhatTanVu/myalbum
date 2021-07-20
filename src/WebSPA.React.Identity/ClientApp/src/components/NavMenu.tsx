@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { NavLink as RRNavLink } from 'react-router-dom';
 import './NavMenu.css';
 import '../toggle-switch.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -39,7 +39,7 @@ class NavMenu extends Component<INavMenuProps & RouteComponentProps, INavMenuSta
 
         switch (currentPath) {
             case "/":
-                if (displayMode == DisplayMode.Album) {
+                if (displayMode === DisplayMode.Album) {
                     this.props.history.push('/album');
                 }
                 else {
@@ -47,17 +47,17 @@ class NavMenu extends Component<INavMenuProps & RouteComponentProps, INavMenuSta
                 }
                 break;
             case "/photo/new":
-                if (displayMode == DisplayMode.Album) {
+                if (displayMode === DisplayMode.Album) {
                     this.props.history.push('/album/new');
                 }
                 break;
             case "/album":
-                if (displayMode == DisplayMode.Photo) {
+                if (displayMode === DisplayMode.Photo) {
                     this.props.history.push('/');
                 }
                 break;
             case "/album/new":
-                if (displayMode == DisplayMode.Photo) {
+                if (displayMode === DisplayMode.Photo) {
                     this.props.history.push('/photo/new');
                 }
                 break;
@@ -72,7 +72,7 @@ class NavMenu extends Component<INavMenuProps & RouteComponentProps, INavMenuSta
             <header>
                 <Navbar className="navbar navbar-expand-md navbar-toggleable-md navbar-dark box-shadow-bottom background-dark-darker" light>
                     <Container fluid={true}>
-                        <NavbarBrand tag={Link} to="/" className="navbar-brand text-light">
+                        <NavbarBrand tag={RRNavLink} to="/" className="navbar-brand text-light">
                             <img className="rounded" src="/logo.jpg" alt="logo.jpg" height="40px" width="40px" />
                             <span> My Album</span>
                         </NavbarBrand>
@@ -100,31 +100,38 @@ class NavMenu extends Component<INavMenuProps & RouteComponentProps, INavMenuSta
                             <ul className="navbar-nav flex-grow">
                                 <NavItem>
                                     {this.context?.globalData.displayMode === DisplayMode.Photo &&
-                                        <NavLink tag={Link} className="text-light" to="/">
+                                        <NavLink tag={RRNavLink} className="text-light" to="/" activeClassName="link-active" exact>
                                             <FontAwesomeIcon icon="torii-gate" /> Explore
                                         </NavLink>
                                     }
                                     {this.context?.globalData.displayMode === DisplayMode.Album &&
-                                        <NavLink tag={Link} className="text-light" to="/album">
+                                        <NavLink tag={RRNavLink} className="text-light" to="/album" activeClassName="link-active" exact>
                                             <FontAwesomeIcon icon="torii-gate" /> Explore
                                         </NavLink>
                                     }
                                 </NavItem>
-                                <NavItem>
-                                    {this.context?.globalData.displayMode === DisplayMode.Photo &&
-                                        <NavLink tag={Link} className="text-light" to="/worldmap">
+                                {this.context?.globalData.displayMode === DisplayMode.Photo &&
+                                    <NavItem>
+                                        <NavLink tag={RRNavLink} className="text-light" to="/worldmap" activeClassName="link-active">
                                             <FontAwesomeIcon icon="globe" /> World Map
                                         </NavLink>
-                                    }
-                                </NavItem>
+                                    </NavItem>
+                                }
+                                {this.context?.globalData.displayMode === DisplayMode.Album &&
+                                    <NavItem className="disabled">
+                                        <span className="nav-link text-dark">
+                                            <FontAwesomeIcon icon="globe" /> World Map
+                                        </span>
+                                    </NavItem>
+                                }
                                 <NavItem>
                                     {this.context?.globalData.displayMode === DisplayMode.Photo &&
-                                        <NavLink tag={Link} className="text-light" to="/photo/new">
+                                        <NavLink tag={RRNavLink} className="text-light" to="/photo/new" activeClassName="link-active">
                                             <FontAwesomeIcon icon="plus" /> Add
                                         </NavLink>
                                     }
                                     {this.context?.globalData.displayMode === DisplayMode.Album &&
-                                        <NavLink tag={Link} className="text-light" to="/album/new">
+                                        <NavLink tag={RRNavLink} className="text-light" to="/album/new" activeClassName="link-active">
                                             <FontAwesomeIcon icon="plus" /> Add
                                         </NavLink>
                                     }

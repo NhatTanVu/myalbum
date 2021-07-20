@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { GlobalDataContext } from '../context/GlobalDataContext';
+import { DisplayMode } from '../models/globalData';
 
 interface IAddPhotoProps { }
 interface IAddPhotoState {
@@ -7,57 +9,23 @@ interface IAddPhotoState {
 }
 
 export class AddPhoto extends Component<IAddPhotoProps, IAddPhotoState> {
-  constructor(props: IAddPhotoProps) {
-    super(props);
-    this.state = { forecasts: [], loading: true };
-  }
+    static contextType = GlobalDataContext;
+    context!: React.ContextType<typeof GlobalDataContext>;
 
-  componentDidMount() {
-    this.populateWeatherData();
-  }
+    constructor(props: IAddPhotoProps) {
+        super(props);
+    }
 
-  static renderForecastsTable(forecasts: any[]) {
-    return (
-      <table className='table table-striped text-light' aria-labelledby="tabelLabel">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
-          </tr>
-        </thead>
-        <tbody>
-          {forecasts.map(forecast =>
-            <tr key={forecast.date}>
-              <td>{forecast.date}</td>
-              <td>{forecast.temperatureC}</td>
-              <td>{forecast.temperatureF}</td>
-              <td>{forecast.summary}</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    );
-  }
+    componentDidMount() {
+        this.context?.setDisplayMode(DisplayMode.Photo);
+        this.context?.setEnableDisplayMode(true);
+    }
 
-  render() {
-    let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
-      : AddPhoto.renderForecastsTable(this.state.forecasts);
-
-    return (
-      <div>
-        <h1 id="tabelLabel" >Weather forecast</h1>
-        <p>This component demonstrates fetching data from the server.</p>
-        {contents}
-      </div>
-    );
-  }
-
-  async populateWeatherData() {
-    const response = await fetch('weatherforecast');
-    const data = await response.json();
-    this.setState({ forecasts: data, loading: false });
-  }
+    render() {
+        return (
+            <div>
+                Add Photo
+            </div>
+        );
+    }
 }

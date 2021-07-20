@@ -63,15 +63,12 @@ li {
     box-shadow: 0 -0.05rem .5rem rgba(255, 255, 255, .85);
 }
 
-.nav-item.link-active {
+.nav-item a.link-active {
     border-bottom: 2px solid grey;
+    color: grey !important;
 }
 
-    .nav-item.link-active a {
-        color: grey !important;
-    }
-
-.nav-item:not(.disabled):hover {
+.nav-item:not(.disabled) a:hover {
     border-bottom: 2px solid rgba(255, 255, 255, .85);
 }
 
