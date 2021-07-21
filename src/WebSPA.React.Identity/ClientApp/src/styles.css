@@ -72,6 +72,10 @@ li {
     border-bottom: 2px solid rgba(255, 255, 255, .85);
 }
 
+.nav-item.disabled {
+    border-bottom: 2px solid #131417;
+}
+
 hr {
     border-top-color: #f8f9fa;
 }

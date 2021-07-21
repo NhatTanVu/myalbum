@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DisplayMode } from '../models/globalData';
 import { GlobalDataContext } from '../context/GlobalDataContext';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { LoginMenu } from './api-authorization/LoginMenu';
 
 interface INavMenuProps {
 }
@@ -136,6 +137,7 @@ class NavMenu extends Component<INavMenuProps & RouteComponentProps, INavMenuSta
                                         </NavLink>
                                     }
                                 </NavItem>
+                                <LoginMenu/>
                             </ul>
                             <span className="separator"></span>
                             <div className="rounded switch-toggle alert display-mode">

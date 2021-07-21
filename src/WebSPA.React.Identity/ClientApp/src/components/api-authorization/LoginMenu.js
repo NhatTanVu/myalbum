@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { NavItem, NavLink } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { NavLink as RRNavLink } from 'react-router-dom';
 import authService from './AuthorizeService';
 import { ApplicationPaths } from './ApiAuthorizationConstants';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export class LoginMenu extends Component {
     constructor(props) {
@@ -27,7 +28,7 @@ export class LoginMenu extends Component {
         const [isAuthenticated, user] = await Promise.all([authService.isAuthenticated(), authService.getUser()])
         this.setState({
             isAuthenticated,
-            userName: user && user.name
+            userName: user && user["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]
         });
     }
 
@@ -45,25 +46,38 @@ export class LoginMenu extends Component {
     }
 
     authenticatedView(userName, profilePath, logoutPath) {
-        return (<Fragment>
-            <NavItem>
-                <NavLink tag={Link} className="text-dark" to={profilePath}>Hello {userName}</NavLink>
-            </NavItem>
-            <NavItem>
-                <NavLink tag={Link} className="text-dark" to={logoutPath}>Logout</NavLink>
-            </NavItem>
-        </Fragment>);
+        return (
+            <Fragment>
+                <NavItem>
+                    <NavLink tag={RRNavLink} className="text-light" to={profilePath} activeClassName="link-active">
+                        {/*Hello {userName}*/}
+                        <FontAwesomeIcon icon="user-cog" /> Manage
+                    </NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={RRNavLink} className="text-light" to={logoutPath} activeClassName="link-active">
+                        <FontAwesomeIcon icon="sign-out-alt" /> Logout
+                    </NavLink>
+                </NavItem>
+            </Fragment>
+        );
 
     }
 
     anonymousView(registerPath, loginPath) {
-        return (<Fragment>
-            <NavItem>
-                <NavLink tag={Link} className="text-dark" to={registerPath}>Register</NavLink>
-            </NavItem>
-            <NavItem>
-                <NavLink tag={Link} className="text-dark" to={loginPath}>Login</NavLink>
-            </NavItem>
-        </Fragment>);
+        return (
+            <Fragment>
+                <NavItem>
+                    <NavLink tag={RRNavLink} className="text-light" to={registerPath} activeClassName="link-active">
+                        <FontAwesomeIcon icon="user-plus" /> Register
+                    </NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={RRNavLink} className="text-light" to={loginPath} activeClassName="link-active">
+                        <FontAwesomeIcon icon="sign-in-alt" /> Login
+                    </NavLink>
+                </NavItem>
+            </Fragment>
+        );
     }
 }

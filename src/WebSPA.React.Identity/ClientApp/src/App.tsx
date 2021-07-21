@@ -9,7 +9,10 @@ import { WorldMap } from './components/WorldMap';
 import { ViewPhoto } from './components/ViewPhoto';
 import { ViewAlbum } from './components/ViewAlbum';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faToriiGate, faGlobe, faPlus, faComments, faExternalLinkAlt, faPencilAlt, faCommentMedical, faImages } from '@fortawesome/free-solid-svg-icons';
+import {
+    faToriiGate, faGlobe, faPlus, faComments, faExternalLinkAlt, faPencilAlt, faCommentMedical,
+    faImages, faUserPlus, faSignInAlt, faSignOutAlt, faUserCog
+} from '@fortawesome/free-solid-svg-icons';
 import { GlobalDataContextProvider } from './context/GlobalDataContextProvider';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
@@ -17,7 +20,8 @@ import { ApplicationPaths } from './components/api-authorization/ApiAuthorizatio
 
 import './styles.css'
 
-library.add(faToriiGate, faGlobe, faPlus, faComments, faExternalLinkAlt, faPencilAlt, faCommentMedical, faImages)
+library.add(faToriiGate, faGlobe, faPlus, faComments, faExternalLinkAlt,
+    faPencilAlt, faCommentMedical, faImages, faUserPlus, faSignInAlt, faSignOutAlt, faUserCog)
 
 export default class App extends Component {
     static displayName = App.name;
