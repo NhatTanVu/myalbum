@@ -104,7 +104,8 @@ namespace Album.API
                         {
                             "MyAlbum.DeveloperAPI",
                             "Identity.APIAPI",
-                            "WebSPA.IdentityAPI"
+                            "WebSPA.IdentityAPI",
+                            "WebSPA.React.IdentityAPI"
                         },
                         ValidIssuer = issuerUri
                     };

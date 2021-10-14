@@ -11,7 +11,7 @@ import { ViewAlbum } from './components/ViewAlbum';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
     faToriiGate, faGlobe, faPlus, faComments, faExternalLinkAlt, faPencilAlt, faCommentMedical,
-    faImages, faUserPlus, faSignInAlt, faSignOutAlt, faUserCog
+    faImages, faUserPlus, faSignInAlt, faSignOutAlt, faUserCog, faCheck, faTimes
 } from '@fortawesome/free-solid-svg-icons';
 import { GlobalDataContextProvider } from './context/GlobalDataContextProvider';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
@@ -21,7 +21,7 @@ import { ApplicationPaths } from './components/api-authorization/ApiAuthorizatio
 import './styles.css'
 
 library.add(faToriiGate, faGlobe, faPlus, faComments, faExternalLinkAlt,
-    faPencilAlt, faCommentMedical, faImages, faUserPlus, faSignInAlt, faSignOutAlt, faUserCog)
+    faPencilAlt, faCommentMedical, faImages, faUserPlus, faSignInAlt, faSignOutAlt, faUserCog, faCheck, faTimes)
 
 export default class App extends Component {
     static displayName = App.name;
