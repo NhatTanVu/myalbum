@@ -5,7 +5,7 @@ import { User } from "../models/user";
 import { SaveAlbum } from '../models/album';
 import { PhotoService } from '../services/photo.service';
 import './ViewPhoto.css';
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import GoogleMapReact from 'google-map-react';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -13,6 +13,7 @@ import { ReplyList } from './ReplyList';
 import { ReplyForm } from './ReplyForm';
 import { DisplayMode } from '../models/globalData';
 import { GlobalDataContext } from '../context/GlobalDataContext';
+import authService from './api-authorization/AuthorizeService';
 
 interface IViewPhotoProps { }
 interface IViewPhotoState {
@@ -20,6 +21,7 @@ interface IViewPhotoState {
     isShownBoundingBox: boolean,
     hasMap: boolean | null,
     userName: string,
+    isEditable: boolean,
     flipContainerWidth: number,
     maxHeight: number,
     maxWidth: number,
@@ -66,6 +68,7 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
             isShownBoundingBox: false,
             hasMap: null,
             userName: "",
+            isEditable: false,
             flipContainerWidth: 0,
             maxHeight: 0,
             maxWidth: 0,
@@ -140,10 +143,20 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
 
     componentDidMount() {
         window.addEventListener("resize", this.handleResize);
+        this.context?.setDisplayMode(DisplayMode.Photo);
+        this.context?.setEnableDisplayMode(false);
+        this.populateState();
+    }
+
+    async populateState() {
+        let user = await authService.getUser();
+        let userName = user ? user["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] : null;
         this.photoService.get(this.photoId).then(photo => {
             if (photo) {
                 this.setState({
                     photo: photo,
+                    userName: userName,
+                    isEditable: photo.author && photo.author.userName === userName,
                     hasMap: (photo.locLat != null) && (photo.locLng != null)
                 });
                 this.calcPhotoSize();
@@ -152,8 +165,6 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                 this.props.history.push('/');
             }
         });
-        this.context?.setDisplayMode(DisplayMode.Photo);
-        this.context?.setEnableDisplayMode(false);
     }
 
     componentWillUnmount() {
@@ -167,11 +178,11 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                     <Col lg={{ size: 6 }}>
                         <h3 className="header-container">
                             <span className="header-text" title={this.state.photo.name}>{this.state.photo.name}</span>
-                            {/*
-                                    <a className="btn btn-secondary header-button" href={"/photo/edit/" + this.state.photo.id } title="Edit Photo">
+                            {this.state.isEditable &&
+                                    <a className="btn btn-secondary header-button" href={"/photo/edit/" + this.state.photo.id} title="Edit Photo">
                                         <FontAwesomeIcon icon="pencil-alt" />
                                     </a>
-                                */}
+                            }
                         </h3>
                         <hr />
                     </Col>

@@ -1,5 +1,6 @@
-﻿import { Album } from '../models/album';
+﻿import { Album, SaveAlbum } from '../models/album';
 import { setDisplayName, User } from '../models/user';
+import authService from '../components/api-authorization/AuthorizeService';
 
 export class AlbumService {
     private albumApiEndpoint: string = "https://localhost:5003/api/albums";
@@ -44,6 +45,74 @@ export class AlbumService {
             .then(data => {
                 var album = data as Album;
                 return album;
+            });
+    }
+
+    async create(album: SaveAlbum) {
+        if (album.name === "") return null;
+
+        var formData = new FormData();
+        formData.append('Name', album.name as string);
+        const token = await authService.getAccessToken();
+
+        return fetch(this.albumApiEndpoint, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            body: formData,
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                } else {
+                    return null;
+                }
+            })
+            .then(data => {
+                var album = data as SaveAlbum;
+                return album;
+            });
+    }
+
+    async save(album: SaveAlbum) {
+        var formData = new FormData();
+        formData.append('Id', album.id?.toString() as string);
+        formData.append('Name', album.name as string);
+        const token = await authService.getAccessToken();
+
+        return fetch(this.albumApiEndpoint + '/' + album.id, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            body: formData,
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                } else {
+                    return null;
+                }
+            })
+            .then(data => {
+                var album = data as SaveAlbum;
+                return album;
+            });
+    }
+
+    async delete(album: SaveAlbum) {
+        const token = await authService.getAccessToken();
+
+        return fetch(this.albumApiEndpoint + '/' + album.id, {
+            method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return true;
+                } else {
+                    return null;
+                }
+            })
+            .then(data => {
+                return data;
             });
     }
 }

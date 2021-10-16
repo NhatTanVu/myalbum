@@ -28,19 +28,22 @@ export interface Photo {
     album: SaveAlbum;
 }
 
-export interface SavePhoto {
-    id: number;
-    name: string;
-    locLat: number;
-    locLng: number;
-    centerLat: number;
-    centerLng: number;
-    mapZoom: number;
-    photoCategories: PhotoCategory[];
-    album: SaveAlbum;
+export class SavePhoto {
+    id?: number;
+    name?: string;
+    locLat?: number;
+    locLng?: number;
+    centerLat?: number;
+    centerLng?: number;
+    mapZoom?: number;
+    photoCategories?: PhotoCategory[];
+    album?: SaveAlbum;
 }
 
-export interface PositionModel {
-    latitude: number;
-    longitude: number;
+export class PositionModel {
+    latitude?: number;
+    longitude?: number;
+    centerLat?: number;
+    centerLng?: number;
+    mapZoom?: number;
 }

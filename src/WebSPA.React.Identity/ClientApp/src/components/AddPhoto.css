@@ -1,0 +1,7 @@
+#gmapSearchBox {
+    text-overflow: ellipsis;
+}
+
+select#photoAlbum {
+    width: 100%
+}

@@ -29,11 +29,11 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
         this.state = {
             viewportPhotos: []
         };
-        this.GoogleApiLoadedHandler = this.GoogleApiLoadedHandler.bind(this);
+        this.googleApiLoadedHandler = this.googleApiLoadedHandler.bind(this);
         this.gmapSearchBoxRef = React.createRef();
     }
 
-    GoogleApiLoadedHandler(map: google.maps.Map) {
+    googleApiLoadedHandler(map: google.maps.Map) {
         this.photoService.getAll([]).then(data => {
             this.allPhotos = data;
             if (this.allPhotos.length > 0) {
@@ -139,7 +139,7 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
                                     libraries: 'places'
                                 }}
                                 yesIWantToUseGoogleMapApiInternals
-                                onGoogleApiLoaded={({ map }) => this.GoogleApiLoadedHandler(map)}
+                                onGoogleApiLoaded={({ map }) => this.googleApiLoadedHandler(map)}
                                 defaultCenter={{ lat: 3.140853, lng: 101.693207 }} /* KUL */
                                 defaultZoom={ 12 }
                                 options={{ mapTypeId: 'roadmap' }}

@@ -1,4 +1,5 @@
-﻿import { Photo } from '../models/photo';
+﻿import authService from '../components/api-authorization/AuthorizeService';
+import { Photo, SavePhoto } from '../models/photo';
 import { setDisplayName } from '../models/user';
 
 export class PhotoService {
@@ -43,5 +44,37 @@ export class PhotoService {
                 });
                 return photo;
             });
+    }
+
+    async create(photo: SavePhoto, file: any) {
+        if (!file || photo.name === "") return null;
+
+        var formData = new FormData();
+        formData.append('Name', photo.name as string);
+        formData.append('FileToUpload', file);
+        photo.locLat && formData.append('LocLat', photo.locLat?.toString() as string);
+        photo.locLng && formData.append('LocLng', photo.locLng?.toString() as string);
+        photo.centerLat && formData.append('CenterLat', photo.centerLat?.toString() as string);
+        photo.centerLng && formData.append('CenterLng', photo.centerLng?.toString() as string);
+        photo.mapZoom && formData.append('MapZoom', photo.mapZoom?.toString() as string);
+        photo.album?.id && formData.append('Album.Id', photo.album?.id?.toString() as string);
+        const token = await authService.getAccessToken();
+
+        return fetch(this.photoApiEndpoint, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            body: formData,
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json()
+            } else {
+                return null;
+            }
+        })
+        .then(data => {
+            var photo = data as SavePhoto;
+            return photo;
+        });
     }
 }

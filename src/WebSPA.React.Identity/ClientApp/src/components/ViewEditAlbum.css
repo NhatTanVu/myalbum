@@ -6,7 +6,7 @@
 
     .header-container .header-text {
         display: table-cell;
-        vertical-align: center;
+        vertical-align: top;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

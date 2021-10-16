@@ -19,6 +19,6 @@ export class Album {
 }
 
 export class SaveAlbum {
-    id: number = 0;
-    name: string | null = null;
+    id?: number;
+    name?: string;
 }
