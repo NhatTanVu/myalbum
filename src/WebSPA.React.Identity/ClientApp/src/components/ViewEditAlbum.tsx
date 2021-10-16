@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'reactstrap';
-import { Album } from '../models/album';
-import './ViewAlbum.css';
+import { Album, SaveAlbum } from '../models/album';
+import './ViewEditAlbum.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RouteComponentProps } from 'react-router';
 import { DisplayMode } from '../models/globalData';
@@ -10,32 +10,33 @@ import { ExplorePhotos } from "./ExplorePhotos"
 import { AlbumService } from '../services/album.service';
 import authService from './api-authorization/AuthorizeService';
 
-interface IViewAlbumProps { }
-interface IViewAlbumState {
+interface IViewEditAlbumProps { }
+interface IViewEditAlbumState {
     album: Album | null,
     isEditable: boolean,
     isEditMode: boolean,
     editAlbum: Album | null
 }
 
-interface IViewAlbumParams {
+interface IViewEditAlbumParams {
     id: string;
 }
 
-export class ViewAlbum extends Component<IViewAlbumProps & RouteComponentProps<IViewAlbumParams>, IViewAlbumState> {
+export class ViewEditAlbum extends Component<IViewEditAlbumProps & RouteComponentProps<IViewEditAlbumParams>, IViewEditAlbumState> {
     static contextType = GlobalDataContext;
     context!: React.ContextType<typeof GlobalDataContext>;
 
     private albumService = new AlbumService();
     private albumId: number;
 
-    constructor(props: IViewAlbumProps & RouteComponentProps<IViewAlbumParams>) {
+    constructor(props: IViewEditAlbumProps & RouteComponentProps<IViewEditAlbumParams>) {
         super(props);
         this.albumId = parseInt(this.props.match.params.id);
         this.switchToEditMode = this.switchToEditMode.bind(this);
         this.changeAlbumName = this.changeAlbumName.bind(this);
         this.saveAlbumName = this.saveAlbumName.bind(this);
         this.cancelAlbumName = this.cancelAlbumName.bind(this);
+        this.deleteAlbum = this.deleteAlbum.bind(this);
         this.state = {
             album: null,
             isEditable: false,
@@ -85,9 +86,23 @@ export class ViewAlbum extends Component<IViewAlbumProps & RouteComponentProps<I
     }
 
     saveAlbumName(event: React.MouseEvent<HTMLButtonElement>) {
-        this.setState({
-            isEditable: true,
-            isEditMode: false
+        if (this.state.editAlbum?.name === "") {
+            alert("Album Name required.");
+            return;
+        }
+
+        this.albumService.save(this.state.editAlbum as SaveAlbum).then(album => {
+            if (album) {
+                alert("Saved successfully.");
+                this.setState({
+                    isEditable: true,
+                    isEditMode: false,
+                    album: this.state.editAlbum
+                });
+            }
+            else {
+                alert("Error occurred. Please try again!");
+            }
         });
     }
 
@@ -95,6 +110,18 @@ export class ViewAlbum extends Component<IViewAlbumProps & RouteComponentProps<I
         this.setState({
             isEditable: true,
             isEditMode: false
+        });
+    }
+
+    deleteAlbum() {
+        this.albumService.delete(this.state.album as SaveAlbum).then(res => {
+            if (res) {
+                alert("Deleted successfully.");
+                this.props.history.push('/album');
+            }
+            else {
+                alert("Error occurred. Please try again!");
+            }
         });
     }
 
@@ -109,21 +136,30 @@ export class ViewAlbum extends Component<IViewAlbumProps & RouteComponentProps<I
                                     <span className="header-text" title={this.state.album.name as string}>{this.state.album.name as string}</span>
                                 }
                                 {this.state.isEditable &&
-                                    <button className="btn btn-secondary header-button" type="button" onClick={this.switchToEditMode}>
-                                        <FontAwesomeIcon icon="pencil-alt" />
-                                    </button>
+                                    <div className="float-right">
+                                        <button className="btn btn-secondary header-button mr-1" type="button" onClick={this.switchToEditMode}>
+                                            <FontAwesomeIcon icon="pencil-alt" />
+                                        </button>
+                                        <button className="btn btn-danger header-button" type="button" onClick={this.deleteAlbum}>
+                                            <FontAwesomeIcon icon="trash-alt" />
+                                        </button>
+                                    </div>
                                 }
                                 {this.state.isEditMode &&
-                                    <span className="form-inline">
-                                        <input id="albumName" name="albumName" type="text" className="form-control col-lg-8 mr-3"
-                                            value={this.state.editAlbum?.name as string} onChange={this.changeAlbumName} />
-                                        <button className="btn btn-primary header-button mr-1" type="button" onClick={this.saveAlbumName}>
-                                            <FontAwesomeIcon icon="check" />
-                                        </button>
-                                        <button className="btn btn-secondary header-button" type="button" onClick={this.cancelAlbumName}>
-                                            <FontAwesomeIcon icon="times" />
-                                        </button>
-                                    </span>
+                                    <div className="container-fluid">
+                                        <div className="row">
+                                            <input id="albumName" name="albumName" type="text" className="form-control col-md-8 mb-2 mb-md-0"
+                                                value={this.state.editAlbum?.name as string} onChange={this.changeAlbumName} style={{ height: "auto" }} />
+                                            <div className="col-md-4 text-right p-0">
+                                                <button className="btn btn-primary header-button mr-1" type="button" onClick={this.saveAlbumName}>
+                                                    <FontAwesomeIcon icon="check" />
+                                                </button>
+                                                <button className="btn btn-secondary header-button" type="button" onClick={this.cancelAlbumName}>
+                                                    <FontAwesomeIcon icon="times" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 }
                             </h3>
                             <hr />

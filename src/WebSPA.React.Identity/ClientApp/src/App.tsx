@@ -7,11 +7,11 @@ import { AddPhoto } from './components/AddPhoto';
 import { AddAlbum } from './components/AddAlbum';
 import { WorldMap } from './components/WorldMap';
 import { ViewPhoto } from './components/ViewPhoto';
-import { ViewAlbum } from './components/ViewAlbum';
+import { ViewEditAlbum } from './components/ViewEditAlbum';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
     faToriiGate, faGlobe, faPlus, faComments, faExternalLinkAlt, faPencilAlt, faCommentMedical,
-    faImages, faUserPlus, faSignInAlt, faSignOutAlt, faUserCog, faCheck, faTimes
+    faImages, faUserPlus, faSignInAlt, faSignOutAlt, faUserCog, faCheck, faTimes, faTrashAlt
 } from '@fortawesome/free-solid-svg-icons';
 import { GlobalDataContextProvider } from './context/GlobalDataContextProvider';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
@@ -21,7 +21,8 @@ import { ApplicationPaths } from './components/api-authorization/ApiAuthorizatio
 import './styles.css'
 
 library.add(faToriiGate, faGlobe, faPlus, faComments, faExternalLinkAlt,
-    faPencilAlt, faCommentMedical, faImages, faUserPlus, faSignInAlt, faSignOutAlt, faUserCog, faCheck, faTimes)
+    faPencilAlt, faCommentMedical, faImages, faUserPlus, faSignInAlt,
+    faSignOutAlt, faUserCog, faCheck, faTimes, faTrashAlt)
 
 export default class App extends Component {
     static displayName = App.name;
@@ -37,7 +38,7 @@ export default class App extends Component {
                         <AuthorizeRoute path='/photo/new' component={AddPhoto} />
                         <Route path='/photo/:id' component={ViewPhoto} />
                         <AuthorizeRoute path='/album/new' component={AddAlbum} />
-                        <Route path='/album/:id' component={ViewAlbum} />
+                        <Route path='/album/:id' component={ViewEditAlbum} />
                         <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
                     </Switch>
                 </Layout>

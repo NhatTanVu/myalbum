@@ -60,16 +60,59 @@ export class AlbumService {
             body: formData,
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
         })
-        .then(response => {
-            if (response.ok) {
-                return response.json()
-            } else {
-                return null;
-            }
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                } else {
+                    return null;
+                }
+            })
+            .then(data => {
+                var album = data as SaveAlbum;
+                return album;
+            });
+    }
+
+    async save(album: SaveAlbum) {
+        var formData = new FormData();
+        formData.append('Id', album.id?.toString() as string);
+        formData.append('Name', album.name as string);
+        const token = await authService.getAccessToken();
+
+        return fetch(this.albumApiEndpoint + '/' + album.id, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            body: formData,
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
         })
-        .then(data => {
-            var album = data as SaveAlbum;
-            return album;
-        });
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                } else {
+                    return null;
+                }
+            })
+            .then(data => {
+                var album = data as SaveAlbum;
+                return album;
+            });
+    }
+
+    async delete(album: SaveAlbum) {
+        const token = await authService.getAccessToken();
+
+        return fetch(this.albumApiEndpoint + '/' + album.id, {
+            method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+            headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return true;
+                } else {
+                    return null;
+                }
+            })
+            .then(data => {
+                return data;
+            });
     }
 }
