@@ -1,0 +1,23 @@
+@media (max-width: 991.98px) {
+    .photo-container.portrait {
+        height: 350px;
+    }
+}
+
+@media (min-width: 992px) {
+    .photo-container.portrait {
+        height: 678.5px;
+    }
+}
+
+.photo-container img {
+    max-width: 100%;
+    max-height: 100%;
+    border-width: 0px;
+    padding: 0px;
+    box-shadow: 0.05rem 0.05rem .25rem rgba(255, 255, 255, .85);
+}
+
+.basic-multi-select {
+    color: #495057;
+}

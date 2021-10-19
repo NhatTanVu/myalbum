@@ -8,6 +8,7 @@ import { AddAlbum } from './components/AddAlbum';
 import { WorldMap } from './components/WorldMap';
 import { ViewPhoto } from './components/ViewPhoto';
 import { ViewEditAlbum } from './components/ViewEditAlbum';
+import { EditPhoto } from './components/EditPhoto';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
     faToriiGate, faGlobe, faPlus, faComments, faExternalLinkAlt, faPencilAlt, faCommentMedical,
@@ -36,7 +37,8 @@ export default class App extends Component {
                         <Route exact path='/album' component={ExploreAlbums} />
                         <Route path='/worldmap' component={WorldMap} />
                         <AuthorizeRoute path='/photo/new' component={AddPhoto} />
-                        <Route path='/photo/:id' component={ViewPhoto} />
+                        <Route exact path='/photo/:id' component={ViewPhoto} />
+                        <AuthorizeRoute path='/photo/edit/:id' component={EditPhoto} />
                         <AuthorizeRoute path='/album/new' component={AddAlbum} />
                         <Route path='/album/:id' component={ViewEditAlbum} />
                         <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />

@@ -131,7 +131,7 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
     initializeMap(map: google.maps.Map) {
         if (this.state.hasMap === true) {
             var marker = new google.maps.Marker({
-                position: new google.maps.LatLng(this.state.photo.locLat, this.state.photo.locLng),
+                position: new google.maps.LatLng(this.state.photo.locLat as number, this.state.photo.locLng as number),
                 map: map
             });
             map.panTo(marker.getPosition() as google.maps.LatLng);

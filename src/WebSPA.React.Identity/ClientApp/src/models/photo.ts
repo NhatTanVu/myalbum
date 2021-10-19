@@ -15,11 +15,11 @@ export interface Photo {
     width: number;
     height: number;
     photoCategories: PhotoCategory[];
-    locLat: number;
-    locLng: number;
-    centerLat: number;
-    centerLng: number;
-    mapZoom: number;
+    locLat: number | null;
+    locLng: number | null;
+    centerLat: number | null;
+    centerLng: number | null;
+    mapZoom: number | null;
     comments: Comment[];
     totalComments: number;
     createdDate: Date;
