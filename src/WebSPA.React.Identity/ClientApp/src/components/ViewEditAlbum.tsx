@@ -114,7 +114,7 @@ export class ViewEditAlbum extends Component<IViewEditAlbumProps & RouteComponen
     }
 
     deleteAlbum() {
-        this.albumService.delete(this.state.album as SaveAlbum).then(res => {
+        this.albumService.delete(this.state.album?.id as number).then(res => {
             if (res) {
                 alert("Deleted successfully.");
                 this.props.history.push('/album');

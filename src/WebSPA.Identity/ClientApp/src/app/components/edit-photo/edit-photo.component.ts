@@ -18,7 +18,6 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./edit-photo.component.css']
 })
 export class EditPhotoComponent implements OnInit {
-  readonly tagSeparator: string = ", ";
   readonly availableCategories: PhotoCategory[] = [
     {
       id: 1,

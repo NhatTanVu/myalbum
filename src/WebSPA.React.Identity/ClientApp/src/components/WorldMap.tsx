@@ -39,7 +39,7 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
             if (this.allPhotos.length > 0) {
                 let allBounds = new google.maps.LatLngBounds();
                 let markers = this.allPhotos.filter((photo) => photo.locLat && photo.locLng).map((photo, i) => {
-                    let markerPosition = new google.maps.LatLng(photo.locLat, photo.locLng);
+                    let markerPosition = new google.maps.LatLng(photo.locLat as number, photo.locLng as number);
                     let marker = new google.maps.Marker({
                         position: markerPosition,
                         label: "",
@@ -102,7 +102,7 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
 
                     this.setState({
                         viewportPhotos: this.allPhotos.filter((photo) => {
-                            return bounds.contains({ lat: photo.locLat, lng: photo.locLng });
+                            return bounds.contains({ lat: photo.locLat as number, lng: photo.locLng as number });
                         })
                     });
                 }

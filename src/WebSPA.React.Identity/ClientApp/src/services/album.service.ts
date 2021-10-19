@@ -74,6 +74,8 @@ export class AlbumService {
     }
 
     async save(album: SaveAlbum) {
+        if (album.name === "") return null;
+
         var formData = new FormData();
         formData.append('Id', album.id?.toString() as string);
         formData.append('Name', album.name as string);
@@ -97,10 +99,10 @@ export class AlbumService {
             });
     }
 
-    async delete(album: SaveAlbum) {
+    async delete(id: number) {
         const token = await authService.getAccessToken();
 
-        return fetch(this.albumApiEndpoint + '/' + album.id, {
+        return fetch(this.albumApiEndpoint + '/' + id, {
             method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
         })
