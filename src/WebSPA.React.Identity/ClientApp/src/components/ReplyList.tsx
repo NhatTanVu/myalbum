@@ -9,7 +9,8 @@ import { ReplyForm } from './ReplyForm';
 interface IReplyListProps {
     parent?: Comment,
     replies: Comment[],
-    userName: string
+    userName: string,
+    onDeleteComment: (deletedComment: Comment) => void
 }
 interface IReplyListState {
 }
@@ -17,8 +18,38 @@ interface IReplyListState {
 export class ReplyList extends Component<IReplyListProps, IReplyListState> {
     private commentService = new CommentService();
 
-    delete(reply: Comment) {
+    constructor(props: IReplyListProps) {
+        super(props);
+        this.handleEditComment = this.handleEditComment.bind(this);
+        this.handleNewComment = this.handleNewComment.bind(this);
+    }
 
+    handleEditComment(newComment: Comment, editComment: Comment) {
+        editComment.isEditing = false;
+        editComment.content = newComment.content;
+        editComment.modifiedDate = newComment.modifiedDate;
+        this.forceUpdate();
+    }
+
+    handleNewComment(newComment: Comment, parentComment?: Comment) {
+        if (parentComment) {
+            parentComment.isReplying = false;
+            parentComment.replies.push(newComment);
+            parentComment.numOfReplies = parentComment.replies.length;
+            this.forceUpdate();
+        }
+    }
+
+    delete(reply: Comment) {
+        this.commentService.delete(reply.id).then(comment => {
+            if (comment) {
+                alert("Deleted successfully.");
+                this.props.onDeleteComment(reply);
+            }
+            else {
+                alert("Error occurred. Please try again!");
+            }
+        });
     }
 
     toggleReplies(reply: Comment) {
@@ -56,7 +87,7 @@ export class ReplyList extends Component<IReplyListProps, IReplyListState> {
                             <span>&nbsp;|&nbsp;</span>
                             <button className="btn btn-link p-0" onClick={(e: any) => { this.delete(reply) }} title="Delete Comment">Delete</button>
                         </div>}
-                        {!reply.isEditing ? <div>{reply.content}</div> : <ReplyForm></ReplyForm>/*<app-edit-reply *ngIf="reply.isEditing" [comment]="reply"></app-edit-reply>*/}
+                        {!reply.isEditing ? <div>{reply.content}</div> : <ReplyForm isNew={false} photoId={reply.photoId} editComment={reply} onEditComment={this.handleEditComment} ></ReplyForm>}
                         <div>
                             {(reply.numOfReplies > 0) &&
                                 <button className="btn btn-link p-0" onClick={(e: any) => { this.toggleReplies(reply) }}>
@@ -66,8 +97,8 @@ export class ReplyList extends Component<IReplyListProps, IReplyListState> {
                             <button className="btn btn-link p-0" onClick={(e: any) => { reply.isReplying = !reply.isReplying; this.forceUpdate(); }}>
                                 {!reply.isReplying ? <span>Reply</span> : <span>Close</span>}
                             </button>
-                            {reply.isReplying && <ReplyForm></ReplyForm> /*<app-reply-form *ngIf="reply.isReplying" [parent]="reply"></app-reply-form>*/}
-                            {reply.isViewing && <ReplyList parent={reply} replies={reply.replies} userName={this.props.userName}></ReplyList>}
+                            {reply.isReplying && <ReplyForm isNew={true} photoId={reply.photoId} parentId={reply.id} parentComment={reply} onCreateComment={this.handleNewComment} ></ReplyForm>}
+                            {reply.isViewing && <ReplyList parent={reply} replies={reply.replies} userName={this.props.userName} onDeleteComment={this.props.onDeleteComment} ></ReplyList>}
                         </div>
                     </div>
                 );

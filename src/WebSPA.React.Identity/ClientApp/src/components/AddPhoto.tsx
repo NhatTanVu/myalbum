@@ -172,7 +172,7 @@ export class AddPhoto extends Component<IAddPhotoProps & RouteComponentProps, IA
 
         this.photoService.create(photo, photoFile).then(photo => {
             if (photo) {
-                alert("Saved successfully.");
+                alert("Created successfully.");
                 this.props.history.push('/');
             }
             else {
