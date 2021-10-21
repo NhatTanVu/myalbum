@@ -30,8 +30,8 @@ export class Footer extends Component {
             </div>
             <div className="row">
               <ul className="unstyled">
-                <li><a className="nav-link text-light pt-0 pb-0" href="https://github.com/NhatTanVu" target="_blank">GitHub</a></li>
-                <li><a className="nav-link text-light pt-0 pb-0" href="https://www.linkedin.com/in/tanvu/" target="_blank">LinkedIn</a></li>
+                <li><a className="nav-link text-light pt-0 pb-0" href="https://github.com/NhatTanVu" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                <li><a className="nav-link text-light pt-0 pb-0" href="https://www.linkedin.com/in/tanvu/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
               </ul>
             </div>
             </div>

@@ -75,7 +75,7 @@ export class ExploreAlbums extends Component<IExploreAlbumsProps, IExlploreAlbum
     }
 
     componentDidUpdate(prevProps: IExploreAlbumsProps, prevState: IExlploreAlbumsState) {
-        const tessarray = new Tessarray(".album-gallery", ".album-box", {
+        new Tessarray(".album-gallery", ".album-box", {
             selectorClass: false,
             imageClass: ".album-box .main-photo img",
             boxTransition: false,

@@ -23,6 +23,7 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
     private photoService = new PhotoService();
     private allPhotos: Photo[] = [];
     private gmapSearchBoxRef: React.RefObject<HTMLInputElement>;
+    private map?: google.maps.Map;
 
     constructor(props: IWorldMapProps) {
         super(props);
@@ -31,9 +32,18 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
         };
         this.googleApiLoadedHandler = this.googleApiLoadedHandler.bind(this);
         this.gmapSearchBoxRef = React.createRef();
+        this.panTo.bind(this);
+    }
+
+    panTo(photo: Photo, e: any) {
+        if (this.map && photo.locLat && photo.locLng) {
+            var location = new google.maps.LatLng({ lat: photo.locLat, lng: photo.locLng });
+            this.map.setCenter(location);
+        }
     }
 
     googleApiLoadedHandler(map: google.maps.Map) {
+        this.map = map;
         this.photoService.getAll([]).then(data => {
             this.allPhotos = data;
             if (this.allPhotos.length > 0) {
@@ -56,16 +66,22 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
                     return marker;
                 });
                 map.fitBounds(allBounds);
-                let markerCluster = new MarkerClusterer(map, markers, {
+                new MarkerClusterer(map, markers, {
                     imagePath: "/lib/@googlemaps/markerclustererplus/m"
                 });
             }
             google.maps.event.addListener(map, 'bounds_changed', (e: any) => {
                 let bound = map.getBounds();
+                let photosWithLocation = this.allPhotos.filter((photo) => {
+                    return photo.locLat && photo.locLng;
+                });
+                let viewportPhotos = photosWithLocation.filter((photo) => {
+                    return bound?.contains({ lat: photo.locLat as number, lng: photo.locLng as number });
+                });
+                if (viewportPhotos.length === 0)
+                    viewportPhotos = photosWithLocation;
                 this.setState({
-                    viewportPhotos: this.allPhotos.filter((photo) => {
-                        return photo.locLat && photo.locLng && bound?.contains({ lat: photo.locLat, lng: photo.locLng });
-                    })
+                    viewportPhotos: viewportPhotos
                 });
             });
             google.maps.event.addListener(map, 'click', (e: any) => {
@@ -117,9 +133,9 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
                     <Col lg={{ size: 4, order: 1 }} className="order-2">
                         <div className={styles["explore-gallery"]}>
                             {this.state.viewportPhotos.map(photo =>
-                                <div className="image-box rounded" key={photo.id}>
+                                <div className="image-box rounded" key={photo.id} onClick={(e) => { this.panTo(photo, e) }}>
                                     <img src={photo.filePath} alt={photo.name} />
-                                    <a href={"/photo/" + photo.id} target="_blank" className="external-button">
+                                    <a href={"/photo/" + photo.id} target="_blank" rel="noopener noreferrer" className="external-button">
                                         <FontAwesomeIcon icon="external-link-alt" className="edit-link" />
                                     </a>
                                 </div>
@@ -157,7 +173,7 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
     }
 
     componentDidUpdate(prevProps: IWorldMapProps, prevState: IWorldMapState) {
-        const tessarray = new Tessarray("." + styles["explore-gallery"], ".image-box", {
+        new Tessarray("." + styles["explore-gallery"], ".image-box", {
             selectorClass: false,
             boxTransition: false,
             boxTransformOutTransition: false,

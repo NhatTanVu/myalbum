@@ -54,7 +54,7 @@ export class CommentService {
                 }
             })
             .then(data => {
-                var comment = <Comment>data;
+                var comment = data as Comment;
                 if (comment) {
                     setDisplayName(comment.author);
                 }
@@ -63,7 +63,7 @@ export class CommentService {
     }
 
     async save(comment: SaveComment) {
-        if (!comment.id || comment.content == "") return null;
+        if (!comment.id || comment.content === "") return null;
 
         const token = await authService.getAccessToken();
         var formData = new FormData();
@@ -83,7 +83,7 @@ export class CommentService {
                 }
             })
             .then(data => {
-                var res = <Comment>data;
+                var res = data as Comment;
                 return res;
             });
     }

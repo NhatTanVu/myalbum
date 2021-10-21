@@ -91,7 +91,7 @@ class NavMenu extends Component<INavMenuProps & RouteComponentProps, INavMenuSta
                                         disabled={!this.context?.globalData.enableDisplayMode}
                                         onChange={(e) => this.changeDisplayMode(DisplayMode.Album)} />
                                     <label htmlFor="album_mobile">Album</label>
-                                    <a className="btn btn-primary"></a>
+                                    <a className="btn btn-primary" href="#0"> </a>
                                 </div>
                             </div>
                             <span className="separator mobile"></span>
@@ -153,7 +153,7 @@ class NavMenu extends Component<INavMenuProps & RouteComponentProps, INavMenuSta
                                         disabled={!this.context?.globalData.enableDisplayMode}
                                         onChange={(e) => this.changeDisplayMode(DisplayMode.Album)} />
                                     <label htmlFor="album">Album</label>
-                                    <a className="btn btn-primary"></a>
+                                    <a className="btn btn-primary" href="#0"> </a>
                                 </div>
                             </div>
                         </Collapse>
