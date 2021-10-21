@@ -14,6 +14,7 @@ import { ReplyForm } from './ReplyForm';
 import { DisplayMode } from '../models/globalData';
 import { GlobalDataContext } from '../context/GlobalDataContext';
 import authService from './api-authorization/AuthorizeService';
+import { Comment } from '../models/comment';
 
 interface IViewPhotoProps { }
 interface IViewPhotoState {
@@ -77,6 +78,8 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
         this.googleApiLoadedHandler = this.googleApiLoadedHandler.bind(this);
         this.initializeMap = this.initializeMap.bind(this);
         this.handleResize = this.handleResize.bind(this);
+        this.handleDeleteComment = this.handleDeleteComment.bind(this);
+        this.handleNewComment = this.handleNewComment.bind(this);
         this.calcPhotoSize = this.calcPhotoSize.bind(this);
         this.photoId = parseInt(this.props.match.params.id);
         this.photoContainerRef = React.createRef();
@@ -96,6 +99,52 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
 
     handleResize(event: any) {
         this.calcPhotoSize();
+    }
+
+    handleNewComment(newComment: Comment, parentComment?: Comment) {
+        this.setState({
+            photo: {
+                ...this.state.photo,
+                comments: [...this.state.photo.comments, newComment]
+            }
+        });
+    }
+
+    handleDeleteComment(deletedComment: Comment) {
+        var result1 = this.state.photo.comments.find(c => c && c.id == deletedComment.id);
+        if (result1) {
+            this.state.photo.comments = this.state.photo.comments.filter(c => c && c.id != deletedComment.id);
+            this.forceUpdate();
+        }
+        else {
+            let isDeleted: boolean = false;
+            this.state.photo.comments.forEach((comment: Comment) => {
+                if (!isDeleted && this.deleteRepliesInComment(deletedComment, comment)) {
+                    isDeleted = true;
+                    this.forceUpdate();
+                    return;
+                }
+            });
+        }
+    }
+
+    deleteRepliesInComment(deletedComment: Comment, parentComment: Comment) {
+        var result1 = parentComment.replies.find(c => c && c.id == deletedComment.id);
+        if (result1) {
+            parentComment.replies = parentComment.replies.filter(c => c && c.id != deletedComment.id);
+            parentComment.numOfReplies = parentComment.replies.length;
+            return true;
+        }
+        else {
+            let isDeleted: boolean = false;
+            parentComment.replies.forEach((comment: Comment) => {
+                if (!isDeleted && this.deleteRepliesInComment(deletedComment, comment)) {
+                    isDeleted = true;
+                    return;
+                }
+            });
+            return isDeleted;
+        }
     }
 
     calcPhotoSize() {
@@ -275,7 +324,7 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                             <hr />
                         </div>
                         <div>
-                            <ReplyForm></ReplyForm>
+                            <ReplyForm isNew={true} photoId={this.photoId} onCreateComment={this.handleNewComment} ></ReplyForm>
                         </div>
                     </Col>
                 </Row>
@@ -286,8 +335,8 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                                 <h4>All Comments</h4>
                                 <hr />
                             </div>
-                            <div>
-                                <ReplyList replies={this.state.photo.comments} userName={this.state.userName}></ReplyList>
+                        <div>
+                            <ReplyList replies={this.state.photo.comments} userName={this.state.userName} onDeleteComment={this.handleDeleteComment} ></ReplyList>
                             </div>
                          </Col>
                     </Row>

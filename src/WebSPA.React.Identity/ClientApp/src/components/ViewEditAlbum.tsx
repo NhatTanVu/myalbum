@@ -33,7 +33,7 @@ export class ViewEditAlbum extends Component<IViewEditAlbumProps & RouteComponen
         super(props);
         this.albumId = parseInt(this.props.match.params.id);
         this.switchToEditMode = this.switchToEditMode.bind(this);
-        this.changeAlbumName = this.changeAlbumName.bind(this);
+        this.handleNameChange = this.handleNameChange.bind(this);
         this.saveAlbumName = this.saveAlbumName.bind(this);
         this.cancelAlbumName = this.cancelAlbumName.bind(this);
         this.deleteAlbum = this.deleteAlbum.bind(this);
@@ -75,7 +75,7 @@ export class ViewEditAlbum extends Component<IViewEditAlbumProps & RouteComponen
         });
     }
 
-    changeAlbumName(event: React.FormEvent<HTMLInputElement>) {
+    handleNameChange(event: React.FormEvent<HTMLInputElement>) {
         let currentValue = event.currentTarget.value;
         this.setState((prevState, props) => ({
             editAlbum: {
@@ -149,7 +149,7 @@ export class ViewEditAlbum extends Component<IViewEditAlbumProps & RouteComponen
                                     <div className="container-fluid">
                                         <div className="row">
                                             <input id="albumName" name="albumName" type="text" className="form-control col-md-8 mb-2 mb-md-0"
-                                                value={this.state.editAlbum?.name as string} onChange={this.changeAlbumName} style={{ height: "auto" }} />
+                                                value={this.state.editAlbum?.name as string} onChange={this.handleNameChange} style={{ height: "auto" }} />
                                             <div className="col-md-4 text-right p-0">
                                                 <button className="btn btn-primary header-button mr-1" type="button" onClick={this.saveAlbumName}>
                                                     <FontAwesomeIcon icon="check" />

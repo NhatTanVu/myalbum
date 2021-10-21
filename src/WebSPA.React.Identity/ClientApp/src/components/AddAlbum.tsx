@@ -38,14 +38,13 @@ export class AddAlbum extends Component<IAddAlbumProps & RouteComponentProps, IA
 
         this.albumService.create(this.state.album).then(album => {
             if (album) {
-                alert("Saved successfully.");
+                alert("Created successfully.");
                 this.props.history.push('/album');
             }
             else {
                 alert("Error occurred. Please try again!");
             }
         });
-        
     }
 
     handleChange(event: React.FormEvent<HTMLInputElement>) {

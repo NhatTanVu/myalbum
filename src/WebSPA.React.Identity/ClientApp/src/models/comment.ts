@@ -3,7 +3,7 @@ import { User } from "./user";
 export interface Comment {
   id: number;
   photoId: number;
-  parentId: number;
+  parentId?: number;
   content: string;
   author: User;
   connectionId: string;
@@ -16,6 +16,13 @@ export interface Comment {
   replies: Comment[];
   createdDate: Date;
   modifiedDate: Date;
+}
+
+export interface SaveComment {
+    id?: number;
+    content: string;
+    photoId: number;
+    parentId?: number;
 }
 
 export const findReplyInComment = (id: number, comment: Comment): Comment | null => {
