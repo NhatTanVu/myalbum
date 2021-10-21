@@ -24,10 +24,10 @@
 3. Change **Default** connection string in either:
    1. **React** with: "**src/WebSPA.React.Identity/appsettings.Development.json**"
    2. **Angular** with: "**src/WebSPA.Identity/appsettings.Development.json**"
-4. Set Startup Projects for Debugging in either:
+4. Set Startup Projects using menu "**Debug->Set Startup Projects...**" for Debugging in either:
    1. **React** with projects: **Web Apps/WebSPA.React.Identity** and 3 projects in Services folder
    2. **Angular** with projects: **Web Apps/WebSPA.Identity** and 3 projects in Services folder
-5. F5 for Debugging
+5. Press F5 for Debugging
 # Run in Docker
 0. [Install](https://docs.docker.com/docker-for-windows/install/) Docker.
 1. Open "**src/Docker**" folder and run: 
