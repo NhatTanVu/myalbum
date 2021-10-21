@@ -151,7 +151,7 @@ export class AddPhoto extends Component<IAddPhotoProps & RouteComponentProps, IA
         }
 
         let nativeElement = this.fileInput.current;
-        if (!nativeElement || !nativeElement.files || nativeElement.files.length == 0) {
+        if (!nativeElement || !nativeElement.files || nativeElement.files.length === 0) {
             alert("Photo required.");
             return;
         }

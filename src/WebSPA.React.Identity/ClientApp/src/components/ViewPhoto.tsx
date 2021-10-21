@@ -111,10 +111,14 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
     }
 
     handleDeleteComment(deletedComment: Comment) {
-        var result1 = this.state.photo.comments.find(c => c && c.id == deletedComment.id);
+        var result1 = this.state.photo.comments.find(c => c && c.id === deletedComment.id);
         if (result1) {
-            this.state.photo.comments = this.state.photo.comments.filter(c => c && c.id != deletedComment.id);
-            this.forceUpdate();
+            this.setState((prevState, props) => ({
+                photo: {
+                    ...prevState.photo,
+                    comments: this.state.photo.comments.filter(c => c && c.id !== deletedComment.id)
+                }
+            }));
         }
         else {
             let isDeleted: boolean = false;
@@ -129,9 +133,9 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
     }
 
     deleteRepliesInComment(deletedComment: Comment, parentComment: Comment) {
-        var result1 = parentComment.replies.find(c => c && c.id == deletedComment.id);
+        var result1 = parentComment.replies.find(c => c && c.id === deletedComment.id);
         if (result1) {
-            parentComment.replies = parentComment.replies.filter(c => c && c.id != deletedComment.id);
+            parentComment.replies = parentComment.replies.filter(c => c && c.id !== deletedComment.id);
             parentComment.numOfReplies = parentComment.replies.length;
             return true;
         }

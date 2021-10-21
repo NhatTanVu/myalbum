@@ -75,7 +75,7 @@ export class ExplorePhotos extends Component<IExplorePhotosProps, IExplorePhotos
     }
 
     componentDidUpdate(prevProps: IExplorePhotosProps, prevState: IExplorePhotosState) {
-        const tessarray = new Tessarray("." + styles["explore-gallery"], ".image-box", {
+        new Tessarray("." + styles["explore-gallery"], ".image-box", {
             selectorClass: false,
             boxTransition: false,
             boxTransformOutTransition: false,
