@@ -20,10 +20,13 @@
 * **Comment API**: https://my-album-comment-api.azurewebsites.net/swagger/index.html
 # Run in Microsoft Visual Studio Community 2019
 1. Setup DB by running 3 scripts in "**src/WebSPA/sql**"
-2. Change **Default** connection string in "**src/WebSPA/appsettings.json**"
-3. Open **.\src\MyAlbum.sln** and press F5 to start Debugging either:
-   1. **React** with projects: **Web Apps\WebSPA.React.Identity** and 3 projects in Services folder
-   2. **Angular** with projects: **Web Apps\WebSPA.Identity** and 3 projects in Services folder
+2. Open "**src/MyAlbum.sln**"
+3. Change **Default** connection string in either:
+   1. **React** with: "**src/WebSPA.React.Identity/appsettings.Development.json**"
+   2. **Angular** with: "**src/WebSPA.Identity/appsettings.Development.json**"
+4. Press F5 to start Debugging either:
+   1. **React** with projects: **Web Apps/WebSPA.React.Identity** and 3 projects in Services folder
+   2. **Angular** with projects: **Web Apps/WebSPA.Identity** and 3 projects in Services folder
 # Run in Docker
 0. [Install](https://docs.docker.com/docker-for-windows/install/) Docker.
 1. Open "**src/Docker**" folder and run: 
