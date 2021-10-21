@@ -18,10 +18,12 @@
 * **Album API**: https://my-album-album-api.azurewebsites.net/swagger/index.html
 * **Photo API**: https://my-album-photo-api.azurewebsites.net/swagger/index.html
 * **Comment API**: https://my-album-comment-api.azurewebsites.net/swagger/index.html
-# Run in VS Code
+# Run in Microsoft Visual Studio Community 2019
 1. Setup DB by running 3 scripts in "**src/WebSPA/sql**"
 2. Change **Default** connection string in "**src/WebSPA/appsettings.json**"
-3. Open workspace and press F5 to start Debugging
+3. Open **.\src\MyAlbum.sln** and press F5 to start Debugging either:
+   1. **React** with projects: **Web Apps\WebSPA.React.Identity** and 3 projects in Services folder
+   2. **Angular** with projects: **Web Apps\WebSPA.Identity** and 3 projects in Services folder
 # Run in Docker
 0. [Install](https://docs.docker.com/docker-for-windows/install/) Docker.
 1. Open "**src/Docker**" folder and run: 
