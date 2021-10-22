@@ -5,6 +5,7 @@ import styles from './ExplorePhotos.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GlobalDataContext } from '../context/GlobalDataContext';
 import { DisplayMode } from '../models/globalData';
+import { RouteComponentProps } from 'react-router';
 
 declare const Tessarray: any;
 
@@ -15,22 +16,25 @@ interface IExplorePhotosState {
     photos: Photo[];
 }
 
-export class ExplorePhotos extends Component<IExplorePhotosProps, IExplorePhotosState> {
+export class ExplorePhotos extends Component<IExplorePhotosProps & RouteComponentProps, IExplorePhotosState> {
     static contextType = GlobalDataContext;
     context!: React.ContextType<typeof GlobalDataContext>;
 
     private photoService = new PhotoService();
 
-    constructor(props: IExplorePhotosProps) {
+    constructor(props: IExplorePhotosProps & RouteComponentProps) {
         super(props);
         this.state = {
             photos: []
-        };   
+        };
     }
 
     componentDidMount() {
         console.log("React.version = " + React.version);
         let filter: any = {};
+        let params = new URLSearchParams(this.props.location?.search);
+        if (params?.get("catId"))
+            filter.categoryId = parseInt(params.get("catId") as string);
         if (this.props.albumId) {
             filter.albumId = this.props.albumId;
             this.context?.setDisplayMode(DisplayMode.Album);
