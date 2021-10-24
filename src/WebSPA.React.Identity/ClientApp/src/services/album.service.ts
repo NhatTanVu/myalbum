@@ -1,25 +1,29 @@
 ﻿import { Album, SaveAlbum } from '../models/album';
 import { setDisplayName, User } from '../models/user';
 import authService from '../components/api-authorization/AuthorizeService';
+import { GlobalDataService } from './globalData.service';
 
 export class AlbumService {
-    private albumApiEndpoint: string = "https://localhost:5003/api/albums";
+    private globalDataService = new GlobalDataService();
 
     toQueryString(obj: any) {
-        var parts = [];
-        for (var prop in obj) {
-            var value = obj[prop];
+        let parts = [];
+        for (let prop in obj) {
+            let value = obj[prop];
             if (value !== null && value !== undefined)
                 parts.push(encodeURIComponent(prop) + "=" + encodeURIComponent(value));
         }
         return parts.join("&");
     }
 
-    getAll(filter: any) {
-        return fetch(this.albumApiEndpoint + '?' + this.toQueryString(filter))
+    async getAll(filter: any) {
+        let albumApiEndpoint = await this.globalDataService.getAlbumApiEndpoint();
+        if (!albumApiEndpoint) return null;
+
+        return fetch(albumApiEndpoint + '?' + this.toQueryString(filter))
             .then(response => response.json())
             .then(data => {
-                var albums = data as Album[];
+                let albums = data as Album[];
                 albums.forEach(album => {
                     setDisplayName(album.author as User);
                     album.mainPhoto = (album.photos.length > 0) ? album.photos[0] : null;
@@ -33,8 +37,11 @@ export class AlbumService {
             });
     }
 
-    get(id: number) {
-        return fetch(this.albumApiEndpoint + '/' + id)
+    async get(id: number) {
+        let albumApiEndpoint = await this.globalDataService.getAlbumApiEndpoint();
+        if (!albumApiEndpoint) return null;
+
+        return fetch(albumApiEndpoint + '/' + id)
             .then(response => {
                 if (response.ok) {
                     return response.json()
@@ -43,7 +50,7 @@ export class AlbumService {
                 }
             })
             .then(data => {
-                var album = data as Album;
+                let album = data as Album;
                 return album;
             });
     }
@@ -51,11 +58,14 @@ export class AlbumService {
     async create(album: SaveAlbum) {
         if (album.name === "") return null;
 
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append('Name', album.name as string);
         const token = await authService.getAccessToken();
 
-        return fetch(this.albumApiEndpoint, {
+        let albumApiEndpoint = await this.globalDataService.getAlbumApiEndpoint();
+        if (!albumApiEndpoint) return null;
+
+        return fetch(albumApiEndpoint, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             body: formData,
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
@@ -68,7 +78,7 @@ export class AlbumService {
                 }
             })
             .then(data => {
-                var album = data as SaveAlbum;
+                let album = data as SaveAlbum;
                 return album;
             });
     }
@@ -76,12 +86,15 @@ export class AlbumService {
     async save(album: SaveAlbum) {
         if (album.name === "") return null;
 
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append('Id', album.id?.toString() as string);
         formData.append('Name', album.name as string);
         const token = await authService.getAccessToken();
 
-        return fetch(this.albumApiEndpoint + '/' + album.id, {
+        let albumApiEndpoint = await this.globalDataService.getAlbumApiEndpoint();
+        if (!albumApiEndpoint) return null;
+
+        return fetch(albumApiEndpoint + '/' + album.id, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             body: formData,
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
@@ -94,15 +107,17 @@ export class AlbumService {
                 }
             })
             .then(data => {
-                var album = data as SaveAlbum;
+                let album = data as SaveAlbum;
                 return album;
             });
     }
 
     async delete(id: number) {
         const token = await authService.getAccessToken();
+        let albumApiEndpoint = await this.globalDataService.getAlbumApiEndpoint();
+        if (!albumApiEndpoint) return null;
 
-        return fetch(this.albumApiEndpoint + '/' + id, {
+        return fetch(albumApiEndpoint + '/' + id, {
             method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
         })
