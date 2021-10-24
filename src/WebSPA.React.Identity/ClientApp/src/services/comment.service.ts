@@ -1,25 +1,19 @@
 ﻿import authService from '../components/api-authorization/AuthorizeService';
 import { Comment, SaveComment } from '../models/comment';
 import { setDisplayName } from '../models/user';
+import { GlobalDataService } from './globalData.service';
 
 export class CommentService {
-    private commentApiEndpoint: string = "https://localhost:5004/api/comments";
+    private globalDataService = new GlobalDataService();
 
-    toQueryString(obj: any) {
-        var parts = [];
-        for (var prop in obj) {
-            var value = obj[prop];
-            if (value !== null && value !== undefined)
-                parts.push(encodeURIComponent(prop) + "=" + encodeURIComponent(value));
-        }
-        return parts.join("&");
-    }
+    async getReplies(commentId: number) {
+        let commentApiEndpoint = await this.globalDataService.getCommentApiEndpoint();
+        if (!commentApiEndpoint) return null;
 
-    getReplies(commentId: number) {
-        return fetch(this.commentApiEndpoint + "/" + commentId)
+        return fetch(commentApiEndpoint + "/" + commentId)
             .then(response => response.json())
             .then(data => {
-                var comments = data as Comment[];
+                let comments = data as Comment[];
                 comments.forEach((comment) => {
                     setDisplayName(comment.author);
                     comment.replies = [];
@@ -41,7 +35,10 @@ export class CommentService {
             }
         }
 
-        return fetch(this.commentApiEndpoint, {
+        let commentApiEndpoint = await this.globalDataService.getCommentApiEndpoint();
+        if (!commentApiEndpoint) return null;
+
+        return fetch(commentApiEndpoint, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             headers: headers,
             body: JSON.stringify(comment)
@@ -54,7 +51,7 @@ export class CommentService {
                 }
             })
             .then(data => {
-                var comment = data as Comment;
+                let comment = data as Comment;
                 if (comment) {
                     setDisplayName(comment.author);
                 }
@@ -66,11 +63,14 @@ export class CommentService {
         if (!comment.id || comment.content === "") return null;
 
         const token = await authService.getAccessToken();
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append('Id', comment.id.toString() as string);
         formData.append('Content', comment.content as string);
 
-        return fetch(this.commentApiEndpoint + "/" + comment.id, {
+        let commentApiEndpoint = await this.globalDataService.getCommentApiEndpoint();
+        if (!commentApiEndpoint) return null;
+
+        return fetch(commentApiEndpoint + "/" + comment.id, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             body: formData,
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
@@ -83,15 +83,17 @@ export class CommentService {
                 }
             })
             .then(data => {
-                var res = data as Comment;
+                let res = data as Comment;
                 return res;
             });
     }
 
     async delete(commentId: number) {
         const token = await authService.getAccessToken();
+        let commentApiEndpoint = await this.globalDataService.getCommentApiEndpoint();
+        if (!commentApiEndpoint) return null;
 
-        return fetch(this.commentApiEndpoint + '/' + commentId, {
+        return fetch(commentApiEndpoint + '/' + commentId, {
             method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
         })

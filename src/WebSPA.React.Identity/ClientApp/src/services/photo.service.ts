@@ -1,25 +1,30 @@
 ﻿import authService from '../components/api-authorization/AuthorizeService';
 import { Photo, SavePhoto } from '../models/photo';
 import { setDisplayName } from '../models/user';
+import { GlobalDataService } from './globalData.service';
 
 export class PhotoService {
-    private photoApiEndpoint: string = "https://localhost:5002/api/photos";
+    //private photoApiEndpoint: string = "https://localhost:5002/api/photos";
+    private globalDataService = new GlobalDataService();
 
     toQueryString(obj: any) {
-        var parts = [];
-        for (var prop in obj) {
-            var value = obj[prop];
+        let parts = [];
+        for (let prop in obj) {
+            let value = obj[prop];
             if (value !== null && value !== undefined)
                 parts.push(encodeURIComponent(prop) + "=" + encodeURIComponent(value));
         }
         return parts.join("&");
     }
 
-    getAll(filter: any) {
-        return fetch(this.photoApiEndpoint + '?' + this.toQueryString(filter))
+    async getAll(filter: any) {
+        let photoApiEndpoint = await this.globalDataService.getPhotoApiEndpoint();
+        if (!photoApiEndpoint) return null;
+
+        return fetch(photoApiEndpoint + '?' + this.toQueryString(filter))
             .then(response => response.json())
             .then(data => {
-                var photos = data as Photo[];
+                let photos = data as Photo[];
                 photos.forEach(photo => {
                     setDisplayName(photo.author);
                 });
@@ -27,8 +32,11 @@ export class PhotoService {
             });
     }
 
-    get(id: number) {
-        return fetch(this.photoApiEndpoint + '/' + id)
+    async get(id: number) {
+        let photoApiEndpoint = await this.globalDataService.getPhotoApiEndpoint();
+        if (!photoApiEndpoint) return null;
+
+        return fetch(photoApiEndpoint + '/' + id)
             .then(response => {
                 if (response.ok) {
                     return response.json()
@@ -37,7 +45,7 @@ export class PhotoService {
                 }
             })
             .then(data => {
-                var photo = data as Photo;
+                let photo = data as Photo;
                 photo?.comments.forEach(comment => {
                     setDisplayName(comment.author);
                     comment.isNew = false;
@@ -49,7 +57,7 @@ export class PhotoService {
     async create(photo: SavePhoto, file: any) {
         if (!file || photo.name === "") return null;
 
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append('Name', photo.name as string);
         formData.append('FileToUpload', file);
         photo.locLat && formData.append('LocLat', photo.locLat?.toString() as string);
@@ -60,28 +68,31 @@ export class PhotoService {
         photo.album?.id && formData.append('Album.Id', photo.album?.id?.toString() as string);
         const token = await authService.getAccessToken();
 
-        return fetch(this.photoApiEndpoint, {
+        let photoApiEndpoint = await this.globalDataService.getPhotoApiEndpoint();
+        if (!photoApiEndpoint) return null;
+
+        return fetch(photoApiEndpoint, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             body: formData,
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
         })
-        .then(response => {
-            if (response.ok) {
-                return response.json()
-            } else {
-                return null;
-            }
-        })
-        .then(data => {
-            var photo = data as SavePhoto;
-            return photo;
-        });
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                } else {
+                    return null;
+                }
+            })
+            .then(data => {
+                let photo = data as SavePhoto;
+                return photo;
+            });
     }
 
     async save(photo: Photo, file: any) {
         if (!photo.id || photo.name === "") return null;
 
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append('FileToUpload', file);
         formData.append('Id', photo.id?.toString() as string);
         formData.append('Name', photo.name as string);
@@ -95,7 +106,10 @@ export class PhotoService {
             formData.append('Album.Id', photo.album.id.toString());
         const token = await authService.getAccessToken();
 
-        return fetch(this.photoApiEndpoint + '/' + photo.id, {
+        let photoApiEndpoint = await this.globalDataService.getPhotoApiEndpoint();
+        if (!photoApiEndpoint) return null;
+
+        return fetch(photoApiEndpoint + '/' + photo.id, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             body: formData,
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
@@ -108,15 +122,17 @@ export class PhotoService {
                 }
             })
             .then(data => {
-                var photo = data as SavePhoto;
+                let photo = data as SavePhoto;
                 return photo;
             });
     }
 
     async delete(id: number) {
         const token = await authService.getAccessToken();
+        let photoApiEndpoint = await this.globalDataService.getPhotoApiEndpoint();
+        if (!photoApiEndpoint) return null;
 
-        return fetch(this.photoApiEndpoint + '/' + id, {
+        return fetch(photoApiEndpoint + '/' + id, {
             method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
             headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
         })
