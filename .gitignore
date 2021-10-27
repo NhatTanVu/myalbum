@@ -6,3 +6,6 @@ _notes_JwtToken.txt
 src/Services/Photo/Photo.API/wwwroot/uploads/
 src/WebSPA/ClientApp/package-lock.json
 src/WebSPA.Slim/ClientApp/package-lock.json
+*.PublishSettings
+LogFiles/
+.config/

@@ -164,8 +164,11 @@ export class ViewEditAlbum extends Component<IViewEditAlbumProps & RouteComponen
                             </h3>
                             <hr />
                         </Col>
-                    </Row>
-                    <ExplorePhotos albumId={this.state.album.id} />
+                </Row>
+                <ExplorePhotos albumId={this.state.album.id}
+                    history={this.props.history}
+                    location={this.props.location}
+                    match={this.props.match} />
                 </div>
         );
     }

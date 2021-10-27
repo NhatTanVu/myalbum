@@ -18,7 +18,7 @@ export class AlbumService {
 
     async getAll(filter: any) {
         let albumApiEndpoint = await this.globalDataService.getAlbumApiEndpoint();
-        if (!albumApiEndpoint) return null;
+        if (!albumApiEndpoint) return [];
 
         return fetch(albumApiEndpoint + '?' + this.toQueryString(filter))
             .then(response => response.json())

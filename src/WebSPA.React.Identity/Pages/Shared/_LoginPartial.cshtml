@@ -90,7 +90,7 @@
 
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function (event) {
-        if (displayMode) {
+        if (typeof displayMode !== "undefined") {
             changeDisplayMode(displayMode);
         }
     })

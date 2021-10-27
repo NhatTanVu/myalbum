@@ -19,7 +19,7 @@ export class PhotoService {
 
     async getAll(filter: any) {
         let photoApiEndpoint = await this.globalDataService.getPhotoApiEndpoint();
-        if (!photoApiEndpoint) return null;
+        if (!photoApiEndpoint) return [];
 
         return fetch(photoApiEndpoint + '?' + this.toQueryString(filter))
             .then(response => response.json())
