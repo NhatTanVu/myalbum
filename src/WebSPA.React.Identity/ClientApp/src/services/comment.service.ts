@@ -8,7 +8,7 @@ export class CommentService {
 
     async getReplies(commentId: number) {
         let commentApiEndpoint = await this.globalDataService.getCommentApiEndpoint();
-        if (!commentApiEndpoint) return null;
+        if (!commentApiEndpoint) return [];
 
         return fetch(commentApiEndpoint + "/" + commentId)
             .then(response => response.json())
