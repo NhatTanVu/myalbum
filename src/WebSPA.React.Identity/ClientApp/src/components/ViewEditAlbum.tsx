@@ -9,6 +9,7 @@ import { GlobalDataContext } from '../context/GlobalDataContext';
 import { ExplorePhotos } from "./ExplorePhotos"
 import { AlbumService } from '../services/album.service';
 import authService from './api-authorization/AuthorizeService';
+import { toast } from 'react-toastify';
 
 interface IViewEditAlbumProps { }
 interface IViewEditAlbumState {
@@ -87,13 +88,13 @@ export class ViewEditAlbum extends Component<IViewEditAlbumProps & RouteComponen
 
     saveAlbumName(event: React.MouseEvent<HTMLButtonElement>) {
         if (this.state.editAlbum?.name === "") {
-            alert("Album Name required.");
+            toast("Album Name required.");
             return;
         }
 
         this.albumService.save(this.state.editAlbum as SaveAlbum).then(album => {
             if (album) {
-                alert("Saved successfully.");
+                toast("Saved successfully.");
                 this.setState({
                     isEditable: true,
                     isEditMode: false,
@@ -101,7 +102,7 @@ export class ViewEditAlbum extends Component<IViewEditAlbumProps & RouteComponen
                 });
             }
             else {
-                alert("Error occurred. Please try again!");
+                toast("Error occurred. Please try again!");
             }
         });
     }
@@ -116,11 +117,12 @@ export class ViewEditAlbum extends Component<IViewEditAlbumProps & RouteComponen
     deleteAlbum() {
         this.albumService.delete(this.state.album?.id as number).then(res => {
             if (res) {
-                alert("Deleted successfully.");
-                this.props.history.push('/album');
+                toast("Deleted successfully.", {
+                    onClose: () => this.props.history.push('/album')
+                });
             }
             else {
-                alert("Error occurred. Please try again!");
+                toast("Error occurred. Please try again!");
             }
         });
     }

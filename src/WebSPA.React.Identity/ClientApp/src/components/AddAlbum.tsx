@@ -4,6 +4,7 @@ import { GlobalDataContext } from '../context/GlobalDataContext';
 import { SaveAlbum } from '../models/album';
 import { DisplayMode } from '../models/globalData';
 import { AlbumService } from '../services/album.service';
+import { toast } from 'react-toastify';
 
 interface IAddAlbumProps { }
 interface IAddAlbumState {
@@ -32,17 +33,18 @@ export class AddAlbum extends Component<IAddAlbumProps & RouteComponentProps, IA
         event.preventDefault();
 
         if (this.state.album.name === "") {
-            alert("Album Name required.");
+            toast("Album Name required.");
             return;
         }
 
         this.albumService.create(this.state.album).then(album => {
             if (album) {
-                alert("Created successfully.");
-                this.props.history.push('/album');
+                toast("Created successfully.", {
+                    onClose: () => this.props.history.push('/album')
+                });
             }
             else {
-                alert("Error occurred. Please try again!");
+                toast("Error occurred. Please try again!");
             }
         });
     }

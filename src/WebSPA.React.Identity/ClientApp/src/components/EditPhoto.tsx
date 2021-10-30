@@ -10,7 +10,8 @@ import './EditPhoto.css';
 import authService from './api-authorization/AuthorizeService';
 import GoogleMapReact from 'google-map-react';
 import { User } from '../models/user';
-import Select from 'react-select'
+import Select from 'react-select';
+import { toast } from 'react-toastify';
 
 interface IEditPhotoProps { }
 interface IEditPhotoState {
@@ -283,7 +284,7 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
         event.preventDefault();
 
         if (this.state.photo.name === "") {
-            alert("Photo Name required.");
+            toast("Photo Name required.");
             return;
         }
 
@@ -292,7 +293,7 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
         if (nativeElement && nativeElement.files && nativeElement.files.length > 0)
         {
             if (nativeElement.files[0].size > MAX_FILE_LENGTH) {
-                alert("File size must not exceed " + MAX_FILE_LENGTH/(1024*1024) + "MB.");
+                toast("File size must not exceed " + MAX_FILE_LENGTH/(1024*1024) + "MB.");
                 return;
             }
             else
@@ -317,11 +318,12 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
 
         this.photoService.save(photo, photoFile).then(photo => {
             if (photo) {
-                alert("Saved successfully.");
-                this.props.history.push('/');
+                toast("Saved successfully.", {
+                    onClose: () => this.props.history.push('/')
+                });
             }
             else {
-                alert("Error occurred. Please try again!");
+                toast("Error occurred. Please try again!");
             }
         });
     }
@@ -333,11 +335,12 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
     handleDelete(event: React.MouseEvent<HTMLButtonElement>) {
         this.photoService.delete(this.state.photo?.id as number).then(res => {
             if (res) {
-                alert("Deleted successfully.");
-                this.props.history.push('/');
+                toast("Deleted successfully.", {
+                    onClose: () => this.props.history.push('/')
+                });
             }
             else {
-                alert("Error occurred. Please try again!");
+                toast("Error occurred. Please try again!");
             }
         });
     }
@@ -441,7 +444,7 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
                                 <div id="gmap">
                                     <GoogleMapReact
                                         bootstrapURLKeys={{
-                                            key: "",
+                                            key: "AIzaSyCAAG_UPPB4khoxt6KzPWidWSXABZAwEqU",
                                             libraries: 'places'
                                         }}
                                         yesIWantToUseGoogleMapApiInternals
