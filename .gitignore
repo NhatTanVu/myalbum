@@ -9,3 +9,4 @@ src/WebSPA.Slim/ClientApp/package-lock.json
 *.PublishSettings
 LogFiles/
 .config/
+appsettings.Production.json

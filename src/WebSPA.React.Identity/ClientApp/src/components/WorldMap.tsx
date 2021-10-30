@@ -151,7 +151,7 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
                         <div id="gmap">
                             <GoogleMapReact 
                                 bootstrapURLKeys={{
-                                    key: "",
+                                    key: "AIzaSyCAAG_UPPB4khoxt6KzPWidWSXABZAwEqU",
                                     libraries: 'places'
                                 }}
                                 yesIWantToUseGoogleMapApiInternals

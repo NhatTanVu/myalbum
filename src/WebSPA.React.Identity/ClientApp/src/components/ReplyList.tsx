@@ -5,6 +5,7 @@ import './ReplyList.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Moment from 'moment';
 import { ReplyForm } from './ReplyForm';
+import { toast } from 'react-toastify';
 
 interface IReplyListProps {
     parent?: Comment,
@@ -43,11 +44,11 @@ export class ReplyList extends Component<IReplyListProps, IReplyListState> {
     delete(reply: Comment) {
         this.commentService.delete(reply.id).then(comment => {
             if (comment) {
-                alert("Deleted successfully.");
+                toast("Deleted successfully.");
                 this.props.onDeleteComment(reply);
             }
             else {
-                alert("Error occurred. Please try again!");
+                toast("Error occurred. Please try again!");
             }
         });
     }

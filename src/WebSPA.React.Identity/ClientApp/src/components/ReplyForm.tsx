@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './ReplyForm.css';
 import { CommentService } from '../services/comment.service';
 import { Comment, SaveComment } from '../models/comment';
+import { toast } from 'react-toastify';
 
 interface IReplyFormProps {
     isNew: boolean,
@@ -36,14 +37,14 @@ export class ReplyForm extends Component<IReplyFormProps, IReplyFormState> {
         event.preventDefault();
 
         if (this.state.comment.content === "") {
-            alert("Content required.");
+            toast("Content required.");
             return;
         }
 
         if (this.props.isNew) {
             this.commentService.create(this.state.comment).then(comment => {
                 if (comment) {
-                    alert("Created successfully.");
+                    toast("Created successfully.");
                     this.props.onCreateComment
                         && this.props.onCreateComment(comment, this.props.parentComment);
                     this.setState({
@@ -54,14 +55,14 @@ export class ReplyForm extends Component<IReplyFormProps, IReplyFormState> {
                     });
                 }
                 else {
-                    alert("Error occurred. Please try again!");
+                    toast("Error occurred. Please try again!");
                 }
             });
         }
         else {
             this.commentService.save(this.state.comment).then(comment => {
                 if (comment) {
-                    alert("Saved successfully.");
+                    toast("Saved successfully.");
                     this.props.onEditComment
                         && this.props.editComment
                         && this.props.onEditComment(comment, this.props.editComment);
@@ -73,7 +74,7 @@ export class ReplyForm extends Component<IReplyFormProps, IReplyFormState> {
                     });
                 }
                 else {
-                    alert("Error occurred. Please try again!");
+                    toast("Error occurred. Please try again!");
                 }
             });
         }

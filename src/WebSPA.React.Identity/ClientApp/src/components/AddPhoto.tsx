@@ -9,6 +9,7 @@ import { PhotoService } from '../services/photo.service';
 import './AddPhoto.css';
 import authService from './api-authorization/AuthorizeService';
 import GoogleMapReact from 'google-map-react';
+import { toast } from 'react-toastify';
 
 interface IAddPhotoProps { }
 interface IAddPhotoState {
@@ -146,17 +147,17 @@ export class AddPhoto extends Component<IAddPhotoProps & RouteComponentProps, IA
         event.preventDefault();
 
         if (this.state.photo.name === "") {
-            alert("Photo Name required.");
+            toast("Photo Name required.");
             return;
         }
 
         let nativeElement = this.fileInput.current;
         if (!nativeElement || !nativeElement.files || nativeElement.files.length === 0) {
-            alert("Photo required.");
+            toast("Photo required.");
             return;
         }
         else if (nativeElement.files[0].size > MAX_FILE_LENGTH) {
-            alert("File size must not exceed " + MAX_FILE_LENGTH/(1024*1024) + "MB.");
+            toast("File size must not exceed " + MAX_FILE_LENGTH/(1024*1024) + "MB.");
             return;
         }
 
@@ -172,11 +173,11 @@ export class AddPhoto extends Component<IAddPhotoProps & RouteComponentProps, IA
 
         this.photoService.create(photo, photoFile).then(photo => {
             if (photo) {
-                alert("Created successfully.");
+                toast("Created successfully.");
                 this.props.history.push('/');
             }
             else {
-                alert("Error occurred. Please try again!");
+                toast("Error occurred. Please try again!");
             }
         });
     }
@@ -256,7 +257,7 @@ export class AddPhoto extends Component<IAddPhotoProps & RouteComponentProps, IA
                                 <div id="gmap">
                                     <GoogleMapReact
                                         bootstrapURLKeys={{
-                                            key: "",
+                                            key: "AIzaSyCAAG_UPPB4khoxt6KzPWidWSXABZAwEqU",
                                             libraries: 'places'
                                         }}
                                         yesIWantToUseGoogleMapApiInternals
