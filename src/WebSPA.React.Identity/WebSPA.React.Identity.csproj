@@ -34,6 +34,22 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Remove="ClientApp\public\lib\fontawesome-free\css\all.min.css" />
+		<None Remove="ClientApp\public\lib\fontawesome-free\webfonts\fa-brands-400.eot" />
+		<None Remove="ClientApp\public\lib\fontawesome-free\webfonts\fa-brands-400.svg" />
+		<None Remove="ClientApp\public\lib\fontawesome-free\webfonts\fa-brands-400.ttf" />
+		<None Remove="ClientApp\public\lib\fontawesome-free\webfonts\fa-brands-400.woff" />
+		<None Remove="ClientApp\public\lib\fontawesome-free\webfonts\fa-brands-400.woff2" />
+		<None Remove="ClientApp\public\lib\fontawesome-free\webfonts\fa-regular-400.eot" />
+		<None Remove="ClientApp\public\lib\fontawesome-free\webfonts\fa-regular-400.svg" />
+		<None Remove="ClientApp\public\lib\fontawesome-free\webfonts\fa-regular-400.ttf" />
+		<None Remove="ClientApp\public\lib\fontawesome-free\webfonts\fa-regular-400.woff" />
+		<None Remove="ClientApp\public\lib\fontawesome-free\webfonts\fa-regular-400.woff2" />
+		<None Remove="ClientApp\public\lib\fontawesome-free\webfonts\fa-solid-900.eot" />
+		<None Remove="ClientApp\public\lib\fontawesome-free\webfonts\fa-solid-900.svg" />
+		<None Remove="ClientApp\public\lib\fontawesome-free\webfonts\fa-solid-900.ttf" />
+		<None Remove="ClientApp\public\lib\fontawesome-free\webfonts\fa-solid-900.woff" />
+		<None Remove="ClientApp\public\lib\fontawesome-free\webfonts\fa-solid-900.woff2" />
 		<None Remove="ClientApp\public\lib\nav-menu.component.css" />
 		<None Remove="ClientApp\public\lib\styles.css" />
 		<None Remove="ClientApp\public\lib\toggle-switch.css" />
@@ -43,6 +59,70 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Content Include="ClientApp\public\lib\fontawesome-free\css\all.min.css">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="ClientApp\public\lib\fontawesome-free\webfonts\fa-brands-400.eot">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="ClientApp\public\lib\fontawesome-free\webfonts\fa-brands-400.svg">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="ClientApp\public\lib\fontawesome-free\webfonts\fa-brands-400.ttf">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="ClientApp\public\lib\fontawesome-free\webfonts\fa-brands-400.woff">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="ClientApp\public\lib\fontawesome-free\webfonts\fa-brands-400.woff2">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="ClientApp\public\lib\fontawesome-free\webfonts\fa-regular-400.eot">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="ClientApp\public\lib\fontawesome-free\webfonts\fa-regular-400.svg">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="ClientApp\public\lib\fontawesome-free\webfonts\fa-regular-400.ttf">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="ClientApp\public\lib\fontawesome-free\webfonts\fa-regular-400.woff">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="ClientApp\public\lib\fontawesome-free\webfonts\fa-regular-400.woff2">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="ClientApp\public\lib\fontawesome-free\webfonts\fa-solid-900.eot">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="ClientApp\public\lib\fontawesome-free\webfonts\fa-solid-900.svg">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="ClientApp\public\lib\fontawesome-free\webfonts\fa-solid-900.ttf">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="ClientApp\public\lib\fontawesome-free\webfonts\fa-solid-900.woff">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="ClientApp\public\lib\fontawesome-free\webfonts\fa-solid-900.woff2">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
 		<Content Include="ClientApp\public\lib\nav-menu.component.css">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
