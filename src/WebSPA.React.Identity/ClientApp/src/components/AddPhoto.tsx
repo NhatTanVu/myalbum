@@ -257,7 +257,7 @@ export class AddPhoto extends Component<IAddPhotoProps & RouteComponentProps, IA
                                 <div id="gmap">
                                     <GoogleMapReact
                                         bootstrapURLKeys={{
-                                            key: "AIzaSyCAAG_UPPB4khoxt6KzPWidWSXABZAwEqU",
+                                            key: "",
                                             libraries: 'places'
                                         }}
                                         yesIWantToUseGoogleMapApiInternals
