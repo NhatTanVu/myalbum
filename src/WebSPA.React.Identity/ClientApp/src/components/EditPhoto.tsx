@@ -444,7 +444,7 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
                                 <div id="gmap">
                                     <GoogleMapReact
                                         bootstrapURLKeys={{
-                                            key: "AIzaSyCAAG_UPPB4khoxt6KzPWidWSXABZAwEqU",
+                                            key: "",
                                             libraries: 'places'
                                         }}
                                         yesIWantToUseGoogleMapApiInternals

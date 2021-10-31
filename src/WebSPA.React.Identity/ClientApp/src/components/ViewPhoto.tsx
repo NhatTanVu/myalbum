@@ -303,7 +303,7 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                                 <div id="gmap-edit" style={{ height: this.state.gmapHeight }}>
                                     <GoogleMapReact
                                         bootstrapURLKeys={{
-                                            key: "AIzaSyCAAG_UPPB4khoxt6KzPWidWSXABZAwEqU",
+                                            key: "",
                                             libraries: 'places'
                                         }}
                                         yesIWantToUseGoogleMapApiInternals
