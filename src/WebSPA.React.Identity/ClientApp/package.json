@@ -18,7 +18,7 @@
     "css-toggle-switch": "^4.1.0",
     "google-map-react": "^2.1.9",
     "jquery": "^3.4.1",
-    "merge": "^1.2.1",
+    "merge": "^2.1.1",
     "moment": "^2.29.1",
     "node-sass": "^4.14.1",
     "oidc-client": "^1.9.0",
