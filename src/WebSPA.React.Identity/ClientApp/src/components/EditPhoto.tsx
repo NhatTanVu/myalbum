@@ -318,9 +318,8 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
 
         this.photoService.save(photo, photoFile).then(photo => {
             if (photo) {
-                toast("Saved successfully.", {
-                    onClose: () => this.props.history.push('/')
-                });
+                toast("Saved successfully.");
+                this.props.history.push('/');
             }
             else {
                 toast("Error occurred. Please try again!");
@@ -335,9 +334,8 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
     handleDelete(event: React.MouseEvent<HTMLButtonElement>) {
         this.photoService.delete(this.state.photo?.id as number).then(res => {
             if (res) {
-                toast("Deleted successfully.", {
-                    onClose: () => this.props.history.push('/')
-                });
+                toast("Deleted successfully.");
+                this.props.history.push('/');
             }
             else {
                 toast("Error occurred. Please try again!");

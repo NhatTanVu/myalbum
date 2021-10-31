@@ -39,9 +39,8 @@ export class AddAlbum extends Component<IAddAlbumProps & RouteComponentProps, IA
 
         this.albumService.create(this.state.album).then(album => {
             if (album) {
-                toast("Created successfully.", {
-                    onClose: () => this.props.history.push('/album')
-                });
+                toast("Created successfully.");
+                this.props.history.push('/album');
             }
             else {
                 toast("Error occurred. Please try again!");

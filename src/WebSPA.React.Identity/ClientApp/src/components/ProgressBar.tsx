@@ -133,7 +133,7 @@ export class ProgressBar extends Component<Props, State> {
         const transition = mode === 'init' ? '' : `width ${animationSpeed}s ease-in`;
 
         const style: React.CSSProperties = {
-            position: 'absolute',
+            position: 'fixed',
             top: '0',
             zIndex: 9000,
             backgroundColor: '#f0ad4e',
