@@ -1,14 +1,18 @@
-import React from 'react'
+import React from 'react';
 import { Component } from 'react';
 import authService from './AuthorizeService';
 import { AuthenticationResultStatus } from './AuthorizeService';
 import { QueryParameterNames, LogoutActions, ApplicationPaths } from './ApiAuthorizationConstants';
+import { GlobalDataContext } from '../../context/GlobalDataContext';
 
 // The main responsibility of this component is to handle the user's logout process.
 // This is the starting point for the logout process, which is usually initiated when a
 // user clicks on the logout button on the LoginMenu component.
-export class Logout extends Component {
-    constructor(props) {
+export class Logout extends Component<any, any> {
+    static contextType = GlobalDataContext;
+    context!: React.ContextType<typeof GlobalDataContext>;
+
+    constructor(props: any) {
         super(props);
 
         this.state = {
@@ -64,11 +68,11 @@ export class Logout extends Component {
         }
     }
 
-    async logout(returnUrl) {
+    async logout(returnUrl: any) {
         const state = { returnUrl };
         const isauthenticated = await authService.isAuthenticated();
         if (isauthenticated) {
-            const result = await authService.signOut(state);
+            const result = await authService.signOut(state, this.context?.globalData.displayMode) as any;
             switch (result.status) {
                 case AuthenticationResultStatus.Redirect:
                     break;
@@ -88,7 +92,7 @@ export class Logout extends Component {
 
     async processLogoutCallback() {
         const url = window.location.href;
-        const result = await authService.completeSignOut(url);
+        const result = await authService.completeSignOut(url) as any;
         switch (result.status) {
             case AuthenticationResultStatus.Redirect:
                 // There should not be any redirects as the only time completeAuthentication finishes
@@ -110,7 +114,7 @@ export class Logout extends Component {
         this.setState({ isReady: true, authenticated });
     }
 
-    getReturnUrl(state) {
+    getReturnUrl(state?: any) {
         const params = new URLSearchParams(window.location.search);
         const fromQuery = params.get(QueryParameterNames.ReturnUrl);
         if (fromQuery && !fromQuery.startsWith(`${window.location.origin}/`)) {
@@ -119,10 +123,10 @@ export class Logout extends Component {
         }
         return (state && state.returnUrl) ||
             fromQuery ||
-            `${window.location.origin}${ApplicationPaths.LoggedOut}`;
+            `${window.location.origin}/`;
     }
 
-    navigateToReturnUrl(returnUrl) {
+    navigateToReturnUrl(returnUrl: any) {
         return window.location.replace(returnUrl);
     }
 }

@@ -27,6 +27,10 @@ class NavMenu extends Component<INavMenuProps & RouteComponentProps, INavMenuSta
         this.state = {
             collapsed: true
         };
+        let params = new URLSearchParams(window.location.search);
+        let displayMode = params.get("displayMode");
+        if (displayMode === DisplayMode.Album || displayMode === DisplayMode.Photo)
+            this.changeDisplayMode(displayMode);
     }
 
     toggleNavbar() {
@@ -86,7 +90,7 @@ class NavMenu extends Component<INavMenuProps & RouteComponentProps, INavMenuSta
                                         disabled={!this.context?.globalData.enableDisplayMode}
                                         onChange={(e) => this.changeDisplayMode(DisplayMode.Photo)} />
                                     <label htmlFor="photo_mobile">Photo</label>
-                                    <input id="album_mobile" name="displayMode_mobile" type="radio" value="album" 
+                                    <input id="album_mobile" name="displayMode_mobile" type="radio" value="album"
                                         checked={this.context?.globalData.displayMode === DisplayMode.Album}
                                         disabled={!this.context?.globalData.enableDisplayMode}
                                         onChange={(e) => this.changeDisplayMode(DisplayMode.Album)} />
@@ -137,7 +141,7 @@ class NavMenu extends Component<INavMenuProps & RouteComponentProps, INavMenuSta
                                         </NavLink>
                                     }
                                 </NavItem>
-                                <LoginMenu/>
+                                <LoginMenu />
                             </ul>
                             <span className="separator"></span>
                             <div className="rounded switch-toggle alert display-mode">

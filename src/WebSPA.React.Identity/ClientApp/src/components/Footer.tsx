@@ -38,10 +38,10 @@ export class Footer extends Component<IFooterProps, IFooterState> {
                             </div>
                             <div className="row">
                                 <ul className="unstyled">
-                                    <li><a className="nav-link text-light pt-0 pb-0" href={this.state?.identityUrl + "/swagger"} target="_blank">Identity API</a></li>
-                                    <li><a className="nav-link text-light pt-0 pb-0" href={this.state?.photoUrl + "/swagger"} target="_blank">Photo API</a></li>
-                                    <li><a className="nav-link text-light pt-0 pb-0" href={this.state?.albumUrl + "/swagger"} target="_blank">Album API</a></li>
-                                    <li><a className="nav-link text-light pt-0 pb-0" href={this.state?.commentUrl + "/swagger"} target="_blank">Comment API</a></li>
+                                    <li><a className="nav-link text-light pt-0 pb-0" href={this.state?.identityUrl + "/swagger"} target="_blank" rel="noopener noreferrer">Identity API</a></li>
+                                    <li><a className="nav-link text-light pt-0 pb-0" href={this.state?.photoUrl + "/swagger"} target="_blank" rel="noopener noreferrer">Photo API</a></li>
+                                    <li><a className="nav-link text-light pt-0 pb-0" href={this.state?.albumUrl + "/swagger"} target="_blank" rel="noopener noreferrer">Album API</a></li>
+                                    <li><a className="nav-link text-light pt-0 pb-0" href={this.state?.commentUrl + "/swagger"} target="_blank" rel="noopener noreferrer">Comment API</a></li>
                                 </ul>
                             </div>
                         </div>

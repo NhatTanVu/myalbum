@@ -40,10 +40,10 @@ export class AuthorizeService {
     //    Pop-Up blocker or the user has disabled PopUps.
     // 3) If the two methods above fail, we redirect the browser to the IdP to perform a traditional
     //    redirect flow.
-    async signIn(state) {
+    async signIn(state, displayMode) {
         await this.ensureUserManagerInitialized();
         try {
-            const silentUser = await this.userManager.signinSilent(this.createArguments());
+            const silentUser = await this.userManager.signinSilent(this.createArguments(displayMode));
             this.updateState(silentUser);
             return this.success(state);
         } catch (silentError) {
@@ -55,7 +55,7 @@ export class AuthorizeService {
                     throw new Error('Popup disabled. Change \'AuthorizeService.js:AuthorizeService._popupDisabled\' to false to enable it.')
                 }
 
-                const popUpUser = await this.userManager.signinPopup(this.createArguments());
+                const popUpUser = await this.userManager.signinPopup(this.createArguments(displayMode));
                 this.updateState(popUpUser);
                 return this.success(state);
             } catch (popUpError) {
@@ -68,7 +68,7 @@ export class AuthorizeService {
 
                 // PopUps might be blocked by the user, fallback to redirect
                 try {
-                    await this.userManager.signinRedirect(this.createArguments(state));
+                    await this.userManager.signinRedirect(this.createArguments(displayMode, state));
                     return this.redirect();
                 } catch (redirectError) {
                     console.log("Redirect authentication error: ", redirectError);
@@ -95,20 +95,20 @@ export class AuthorizeService {
     //    Pop-Up blocker or the user has disabled PopUps.
     // 2) If the method above fails, we redirect the browser to the IdP to perform a traditional
     //    post logout redirect flow.
-    async signOut(state) {
+    async signOut(state, displayMode) {
         await this.ensureUserManagerInitialized();
         try {
             if (this._popUpDisabled) {
                 throw new Error('Popup disabled. Change \'AuthorizeService.js:AuthorizeService._popupDisabled\' to false to enable it.')
             }
 
-            await this.userManager.signoutPopup(this.createArguments());
+            await this.userManager.signoutPopup(this.createArguments(displayMode));
             this.updateState(undefined);
             return this.success(state);
         } catch (popupSignOutError) {
             console.log("Popup signout error: ", popupSignOutError);
             try {
-                await this.userManager.signoutRedirect(this.createArguments(state));
+                await this.userManager.signoutRedirect(this.createArguments(displayMode, state));
                 return this.redirect();
             } catch (redirectSignOutError) {
                 console.log("Redirect signout error: ", redirectSignOutError);
@@ -158,8 +158,12 @@ export class AuthorizeService {
         }
     }
 
-    createArguments(state) {
-        return { useReplaceToNavigate: true, data: state };
+    createArguments(displayMode, state) {
+        return {
+            useReplaceToNavigate: true, data: state, extraQueryParams: {
+                displayMode: displayMode
+            }
+        };
     }
 
     error(message) {

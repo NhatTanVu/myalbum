@@ -1,15 +1,20 @@
-import React from 'react'
+import React from 'react';
 import { Component } from 'react';
 import authService from './AuthorizeService';
 import { AuthenticationResultStatus } from './AuthorizeService';
 import { LoginActions, QueryParameterNames, ApplicationPaths } from './ApiAuthorizationConstants';
+import { GlobalDataContext } from '../../context/GlobalDataContext';
+
 
 // The main responsibility of this component is to handle the user's login process.
 // This is the starting point for the login process. Any component that needs to authenticate
 // a user can simply perform a redirect to this component with a returnUrl query parameter and
 // let the component perform the login and return back to the return url.
-export class Login extends Component {
-    constructor(props) {
+export class Login extends Component<any, any> {
+    static contextType = GlobalDataContext;
+    context!: React.ContextType<typeof GlobalDataContext>;
+
+    constructor(props: any) {
         super(props);
 
         this.state = {
@@ -63,9 +68,9 @@ export class Login extends Component {
         }
     }
 
-    async login(returnUrl) {
+    async login(returnUrl: any) {
         const state = { returnUrl };
-        const result = await authService.signIn(state);
+        const result = await authService.signIn(state, this.context?.globalData.displayMode) as any;
         switch (result.status) {
             case AuthenticationResultStatus.Redirect:
                 break;
@@ -82,7 +87,7 @@ export class Login extends Component {
 
     async processLoginCallback() {
         const url = window.location.href;
-        const result = await authService.completeSignIn(url);
+        const result = await authService.completeSignIn(url) as any;
         switch (result.status) {
             case AuthenticationResultStatus.Redirect:
                 // There should not be any redirects as the only time completeSignIn finishes
@@ -99,25 +104,27 @@ export class Login extends Component {
         }
     }
 
-    getReturnUrl(state) {
+    getReturnUrl(state?: any) {
         const params = new URLSearchParams(window.location.search);
         const fromQuery = params.get(QueryParameterNames.ReturnUrl);
         if (fromQuery && !fromQuery.startsWith(`${window.location.origin}/`)) {
             // This is an extra check to prevent open redirects.
             throw new Error("Invalid return url. The return url needs to have the same origin as the current page.")
         }
-        return (state && state.returnUrl) || fromQuery || `${window.location.origin}/`;
+        return (state && state.returnUrl)
+            || fromQuery
+            || `${window.location.origin}/?displayMode=${this.context?.globalData.displayMode}`;
     }
 
     redirectToRegister() {
-        this.redirectToApiAuthorizationPath(`${ApplicationPaths.IdentityRegisterPath}?${QueryParameterNames.ReturnUrl}=${encodeURI(ApplicationPaths.Login)}`);
+        this.redirectToApiAuthorizationPath(`${ApplicationPaths.IdentityRegisterPath}?${QueryParameterNames.ReturnUrl}=${encodeURI(ApplicationPaths.Login)}&displayMode=${this.context?.globalData.displayMode}`);
     }
 
     redirectToProfile() {
-        this.redirectToApiAuthorizationPath(ApplicationPaths.IdentityManagePath);
+        this.redirectToApiAuthorizationPath(`${ApplicationPaths.IdentityManagePath}?displayMode=${this.context?.globalData.displayMode}`);
     }
 
-    redirectToApiAuthorizationPath(apiAuthorizationPath) {
+    redirectToApiAuthorizationPath(apiAuthorizationPath: any) {
         const redirectUrl = `${window.location.origin}/${apiAuthorizationPath}`;
         // It's important that we do a replace here so that when the user hits the back arrow on the
         // browser they get sent back to where it was on the app instead of to an endpoint on this
@@ -125,7 +132,7 @@ export class Login extends Component {
         window.location.replace(redirectUrl);
     }
 
-    navigateToReturnUrl(returnUrl) {
+    navigateToReturnUrl(returnUrl: any) {
         // It's important that we do a replace here so that we remove the callback uri with the
         // fragment containing the tokens from the browser history.
         window.location.replace(returnUrl);

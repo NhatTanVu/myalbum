@@ -6,9 +6,9 @@
 @inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 
 @{ 
-    string albumUrl = Configuration.GetValue<string>("AlbumUrl");
-    string commentUrl = Configuration.GetValue<string>("CommentUrl");
-    string photoUrl = Configuration.GetValue<string>("PhotoUrl");
+    string albumUrl = Configuration.GetValue<string>("AlbumApiUrl").Replace("/api/albums", string.Empty);
+    string commentUrl = Configuration.GetValue<string>("CommentApiUrl").Replace("/api/comments", string.Empty);
+    string photoUrl = Configuration.GetValue<string>("PhotoApiUrl").Replace("/api/photos", string.Empty);
 }
 <!DOCTYPE html>
 <html>
