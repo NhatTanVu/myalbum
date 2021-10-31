@@ -10,11 +10,14 @@ import './AddPhoto.css';
 import authService from './api-authorization/AuthorizeService';
 import GoogleMapReact from 'google-map-react';
 import { toast } from 'react-toastify';
+import { GlobalDataService } from '../services/globalData.service';
 
 interface IAddPhotoProps { }
 interface IAddPhotoState {
     photo: SavePhoto,
-    albums?: SaveAlbum[]
+    albums?: SaveAlbum[],
+    googleAPIKey: string,
+    loadedGoogleAPIKey: boolean
 }
 
 export class AddPhoto extends Component<IAddPhotoProps & RouteComponentProps, IAddPhotoState> {
@@ -23,6 +26,7 @@ export class AddPhoto extends Component<IAddPhotoProps & RouteComponentProps, IA
 
     private albumService = new AlbumService();
     private photoService = new PhotoService();
+    private globalDataService = new GlobalDataService();
     private userName = "";
     private fileInput: React.RefObject<HTMLInputElement>;
     private gmapSearchBoxRef: React.RefObject<HTMLInputElement>;
@@ -41,7 +45,9 @@ export class AddPhoto extends Component<IAddPhotoProps & RouteComponentProps, IA
             photo: {
                 name: ""
             },
-            albums: []
+            albums: [],
+            googleAPIKey: "",
+            loadedGoogleAPIKey: false
         };
     }
 
@@ -157,7 +163,7 @@ export class AddPhoto extends Component<IAddPhotoProps & RouteComponentProps, IA
             return;
         }
         else if (nativeElement.files[0].size > MAX_FILE_LENGTH) {
-            toast("File size must not exceed " + MAX_FILE_LENGTH/(1024*1024) + "MB.");
+            toast("File size must not exceed " + MAX_FILE_LENGTH / (1024 * 1024) + "MB.");
             return;
         }
 
@@ -203,6 +209,12 @@ export class AddPhoto extends Component<IAddPhotoProps & RouteComponentProps, IA
         this.albumService.getAll(albumQuery).then(albums => {
             this.setState({
                 albums: albums as SaveAlbum[]
+            });
+        });
+        this.globalDataService.getGoogleApiKeyEndpoint().then(googleAPIKey => {
+            this.setState({
+                googleAPIKey: googleAPIKey,
+                loadedGoogleAPIKey: true
             });
         });
     }
@@ -255,9 +267,9 @@ export class AddPhoto extends Component<IAddPhotoProps & RouteComponentProps, IA
                         <div className="row">
                             <div className="col-lg-8">
                                 <div id="gmap">
-                                    <GoogleMapReact
+                                    {this.state.loadedGoogleAPIKey && <GoogleMapReact
                                         bootstrapURLKeys={{
-                                            key: "",
+                                            key: this.state.googleAPIKey,
                                             libraries: 'places'
                                         }}
                                         yesIWantToUseGoogleMapApiInternals
@@ -265,7 +277,7 @@ export class AddPhoto extends Component<IAddPhotoProps & RouteComponentProps, IA
                                         defaultCenter={{ lat: 3.140853, lng: 101.693207 }} /* KUL */
                                         defaultZoom={12}
                                         options={{ mapTypeId: 'roadmap' }}
-                                    />
+                                    />}
                                 </div>
                             </div>
                         </div>
