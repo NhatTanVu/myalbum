@@ -19,8 +19,8 @@ interface IEditPhotoState {
     photo: Photo,
     hasMap: boolean | null,
     albums?: SaveAlbum[],
-    googleAPIKey: string,
-    loadedGoogleAPIKey: boolean
+    googleApiKey: string,
+    loadedGoogleApiKey: boolean
 }
 
 interface IEditPhotoParams {
@@ -156,8 +156,8 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
             },
             albums: [],
             hasMap: null,
-            googleAPIKey: "",
-            loadedGoogleAPIKey: false
+            googleApiKey: "",
+            loadedGoogleApiKey: false
         };
         this.photoId = parseInt(this.props.match.params.id);
     }
@@ -378,10 +378,10 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
                 this.props.history.push('/');
             }
         });
-        this.globalDataService.getGoogleApiKeyEndpoint().then(googleAPIKey => {
+        this.globalDataService.getGoogleApiKeyEndpoint().then(googleApiKey => {
             this.setState({
-                googleAPIKey: googleAPIKey,
-                loadedGoogleAPIKey: true
+                googleApiKey: googleApiKey,
+                loadedGoogleApiKey: true
             });
         });
     }
@@ -451,9 +451,9 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
                         <div className="row">
                             <div className="col-lg-8">
                                 <div id="gmap">
-                                    {this.state.loadedGoogleAPIKey && <GoogleMapReact
+                                    {this.state.loadedGoogleApiKey && <GoogleMapReact
                                         bootstrapURLKeys={{
-                                            key: this.state.googleAPIKey,
+                                            key: this.state.googleApiKey,
                                             libraries: 'places'
                                         }}
                                         yesIWantToUseGoogleMapApiInternals

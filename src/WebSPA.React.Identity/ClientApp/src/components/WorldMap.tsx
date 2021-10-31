@@ -15,8 +15,8 @@ declare const Tessarray: any;
 interface IWorldMapProps { }
 interface IWorldMapState {
     viewportPhotos: Photo[],
-    googleAPIKey: string,
-    loadedGoogleAPIKey: boolean
+    googleApiKey: string,
+    loadedGoogleApiKey: boolean
 }
 
 export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
@@ -33,8 +33,8 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
         super(props);
         this.state = {
             viewportPhotos: [],
-            googleAPIKey: "",
-            loadedGoogleAPIKey: false
+            googleApiKey: "",
+            loadedGoogleApiKey: false
         };
         this.googleApiLoadedHandler = this.googleApiLoadedHandler.bind(this);
         this.gmapSearchBoxRef = React.createRef();
@@ -155,9 +155,9 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
                             placeholder="Type location here..."
                             ref={this.gmapSearchBoxRef} />
                         <div id="gmap">
-                            {this.state.loadedGoogleAPIKey && <GoogleMapReact
+                            {this.state.loadedGoogleApiKey && <GoogleMapReact
                                 bootstrapURLKeys={{
-                                    key: this.state.googleAPIKey,
+                                    key: this.state.googleApiKey,
                                     libraries: 'places'
                                 }}
                                 yesIWantToUseGoogleMapApiInternals
@@ -176,10 +176,10 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
     componentDidMount() {
         this.context?.setDisplayMode(DisplayMode.Photo);
         this.context?.setEnableDisplayMode(false);
-        this.globalDataService.getGoogleApiKeyEndpoint().then(googleAPIKey => {
+        this.globalDataService.getGoogleApiKeyEndpoint().then(googleApiKey => {
             this.setState({
-                googleAPIKey: googleAPIKey,
-                loadedGoogleAPIKey: true
+                googleApiKey: googleApiKey,
+                loadedGoogleApiKey: true
             });
         });
     }

@@ -42,10 +42,11 @@ namespace MyAlbum.Services.Indentity.API.Controllers
         public IActionResult GetConfiguration()
         {
             var parameters = new Dictionary<string, string>();
-            parameters.Add("AlbumUrl", config.GetValue<string>("AlbumUrl"));
-            parameters.Add("CommentUrl", config.GetValue<string>("CommentUrl"));
-            parameters.Add("PhotoUrl", config.GetValue<string>("PhotoUrl"));
-            parameters.Add("GoogleAPIKey", config.GetValue<string>("GoogleAPIKey"));
+            parameters.Add("IssuerUri", config.GetValue<string>("IssuerUri")); 
+            parameters.Add("AlbumApiUrl", config.GetValue<string>("AlbumApiUrl"));
+            parameters.Add("CommentApiUrl", config.GetValue<string>("CommentApiUrl"));
+            parameters.Add("PhotoApiUrl", config.GetValue<string>("PhotoApiUrl"));
+            parameters.Add("GoogleApiKey", config.GetValue<string>("GoogleApiKey"));
             return Ok(parameters);
         }
 

@@ -13,21 +13,21 @@ export class GlobalDataService {
 
     async getPhotoApiEndpoint() {
         let result = await this.getConfiguration();
-        return result.PhotoUrl; // https://localhost:5002/api/photos
+        return result.PhotoApiUrl; // https://localhost:5002/api/photos
     }
 
     async getAlbumApiEndpoint() {
         let result = await this.getConfiguration();
-        return result.AlbumUrl; // https://localhost:5003/api/albums
+        return result.AlbumApiUrl; // https://localhost:5003/api/albums
     }
 
     async getCommentApiEndpoint() {
         let result = await this.getConfiguration();
-        return result.CommentUrl; // https://localhost:5004/api/comments
+        return result.CommentApiUrl; // https://localhost:5004/api/comments
     }
 
     async getGoogleApiKeyEndpoint() {
         let result = await this.getConfiguration();
-        return result.GoogleAPIKey; // https://localhost:5004/api/comments
+        return result.GoogleApiKey;
     }
 }

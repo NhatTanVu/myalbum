@@ -16,8 +16,8 @@ interface IAddPhotoProps { }
 interface IAddPhotoState {
     photo: SavePhoto,
     albums?: SaveAlbum[],
-    googleAPIKey: string,
-    loadedGoogleAPIKey: boolean
+    googleApiKey: string,
+    loadedGoogleApiKey: boolean
 }
 
 export class AddPhoto extends Component<IAddPhotoProps & RouteComponentProps, IAddPhotoState> {
@@ -46,8 +46,8 @@ export class AddPhoto extends Component<IAddPhotoProps & RouteComponentProps, IA
                 name: ""
             },
             albums: [],
-            googleAPIKey: "",
-            loadedGoogleAPIKey: false
+            googleApiKey: "",
+            loadedGoogleApiKey: false
         };
     }
 
@@ -211,10 +211,10 @@ export class AddPhoto extends Component<IAddPhotoProps & RouteComponentProps, IA
                 albums: albums as SaveAlbum[]
             });
         });
-        this.globalDataService.getGoogleApiKeyEndpoint().then(googleAPIKey => {
+        this.globalDataService.getGoogleApiKeyEndpoint().then(googleApiKey => {
             this.setState({
-                googleAPIKey: googleAPIKey,
-                loadedGoogleAPIKey: true
+                googleApiKey: googleApiKey,
+                loadedGoogleApiKey: true
             });
         });
     }
@@ -267,9 +267,9 @@ export class AddPhoto extends Component<IAddPhotoProps & RouteComponentProps, IA
                         <div className="row">
                             <div className="col-lg-8">
                                 <div id="gmap">
-                                    {this.state.loadedGoogleAPIKey && <GoogleMapReact
+                                    {this.state.loadedGoogleApiKey && <GoogleMapReact
                                         bootstrapURLKeys={{
-                                            key: this.state.googleAPIKey,
+                                            key: this.state.googleApiKey,
                                             libraries: 'places'
                                         }}
                                         yesIWantToUseGoogleMapApiInternals

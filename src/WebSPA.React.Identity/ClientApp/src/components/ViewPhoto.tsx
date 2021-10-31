@@ -28,8 +28,8 @@ interface IViewPhotoState {
     maxHeight: number,
     maxWidth: number,
     gmapHeight: number,
-    googleAPIKey: string,
-    loadedGoogleAPIKey: boolean
+    googleApiKey: string,
+    loadedGoogleApiKey: boolean
 }
 
 interface IViewPhotoParams {
@@ -78,8 +78,8 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
             maxHeight: 0,
             maxWidth: 0,
             gmapHeight: (windowWidth > 575.98) ? 400 : 300,
-            googleAPIKey: "",
-            loadedGoogleAPIKey: false
+            googleApiKey: "",
+            loadedGoogleApiKey: false
         };
         this.googleApiLoadedHandler = this.googleApiLoadedHandler.bind(this);
         this.initializeMap = this.initializeMap.bind(this);
@@ -224,10 +224,10 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                 this.props.history.push('/');
             }
         });
-        this.globalDataService.getGoogleApiKeyEndpoint().then(googleAPIKey => {
+        this.globalDataService.getGoogleApiKeyEndpoint().then(googleApiKey => {
             this.setState({
-                googleAPIKey: googleAPIKey,
-                loadedGoogleAPIKey: true
+                googleApiKey: googleApiKey,
+                loadedGoogleApiKey: true
             });
         });
     }
@@ -313,9 +313,9 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                         <Row>
                             <Col>
                                 <div id="gmap-edit" style={{ height: this.state.gmapHeight }}>
-                                    {this.state.loadedGoogleAPIKey && <GoogleMapReact
+                                    {this.state.loadedGoogleApiKey && <GoogleMapReact
                                         bootstrapURLKeys={{
-                                            key: this.state.googleAPIKey,
+                                            key: this.state.googleApiKey,
                                             libraries: 'places'
                                         }}
                                         yesIWantToUseGoogleMapApiInternals
