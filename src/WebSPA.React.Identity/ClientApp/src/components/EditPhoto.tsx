@@ -12,12 +12,15 @@ import GoogleMapReact from 'google-map-react';
 import { User } from '../models/user';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
+import { GlobalDataService } from '../services/globalData.service';
 
 interface IEditPhotoProps { }
 interface IEditPhotoState {
     photo: Photo,
     hasMap: boolean | null,
-    albums?: SaveAlbum[]
+    albums?: SaveAlbum[],
+    googleAPIKey: string,
+    loadedGoogleAPIKey: boolean
 }
 
 interface IEditPhotoParams {
@@ -112,6 +115,7 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
 
     private albumService = new AlbumService();
     private photoService = new PhotoService();
+    private globalDataService = new GlobalDataService();
     private photoId: number;
     private userName = "";
     private fileInput: React.RefObject<HTMLInputElement>;
@@ -151,7 +155,9 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
                 album: new SaveAlbum()
             },
             albums: [],
-            hasMap: null
+            hasMap: null,
+            googleAPIKey: "",
+            loadedGoogleAPIKey: false
         };
         this.photoId = parseInt(this.props.match.params.id);
     }
@@ -290,10 +296,9 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
 
         let nativeElement = this.fileInput.current;
         let photoFile = null;
-        if (nativeElement && nativeElement.files && nativeElement.files.length > 0)
-        {
+        if (nativeElement && nativeElement.files && nativeElement.files.length > 0) {
             if (nativeElement.files[0].size > MAX_FILE_LENGTH) {
-                toast("File size must not exceed " + MAX_FILE_LENGTH/(1024*1024) + "MB.");
+                toast("File size must not exceed " + MAX_FILE_LENGTH / (1024 * 1024) + "MB.");
                 return;
             }
             else
@@ -373,6 +378,12 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
                 this.props.history.push('/');
             }
         });
+        this.globalDataService.getGoogleApiKeyEndpoint().then(googleAPIKey => {
+            this.setState({
+                googleAPIKey: googleAPIKey,
+                loadedGoogleAPIKey: true
+            });
+        });
     }
 
     render() {
@@ -427,7 +438,7 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
                                     getOptionLabel={option => option.name}
                                     getOptionValue={option => option.id.toString()} />
                             </div>
-                        </div>    
+                        </div>
                     </div>
                     <div className="form-group">
                         <div className="row mb-2">
@@ -440,9 +451,9 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
                         <div className="row">
                             <div className="col-lg-8">
                                 <div id="gmap">
-                                    <GoogleMapReact
+                                    {this.state.loadedGoogleAPIKey && <GoogleMapReact
                                         bootstrapURLKeys={{
-                                            key: "",
+                                            key: this.state.googleAPIKey,
                                             libraries: 'places'
                                         }}
                                         yesIWantToUseGoogleMapApiInternals
@@ -450,7 +461,7 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
                                         defaultCenter={{ lat: 3.140853, lng: 101.693207 }} /* KUL */
                                         defaultZoom={12}
                                         options={{ mapTypeId: 'roadmap' }}
-                                    />
+                                    />}
                                 </div>
                             </div>
                         </div>

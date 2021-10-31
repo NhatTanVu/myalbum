@@ -25,4 +25,9 @@ export class GlobalDataService {
         let result = await this.getConfiguration();
         return result.CommentUrl; // https://localhost:5004/api/comments
     }
+
+    async getGoogleApiKeyEndpoint() {
+        let result = await this.getConfiguration();
+        return result.GoogleAPIKey; // https://localhost:5004/api/comments
+    }
 }

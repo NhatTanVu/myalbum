@@ -15,6 +15,7 @@ import { DisplayMode } from '../models/globalData';
 import { GlobalDataContext } from '../context/GlobalDataContext';
 import authService from './api-authorization/AuthorizeService';
 import { Comment } from '../models/comment';
+import { GlobalDataService } from '../services/globalData.service';
 
 interface IViewPhotoProps { }
 interface IViewPhotoState {
@@ -26,7 +27,9 @@ interface IViewPhotoState {
     flipContainerWidth: number,
     maxHeight: number,
     maxWidth: number,
-    gmapHeight: number
+    gmapHeight: number,
+    googleAPIKey: string,
+    loadedGoogleAPIKey: boolean
 }
 
 interface IViewPhotoParams {
@@ -38,6 +41,7 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
     context!: React.ContextType<typeof GlobalDataContext>;
 
     private photoService = new PhotoService();
+    private globalDataService = new GlobalDataService();
     private photoId: number;
     private photoContainerRef: React.RefObject<HTMLDivElement>;
     private imageElementRef: React.RefObject<HTMLImageElement>;
@@ -73,7 +77,9 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
             flipContainerWidth: 0,
             maxHeight: 0,
             maxWidth: 0,
-            gmapHeight: (windowWidth > 575.98) ? 400 : 300
+            gmapHeight: (windowWidth > 575.98) ? 400 : 300,
+            googleAPIKey: "",
+            loadedGoogleAPIKey: false
         };
         this.googleApiLoadedHandler = this.googleApiLoadedHandler.bind(this);
         this.initializeMap = this.initializeMap.bind(this);
@@ -218,6 +224,12 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                 this.props.history.push('/');
             }
         });
+        this.globalDataService.getGoogleApiKeyEndpoint().then(googleAPIKey => {
+            this.setState({
+                googleAPIKey: googleAPIKey,
+                loadedGoogleAPIKey: true
+            });
+        });
     }
 
     componentWillUnmount() {
@@ -301,9 +313,9 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                         <Row>
                             <Col>
                                 <div id="gmap-edit" style={{ height: this.state.gmapHeight }}>
-                                    <GoogleMapReact
+                                    {this.state.loadedGoogleAPIKey && <GoogleMapReact
                                         bootstrapURLKeys={{
-                                            key: "",
+                                            key: this.state.googleAPIKey,
                                             libraries: 'places'
                                         }}
                                         yesIWantToUseGoogleMapApiInternals
@@ -311,7 +323,7 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                                         defaultZoom={12}
                                         onGoogleApiLoaded={({ map }) => this.googleApiLoadedHandler(map)}
                                         options={{ mapTypeId: 'roadmap' }}
-                                    />
+                                    />}
                                     {!this.state.hasMap &&
                                         <div id="gmap-edit-overlay" className="background-dark-lighter" style={{ top: 0, left: 0, width: "100%", height: "100%", zIndex: 1000, position: "absolute" }}>
                                         </div>

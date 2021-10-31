@@ -8,12 +8,15 @@ import GoogleMapReact from 'google-map-react';
 import MarkerClusterer from '@googlemaps/markerclustererplus';
 import { GlobalDataContext } from '../context/GlobalDataContext';
 import { DisplayMode } from '../models/globalData';
+import { GlobalDataService } from '../services/globalData.service';
 
 declare const Tessarray: any;
 
 interface IWorldMapProps { }
 interface IWorldMapState {
-    viewportPhotos: Photo[]
+    viewportPhotos: Photo[],
+    googleAPIKey: string,
+    loadedGoogleAPIKey: boolean
 }
 
 export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
@@ -21,6 +24,7 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
     context!: React.ContextType<typeof GlobalDataContext>;
 
     private photoService = new PhotoService();
+    private globalDataService = new GlobalDataService();
     private allPhotos: Photo[] = [];
     private gmapSearchBoxRef: React.RefObject<HTMLInputElement>;
     private map?: google.maps.Map;
@@ -28,7 +32,9 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
     constructor(props: IWorldMapProps) {
         super(props);
         this.state = {
-            viewportPhotos: []
+            viewportPhotos: [],
+            googleAPIKey: "",
+            loadedGoogleAPIKey: false
         };
         this.googleApiLoadedHandler = this.googleApiLoadedHandler.bind(this);
         this.gmapSearchBoxRef = React.createRef();
@@ -149,17 +155,17 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
                             placeholder="Type location here..."
                             ref={this.gmapSearchBoxRef} />
                         <div id="gmap">
-                            <GoogleMapReact 
+                            {this.state.loadedGoogleAPIKey && <GoogleMapReact
                                 bootstrapURLKeys={{
-                                    key: "",
+                                    key: this.state.googleAPIKey,
                                     libraries: 'places'
                                 }}
                                 yesIWantToUseGoogleMapApiInternals
                                 onGoogleApiLoaded={({ map }) => this.googleApiLoadedHandler(map)}
                                 defaultCenter={{ lat: 3.140853, lng: 101.693207 }} /* KUL */
-                                defaultZoom={ 12 }
+                                defaultZoom={12}
                                 options={{ mapTypeId: 'roadmap' }}
-                            />
+                            />}
                         </div>
                     </Col>
                 </Row>
@@ -170,6 +176,12 @@ export class WorldMap extends Component<IWorldMapProps, IWorldMapState> {
     componentDidMount() {
         this.context?.setDisplayMode(DisplayMode.Photo);
         this.context?.setEnableDisplayMode(false);
+        this.globalDataService.getGoogleApiKeyEndpoint().then(googleAPIKey => {
+            this.setState({
+                googleAPIKey: googleAPIKey,
+                loadedGoogleAPIKey: true
+            });
+        });
     }
 
     componentDidUpdate(prevProps: IWorldMapProps, prevState: IWorldMapState) {
