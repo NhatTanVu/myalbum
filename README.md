@@ -13,7 +13,7 @@
 # Website
 * **URL**: 
    1. https://my-album.azurewebsites.net/ (Angular 8.0)
-   2. https://my-album-react.azurewebsites.net/ (React 16.12) (in progress)
+   2. https://my-album-react.azurewebsites.net/ (React 16.12)
 * **Email**: guest@gmail.com (for add/edit photo, album, comment and reply)
 * **Password**: 2u)TAa
 * **Identity API**: https://my-album.azurewebsites.net/swagger/index.html
