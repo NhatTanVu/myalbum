@@ -128,7 +128,7 @@ export class ProgressBar extends Component<Props, State> {
             return null;
         }
 
-        const width = mode === 'complete' ? 100 : mode === 'init' ? 0 : 80;
+        const width = mode === 'complete' ? 100 : mode === 'init' ? 2 : 80;
         const animationSpeed = mode === 'complete' ? 0.8 : 30;
         const transition = mode === 'init' ? '' : `width ${animationSpeed}s ease-in`;
 
