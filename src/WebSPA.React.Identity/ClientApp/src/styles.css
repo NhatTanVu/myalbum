@@ -63,6 +63,10 @@ li {
     box-shadow: 0 -0.05rem .5rem rgba(255, 255, 255, .85);
 }
 
+.background-dark-darker .nav-item a {
+    border-bottom: 2px solid #131417;
+}
+
 .nav-item a.link-active {
     border-bottom: 2px solid grey;
     color: grey !important;
@@ -72,7 +76,7 @@ li {
     border-bottom: 2px solid rgba(255, 255, 255, .85);
 }
 
-.nav-item.disabled {
+.background-dark-darker .nav-item.disabled {
     border-bottom: 2px solid #131417;
 }
 
@@ -80,8 +84,14 @@ hr {
     border-top-color: #f8f9fa;
 }
 
-@media (min-width: 768px) and (max-width: 820px) {
+@media (min-width: 400px) and (max-width: 820px) {
     nav *, footer * {
         font-size: 0.8rem !important;
+    }
+}
+
+@media (max-width: 399px) {
+    nav *, footer * {
+        font-size: 0.7rem !important;
     }
 }

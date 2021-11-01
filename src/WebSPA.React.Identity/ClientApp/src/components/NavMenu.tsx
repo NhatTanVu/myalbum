@@ -99,7 +99,7 @@ class NavMenu extends Component<INavMenuProps & RouteComponentProps, INavMenuSta
                                 </div>
                             </div>
                             <span className="separator mobile"></span>
-                            <NavbarToggler onClick={this.toggleNavbar} className="mr-2 text-light" />
+                            <NavbarToggler onClick={this.toggleNavbar} className="text-light" />
                         </div>
                         <Collapse className="d-md-inline-flex flex-md-row-reverse" isOpen={!this.state.collapsed} navbar>
                             <ul className="navbar-nav flex-grow">
