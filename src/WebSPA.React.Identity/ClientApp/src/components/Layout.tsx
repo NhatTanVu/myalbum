@@ -18,13 +18,15 @@ window.fetch = progressBarFetch;
 export class Layout extends Component {
     render() {
         return (
-            <div>
+            <div id="outer-container">
                 <ProgressBar />
                 <ToastContainer position="bottom-right" hideProgressBar={true} autoClose={3000} />
-                <NavMenu />
-                <Container fluid={true} className="pt-3 pb-3 background-dark-lighter text-light" id="container-body">
-                    {this.props.children}
-                </Container>
+                <div id="inner-container">
+                    <NavMenu />
+                    <Container fluid={true} className="pt-3 pb-3 background-dark-lighter text-light">
+                        {this.props.children}
+                    </Container>
+                </div>
                 <Footer />
             </div>
         );
