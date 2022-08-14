@@ -25,6 +25,9 @@ services:
             - IdentityServer__Clients__MyAlbum__RedirectUri=http://localhost:5000/authentication/login-callback
             - IdentityServer__Clients__MyAlbum__LogoutUri=http://localhost:5000/authentication/logout-callback
             - IssuerUri=http://localhost:5000
+            - AlbumUrl=https://localhost:5003
+            - CommentUrl=https://localhost:5004
+            - PhotoUrl=https://localhost:5002
         depends_on:
             - db
         container_name: "my-album-webspa-identity"

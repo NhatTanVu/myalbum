@@ -38,7 +38,13 @@ docker-compose down
 docker-compose build
 docker-compose up
 ```
-2. Browse the website at http://localhost:5000/
+2. Open "**src/Docker**" folder and [install](https://www.thewindowsclub.com/manage-trusted-root-certificates-windows) **my-album.pfx** SSL certificate file to "**Trusted Root Certification Authorities**":
+```
+File name: my-album.pfx
+Password: 2u)TAa
+```
+Verify by browsing https://localhost:5002/swagger successfully
+3. Browse the website at http://localhost:5000/
 # Deploy to Azure
 1. Create 1 Azure App Service and 1 Azure SQL database
 2. Add 2 app settings: "**ASPNETCORE_ENVIRONMENT**" and "**ConnectionStrings:Default**" to Azure App Service:
