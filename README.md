@@ -38,7 +38,7 @@ docker-compose down
 docker-compose build
 docker-compose up
 ```
-2. Open "**src/Docker**" folder and [install](https://www.thewindowsclub.com/manage-trusted-root-certificates-windows) this file to "**Trusted Root Certification Authorities**":
+2. Open "**src/Docker**" folder and [install](https://www.thewindowsclub.com/manage-trusted-root-certificates-windows) this SSL certificate to Local Computer's "**Trusted Root Certification Authorities**" folder:
 ```
 File name: my-album.pfx
 Password: 2u)TAa
