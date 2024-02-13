@@ -9,7 +9,7 @@
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/4b7m4xj6fu82xtgn/branch/master?svg=true)](https://ci.appveyor.com/project/NhatTanVu/myalbum/branch/master)
 
 # Supporters :clap:
-[![Stargazers repo roster for @NhatTanVu/myalbum](https://reporoster.com/stars/NhatTanVu/myalbum)](https://github.com/NhatTanVu/myalbum/stargazers)
+[![Stargazers repo roster for @NhatTanVu/myalbum](http://reporoster.com/stars/NhatTanVu/myalbum)](https://github.com/NhatTanVu/myalbum/stargazers)
 # Website
 * **URL**: 
    1. https://my-album.azurewebsites.net/ (Angular 8.0)
