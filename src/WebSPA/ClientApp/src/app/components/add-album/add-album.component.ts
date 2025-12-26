@@ -1,7 +1,7 @@
 import { GlobalDataService } from 'src/app/services/globalData.service';
 import { DisplayMode, GlobalData } from 'src/app/models/globalData';
 import { Router } from '@angular/router';
-import { ToastData, ToastyService } from 'ng2-toasty';
+import { ToastrService } from 'ngx-toastr';
 import { AlbumService } from './../../services/album.service';
 import { SaveAlbum } from './../../models/album';
 import { Component, OnInit } from '@angular/core';
@@ -22,7 +22,7 @@ export class AddAlbumComponent implements OnInit {
   };
 
   constructor(private albumService: AlbumService,
-    private toasty: ToastyService,
+    private toastr: ToastrService,
     private router: Router,
     private globalDataService: GlobalDataService) { }
 
@@ -36,34 +36,24 @@ export class AddAlbumComponent implements OnInit {
     result$.subscribe(
       album => {
         if (album) {
-          this.toasty.success({
-            title: "Success",
-            msg: "Saved successfully.",
-            theme: "bootstrap",
-            showClose: true,
-            timeout: 1500,
-            onRemove: function (toast: ToastData) {
-              router.navigate(['/album']);
-            }
+          this.toastr.success("Saved successfully.", "Success", {
+            timeOut: 1500,
+            closeButton: true
+          }).onHidden.subscribe(() => {
+            router.navigate(['/album']);
           });
         }
         else {
-          this.toasty.error({
-            title: "Error",
-            msg: "Error occurred. Please try again!",
-            theme: "bootstrap",
-            showClose: true,
-            timeout: 1500
-          });          
+          this.toastr.error("Error occurred. Please try again!", "Error", {
+            timeOut: 1500,
+            closeButton: true
+          });
         }
       },
       err => {
-        this.toasty.error({
-          title: "Error",
-          msg: "Error occurred. Please try again!",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500
+        this.toastr.error("Error occurred. Please try again!", "Error", {
+          timeOut: 1500,
+          closeButton: true
         });        
         console.log(err);
       }

@@ -5,7 +5,7 @@ import { PhotoService } from './../../services/photo.service';
 import { LocationService } from './../../services/location.service';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastyService, ToastData } from 'ng2-toasty';
+import { ToastrService } from 'ngx-toastr';
 import { AlbumService } from './../../services/album.service';
 import { AlbumQuery, SaveAlbum } from './../../models/album';
 import { AuthorizeService } from './../../../api-authorization/authorize.service';
@@ -53,7 +53,7 @@ export class PhotoFormComponent implements OnInit {
 
   constructor(private photoService: PhotoService,
     private locationService: LocationService,
-    private toasty: ToastyService,
+    private toastr: ToastrService,
     private router: Router,
     private albumService: AlbumService,
     private authorizeService: AuthorizeService,
@@ -156,22 +156,16 @@ export class PhotoFormComponent implements OnInit {
   submit() {
     var nativeElement: HTMLInputElement = this.fileInput.nativeElement;
     if (!nativeElement.files || nativeElement.files.length == 0) {
-      this.toasty.error({
-        title: "Error",
-        msg: "Photo required.",
-        theme: "bootstrap",
-        showClose: true,
-        timeout: 1500
+      this.toastr.error("Photo required.", "Error", {
+        timeOut: 1500,
+        closeButton: true
       });
       return;
     }
     else if (nativeElement.files[0].size > MAX_FILE_LENGTH) {
-      this.toasty.error({
-        title: "Error",
-        msg: "File size must not exceed 1MB.",
-        theme: "bootstrap",
-        showClose: true,
-        timeout: 1500
+      this.toastr.error("File size must not exceed 1MB.", "Error", {
+        timeOut: 1500,
+        closeButton: true
       });
       return;
     }
@@ -196,34 +190,24 @@ export class PhotoFormComponent implements OnInit {
     result$.subscribe(
       photo => {
         if (photo) {
-          this.toasty.success({
-            title: "Success",
-            msg: "Saved successfully.",
-            theme: "bootstrap",
-            showClose: true,
-            timeout: 1500,
-            onRemove: function (toast: ToastData) {
-              router.navigate(['/']);
-            }
+          this.toastr.success("Saved successfully.", "Success", {
+            timeOut: 1500,
+            closeButton: true
+          }).onHidden.subscribe(() => {
+            router.navigate(['/']);
           });
         }
         else {
-          this.toasty.error({
-            title: "Error",
-            msg: "Error occurred. Please try again!",
-            theme: "bootstrap",
-            showClose: true,
-            timeout: 1500
+          this.toastr.error("Error occurred. Please try again!", "Error", {
+            timeOut: 1500,
+            closeButton: true
           });
         }
       },
       err => {
-        this.toasty.error({
-          title: "Error",
-          msg: "Error occurred. Please try again!",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500
+        this.toastr.error("Error occurred. Please try again!", "Error", {
+          timeOut: 1500,
+          closeButton: true
         });
         console.log(err);
       }

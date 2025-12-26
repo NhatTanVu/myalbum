@@ -12,7 +12,8 @@ import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
 import { HomeComponent } from './components/home/home.component';
 import { PhotoFormComponent } from './components/photo-form/photo-form.component';
 import { PhotoService } from './services/photo.service';
-import { ToastyModule } from 'ng2-toasty';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 import { ViewPhotoComponent } from './components/view-photo/view-photo.component';
 import { LocationService } from './services/location.service';
 import { WindowRef } from './models/WindowRef';
@@ -64,7 +65,14 @@ import { AlbumService } from './services/album.service';
       { path: 'album/new', component: AddAlbumComponent, canActivate: [AuthorizeGuard] },
       { path: 'album/edit/:id', component: EditAlbumComponent, canActivate: [AuthorizeGuard] }
     ]),
-    ToastyModule.forRoot(),
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right',
+      timeOut: 3000,
+      closeButton: true,
+      progressBar: true,
+      preventDuplicates: true
+    }),
     LoadingBarHttpClientModule, // for HttpClient use
     LoadingBarModule,
     NgSelectModule

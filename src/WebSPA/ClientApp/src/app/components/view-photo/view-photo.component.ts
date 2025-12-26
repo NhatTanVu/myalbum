@@ -8,7 +8,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Comment, findReplyInComment, mergeNewComment } from './../../models/comment';
 import { CommentService } from 'src/app/services/comment.service';
-import { ToastyService } from 'ng2-toasty';
+import { ToastrService } from 'ngx-toastr';
 import { CommentAdded } from 'src/app/models/commentAdded';
 import { map } from 'rxjs/operators';
 
@@ -89,7 +89,7 @@ export class ViewPhotoComponent implements OnInit {
     private commentService: CommentService,
     private route: ActivatedRoute,
     private router: Router,
-    private toasty: ToastyService,
+    private toastr: ToastrService,
     private globalDataService: GlobalDataService,
     private authorizeService: AuthorizeService
   ) { }
@@ -157,12 +157,9 @@ export class ViewPhotoComponent implements OnInit {
 
   addedCommentSubscriber(newComment: CommentAdded) {
     if (newComment.ancestorOrSelf.photoId == this.photoId) {
-      this.toasty.info({
-        title: "Info",
-        msg: "New comment added.",
-        theme: "bootstrap",
-        showClose: true,
-        timeout: 10000
+      this.toastr.info("New comment added.", "Info", {
+        timeOut: 10000,
+        closeButton: true
       });
 
       let index = this.photo.comments.findIndex((element, index, array) => {
@@ -242,12 +239,9 @@ export class ViewPhotoComponent implements OnInit {
     var result$ = this.commentService.create(this.newComment);
     result$.subscribe(
       comment => {
-        this.toasty.success({
-          title: "Success",
-          msg: "Posted successfully.",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500
+        this.toastr.success("Posted successfully.", "Success", {
+          closeButton: true,
+          timeOut: 1500
         });
         this.photo.comments.push(comment);
         this.resetNewComment();

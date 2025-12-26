@@ -5,7 +5,7 @@ import { NameClaimType } from './../../../api-authorization/api-authorization.co
 import { AlbumService } from './../../services/album.service';
 import { SaveAlbum, AlbumQuery } from './../../models/album';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastData, ToastyService } from 'ng2-toasty';
+import { ToastrService } from 'ngx-toastr';
 import { LocationService } from './../../services/location.service';
 import { PhotoService } from './../../services/photo.service';
 import { PositionModel, Photo, PhotoCategory } from './../../models/photo';
@@ -141,7 +141,7 @@ export class EditPhotoComponent implements OnInit {
 
   constructor(private photoService: PhotoService,
     private locationService: LocationService,
-    private toasty: ToastyService,
+    private toastr: ToastrService,
     private route: ActivatedRoute,
     private router: Router,
     private albumService: AlbumService,
@@ -291,12 +291,9 @@ export class EditPhotoComponent implements OnInit {
     if (nativeElement.files && nativeElement.files.length > 0) {
       photoFile = nativeElement.files[0];
       if (nativeElement.files[0].size > MAX_FILE_LENGTH) {
-        this.toasty.error({
-          title: "Error",
-          msg: "File size must not exceed 1MB.",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500
+        this.toastr.error("File size must not exceed 1MB.", "Error", {
+          timeOut: 1500,
+          closeButton: true
         });
         return;
       }      
@@ -328,34 +325,25 @@ export class EditPhotoComponent implements OnInit {
     result$.subscribe(
       photo => {
         if (photo) {
-          this.toasty.success({
-            title: "Success",
-            msg: "Saved successfully.",
-            theme: "bootstrap",
-            showClose: true,
-            timeout: 1500
+          this.toastr.success("Saved successfully.", "Success", {
+            timeOut: 1500,
+            closeButton: true
           });
           this.photo = photo;
           this.fileInput.nativeElement.value = "";
         }
         else {
-          this.toasty.error({
-            title: "Error",
-            msg: "Error occurred. Please try again!",
-            theme: "bootstrap",
-            showClose: true,
-            timeout: 1500
-          });          
+          this.toastr.error("Error occurred. Please try again!", "Error", {
+            timeOut: 1500,
+            closeButton: true
+          });
         }
       },
       err => {
-        this.toasty.error({
-          title: "Error",
-          msg: "Error occurred. Please try again!",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500
-        });        
+        this.toastr.error("Error occurred. Please try again!", "Error", {
+          timeOut: 1500,
+          closeButton: true
+        });
         console.log(err);
       }
     );
@@ -370,24 +358,17 @@ export class EditPhotoComponent implements OnInit {
     var router = this.router;
     result$.subscribe(
       res => {
-        this.toasty.success({
-          title: "Success",
-          msg: "Deleted successfully.",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500,
-          onRemove: function (toast: ToastData) {
-            router.navigate(['/']);
-          }
+        this.toastr.success("Deleted successfully.", "Success", {
+          timeOut: 1500,
+          closeButton: true
+        }).onHidden.subscribe(() => {
+          router.navigate(['/']);
         });
       },
       err => {
-        this.toasty.error({
-          title: "Error",
-          msg: "Error occurred. Please try again!",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500
+        this.toastr.error("Error occurred. Please try again!", "Error", {
+          timeOut: 1500,
+          closeButton: true
         });        
         console.log(err);
       }

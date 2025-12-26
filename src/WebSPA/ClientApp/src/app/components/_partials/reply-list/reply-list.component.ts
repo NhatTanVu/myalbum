@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Comment } from '../../../models/comment';
 import { CommentService } from 'src/app/services/comment.service';
-import { ToastyService, ToastData } from 'ng2-toasty';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-reply-list',
@@ -19,7 +19,7 @@ export class ReplyListComponent implements OnInit {
 
   constructor(
     private commentService: CommentService,
-    private toasty: ToastyService
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -48,12 +48,9 @@ export class ReplyListComponent implements OnInit {
     var result$ = this.commentService.delete(reply.id);
     result$.subscribe(
       res => {
-        this.toasty.success({
-          title: "Success",
-          msg: "Deleted successfully.",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500,
+        this.toastr.success("Deleted successfully.", "Success", {
+          closeButton: true,
+          timeOut: 1500,
         });
         for (var i = 0; i < this.replies.length; i++) {
           if (this.replies[i].id === reply.id) {
@@ -66,12 +63,9 @@ export class ReplyListComponent implements OnInit {
         }
       },
       err => {
-        this.toasty.error({
-          title: "Error",
-          msg: "Error occurred. Please try again!",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500
+        this.toastr.error("Error occurred. Please try again!", "Error", {
+          closeButton: true,
+          timeOut: 1500
         });
         console.log(err);
       }

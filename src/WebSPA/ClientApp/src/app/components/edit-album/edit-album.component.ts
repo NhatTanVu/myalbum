@@ -4,9 +4,9 @@ import { GlobalDataService } from 'src/app/services/globalData.service';
 import { GlobalData, DisplayMode } from 'src/app/models/globalData';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlbumService } from './../../services/album.service';
-import { Album } from './../../models/album';
+import { SaveAlbum, Album } from './../../models/album';
 import { Component, OnInit } from '@angular/core';
-import { ToastData, ToastyService } from 'ng2-toasty';
+import { ToastrService } from 'ngx-toastr';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -23,7 +23,7 @@ export class EditAlbumComponent implements OnInit {
   userName: string;
 
   constructor(private albumService: AlbumService,
-    private toasty: ToastyService,
+    private toastr: ToastrService,
     private route: ActivatedRoute,
     private router: Router,
     private globalDataService: GlobalDataService,
@@ -65,34 +65,24 @@ export class EditAlbumComponent implements OnInit {
     result$.subscribe(
       album => {
         if (album) {
-          this.toasty.success({
-            title: "Success",
-            msg: "Saved successfully.",
-            theme: "bootstrap",
-            showClose: true,
-            timeout: 1500,
-            onRemove: function (toast: ToastData) {
-              this.album = album;
-            }
+          this.toastr.success("Saved successfully.", "Success", {
+            timeOut: 1500,
+            closeButton: true
+          }).onHidden.subscribe(() => {
+            this.album = album as Album;
           });
         }
         else {
-          this.toasty.error({
-            title: "Error",
-            msg: "Error occurred. Please try again!",
-            theme: "bootstrap",
-            showClose: true,
-            timeout: 1500
-          });          
+          this.toastr.error("Error occurred. Please try again!", "Error", {
+            timeOut: 1500,
+            closeButton: true
+          });
         }
       },
       err => {
-        this.toasty.error({
-          title: "Error",
-          msg: "Error occurred. Please try again!",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500
+        this.toastr.error("Error occurred. Please try again!", "Error", {
+          timeOut: 1500,
+          closeButton: true
         });
         console.log(err);
       }
@@ -112,25 +102,19 @@ export class EditAlbumComponent implements OnInit {
     var router = this.router;
     result$.subscribe(
       res => {
-        this.toasty.success({
-          title: "Success",
-          msg: "Deleted successfully.",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500,
-          onRemove: function (toast: ToastData) {
-            router.navigate(['/album']);
-          }
+        this.toastr.success("Deleted successfully.", "Success", {
+          timeOut: 1500,
+          closeButton: true
+        }).onHidden.subscribe(() => {
+          router.navigate(['/album']);
         });
       },
       err => {
-        this.toasty.error({
-          title: "Error",
-          msg: "Error occurred. Please try again!",
-          theme: "bootstrap",
-          showClose: true,
-          timeout: 1500
-        });        
+        this.toastr.error("Error occurred. Please try again!", "Error", {
+          timeOut: 1500,
+          closeButton: true
+        });
+        
         console.log(err);
       }
     );
