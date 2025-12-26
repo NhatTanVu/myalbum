@@ -3,18 +3,18 @@ branches:
   only:
     - master
     
-image: Previous Visual Studio 2019
+image: Visual Studio 2019
 
 before_build:
-- cd ./src
-- nuget restore MyAlbum.Single.sln
-- choco install opencover.portable
-- choco install codecov
+  - nuget restore src/MyAlbum.Single.sln
+  - choco install opencover.portable -y
+  - choco install codecov -y
 
-build:
-  project: ./src/MyAlbum.Single.sln
-  verbosity: minimal
+build: off
 
+build_script:
+  - msbuild src\MyAlbum.Single.sln /verbosity:minimal
+  
 test_script:
-- OpenCover.Console.exe -register:NhatTanVu -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:test -filter:"+[WebSPA]MyAlbum.Persistence.*Repository +[WebSPA]MyAlbum.Core.*Storage +[WebSPA]MyAlbum.Core.*Service +[WebSPA]MyAlbum.WebSPA.Controllers.*Controller -[Tests*]* -[WebSPA]*OidcConfigurationController" -output:".\WebSPA_coverage.xml" -oldstyle
-- codecov -f "WebSPA_coverage.xml" -t a921bbb2-9b19-4e86-8c1f-00109359f2bc
+  - OpenCover.Console.exe -register:NhatTanVu -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test src/MyAlbum.Single.sln" -filter:"+[WebSPA]MyAlbum.Persistence.*Repository +[WebSPA]MyAlbum.Core.*Storage +[WebSPA]MyAlbum.Core.*Service +[WebSPA]MyAlbum.WebSPA.Controllers.*Controller -[Tests*]* -[WebSPA]*OidcConfigurationController" -output:".\WebSPA_coverage.xml" -oldstyle
+  - codecov -f "WebSPA_coverage.xml" -t a921bbb2-9b19-4e86-8c1f-00109359f2bc
