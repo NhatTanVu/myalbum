@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "myalbum-ai-service"
+version = "0.1.0"
+description = "AI service for MyAlbum (image captions, comments, enrichment)"
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+    # FastAPI core
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.29",
+    
+    # OpenAI client
+    "openai>=1.30.0",
+
+    # HTTP client (used internally by OpenAI + optional future calls)
+    "httpx>=0.27",
+
+    # Environment & settings
+    "pydantic>=2.6.0",
+    "pydantic-settings>=2.2.1",
+    "python-dotenv>=1.0.1"
+]
+
+[tool.fastapi]
+app = "app.main:app"

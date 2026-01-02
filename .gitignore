@@ -10,3 +10,17 @@ src/WebSPA.Slim/ClientApp/package-lock.json
 LogFiles/
 .config/
 appsettings.Production.json
+
+# Python virtual environments
+venv/
+.env/
+.env*/
+.venv/
+virtualenv/
+ENV/
+env/
+*.pyc
+
+# Python project Environment variables & Others
+.env
+*egg-info
