@@ -47,6 +47,7 @@ namespace MyAlbum.Services.Indentity.API.Controllers
             parameters.Add("CommentApiUrl", config.GetValue<string>("CommentApiUrl"));
             parameters.Add("PhotoApiUrl", config.GetValue<string>("PhotoApiUrl"));
             parameters.Add("GoogleApiKey", config.GetValue<string>("GoogleApiKey"));
+            parameters.Add("AIService_APIUrl", config.GetValue<string>("AIService_APIUrl"));
             return Ok(parameters);
         }
 

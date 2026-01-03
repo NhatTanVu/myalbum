@@ -11,6 +11,7 @@ interface IReplyListProps {
     parent?: Comment,
     replies: Comment[],
     userName: string,
+    photoUrl: string,
     onDeleteComment: (deletedComment: Comment) => void
 }
 interface IReplyListState {
@@ -88,7 +89,7 @@ export class ReplyList extends Component<IReplyListProps, IReplyListState> {
                             <span>&nbsp;|&nbsp;</span>
                             <button className="btn btn-link p-0" onClick={(e: any) => { this.delete(reply) }} title="Delete Comment">Delete</button>
                         </div>}
-                        {!reply.isEditing ? <div>{reply.content}</div> : <ReplyForm isNew={false} photoId={reply.photoId} editComment={reply} onEditComment={this.handleEditComment} ></ReplyForm>}
+                        {!reply.isEditing ? <div>{reply.content}</div> : <ReplyForm isNew={false} photoId={reply.photoId} photoUrl={this.props.photoUrl} editComment={reply} onEditComment={this.handleEditComment} ></ReplyForm>}
                         <div>
                             {(reply.numOfReplies > 0) &&
                                 <button className="btn btn-link p-0" onClick={(e: any) => { this.toggleReplies(reply) }}>
@@ -98,8 +99,8 @@ export class ReplyList extends Component<IReplyListProps, IReplyListState> {
                             <button className="btn btn-link p-0" onClick={(e: any) => { reply.isReplying = !reply.isReplying; this.forceUpdate(); }}>
                                 {!reply.isReplying ? <span>Reply</span> : <span>Close</span>}
                             </button>
-                            {reply.isReplying && <ReplyForm isNew={true} photoId={reply.photoId} parentId={reply.id} parentComment={reply} onCreateComment={this.handleNewComment} ></ReplyForm>}
-                            {reply.isViewing && <ReplyList parent={reply} replies={reply.replies} userName={this.props.userName} onDeleteComment={this.props.onDeleteComment} ></ReplyList>}
+                            {reply.isReplying && <ReplyForm isNew={true} photoId={reply.photoId} photoUrl={this.props.photoUrl} parentId={reply.id} parentComment={reply} onCreateComment={this.handleNewComment} ></ReplyForm>}
+                            {reply.isViewing && <ReplyList parent={reply} replies={reply.replies} userName={this.props.userName} photoUrl={this.props.photoUrl} onDeleteComment={this.props.onDeleteComment} ></ReplyList>}
                         </div>
                     </div>
                 );

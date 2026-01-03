@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ReplyForm.css';
 import { CommentService } from '../services/comment.service';
+import { AIService } from '../services/ai.service';
 import { Comment, SaveComment } from '../models/comment';
+import { SuggestCommentRequest } from '../models/ai.service';
 import { toast } from 'react-toastify';
+
+
 
 interface IReplyFormProps {
     isNew: boolean,
     photoId: number,
+    photoUrl: string,
     parentId?: number,
     parentComment?: Comment,
     editComment?: Comment,
@@ -19,11 +25,13 @@ interface IReplyFormState {
 
 export class ReplyForm extends Component<IReplyFormProps, IReplyFormState> {
     private commentService = new CommentService();
+    private aiService = new AIService();
 
     constructor(props: IReplyFormProps) {
         super(props);
         this.handleContentChange = this.handleContentChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSuggestCommentAI = this.handleSuggestCommentAI.bind(this);
         this.state = {
             comment: {
                 content: "",
@@ -80,6 +88,22 @@ export class ReplyForm extends Component<IReplyFormProps, IReplyFormState> {
         }
     }
 
+    handleSuggestCommentAI(event: React.MouseEvent<HTMLButtonElement>) {
+        let payload: SuggestCommentRequest = {
+            image_url: this.props.photoUrl,
+            hints: this.state.comment.content.split(",")
+        }
+        this.aiService.suggestComment(payload).then(response => {
+            if (response)
+                this.setState((prevState, props) => ({
+                    comment: {
+                        ...prevState.comment,
+                        content: response.comments[0]
+                    } as SaveComment
+                }));
+        })
+    }
+
     handleContentChange(event: React.FormEvent<HTMLTextAreaElement>) {
         let currentValue = event.currentTarget.value;
         this.setState((prevState, props) => ({
@@ -125,10 +149,13 @@ export class ReplyForm extends Component<IReplyFormProps, IReplyFormState> {
                             </div>
                             <div className="form-group">
                                 <button className="btn btn-primary" type="submit">Post</button>
+                                <button className="btn btn-secondary header-button ml-1" type="button" onClick={this.handleSuggestCommentAI}>
+                                    <FontAwesomeIcon icon="magic" />
+                                </button>
                             </div>
                         </div>
                     </div>
-                </form>                    
+                </form>
             </div>
         );
     }

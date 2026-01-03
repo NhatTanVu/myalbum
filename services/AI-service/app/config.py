@@ -1,10 +1,13 @@
-from pydantic_settings import BaseSettings
-from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import Field, AnyHttpUrl
+from typing import List
 
 
 class Settings(BaseSettings):
     # Core
     ENV: str = Field(default="development")
+
+    CORS_ORIGINS: List[str]
 
     # LLM
     LLM_PROVIDER: str = Field(default="openai")

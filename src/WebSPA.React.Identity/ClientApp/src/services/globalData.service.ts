@@ -30,4 +30,9 @@ export class GlobalDataService {
         let result = await this.getConfiguration();
         return result.GoogleApiKey;
     }
+
+    async getAI_ServiceApiEndpoint() {
+        let result = await this.getConfiguration();
+        return result.AIService_APIUrl; // http://localhost:8000
+    }
 }

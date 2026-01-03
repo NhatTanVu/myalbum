@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { RouteComponentProps } from 'react-router';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GlobalDataContext } from '../context/GlobalDataContext';
 import { SaveAlbum } from '../models/album';
 import { DisplayMode, MAX_FILE_LENGTH } from '../models/globalData';
 import { PositionModel, Photo, PhotoCategory } from '../models/photo';
+import { DescribeImageRequest } from '../models/ai.service';
 import { AlbumService } from '../services/album.service';
 import { PhotoService } from '../services/photo.service';
+import { AIService } from '../services/ai.service';
 import './EditPhoto.css';
 import authService from './api-authorization/AuthorizeService';
 import GoogleMapReact from 'google-map-react';
@@ -116,6 +119,7 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
     private albumService = new AlbumService();
     private photoService = new PhotoService();
     private globalDataService = new GlobalDataService();
+    private aiService = new AIService();
     private photoId: number;
     private userName = "";
     private fileInput: React.RefObject<HTMLInputElement>;
@@ -127,6 +131,7 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
+        this.handleDescribeImageAI = this.handleDescribeImageAI.bind(this);
         this.handleAlbumChange = this.handleAlbumChange.bind(this);
         this.handleTagChange = this.handleTagChange.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -252,6 +257,21 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
                 name: currentValue
             }
         }));
+    }
+
+    handleDescribeImageAI(event: React.MouseEvent<HTMLButtonElement>) {
+        let payload: DescribeImageRequest = {
+            image_url: this.state.photo.filePath
+        }
+        this.aiService.describeImage(payload).then(response => {
+            if (response)
+                this.setState((prevState, props) => ({
+                    photo: {
+                        ...prevState.photo,
+                        name: response.title
+                    }
+                }));
+        })
     }
 
     handleAlbumChange(event: React.FormEvent<HTMLSelectElement>) {
@@ -393,8 +413,17 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <h5>Name:</h5>
-                        <input id="photoName" name="photoName" type="text" className="form-control col-lg-8"
-                            value={this.state.photo.name} onChange={this.handleNameChange} />
+                        <div className="row">
+                            <div className="col-8 pr-0 mr-3">
+                                <input id="photoName" name="photoName" type="text" className="form-control"
+                                    value={this.state.photo.name} onChange={this.handleNameChange} />
+                            </div>
+                            <div className="col-1 p-0">
+                                <button className="btn btn-primary" type="button" onClick={this.handleDescribeImageAI}>
+                                    <FontAwesomeIcon icon="magic" />
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div className="form-group">
                         <h5>Photo:</h5>
