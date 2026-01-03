@@ -31,9 +31,13 @@ jobs:
         run: |
           zip -r ../../ai-service.zip .
 
+      - name: Verify zip contents
+        run: |
+          unzip -l ai-service.zip | head -n 50
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: myalbum-ai-service
+          app-name: my-album-ai
           publish-profile: ${{ secrets.MY_ALBUM_AI_WEBAPP_PUBLISH_PROFILE }}
           package: ai-service.zip
