@@ -281,7 +281,7 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
                 // Log the error for debugging purposes and notify the user.
                 // eslint-disable-next-line no-console
                 console.error('Error generating image description:', error);
-                toast.error('An error occurred while generating image description.');
+                toast.error('Network error occurred while generating image description.');
             });
     }
 
