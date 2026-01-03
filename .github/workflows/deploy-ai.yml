@@ -1,0 +1,39 @@
+name: Deploy AI Service to Azure
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "services/AI-service/**"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        working-directory: services/AI-service
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Zip app for deployment
+        working-directory: services/AI-service
+        run: |
+          zip -r ../../ai-service.zip .
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: myalbum-ai-service
+          publish-profile: ${{ secrets.MY_ALBUM_AI_WEBAPP_PUBLISH_PROFILE }}
+          package: ai-service.zip
