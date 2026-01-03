@@ -7,10 +7,14 @@ app = FastAPI(title="MyAlbum AI Service")
 
 allow_origins = settings.CORS_ORIGINS
 
+allow_credentials = True
+if not allow_origins or "*" in allow_origins:
+    allow_credentials = False
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allow_origins,
-    allow_credentials=True,
+    allow_credentials=allow_credentials,
     allow_methods=["*"],        # GET, POST, OPTIONS, etc.
     allow_headers=["*"],        # Content-Type, Authorization, etc.
 )

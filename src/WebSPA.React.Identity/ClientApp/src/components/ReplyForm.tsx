@@ -8,7 +8,6 @@ import { SuggestCommentRequest } from '../models/ai.service';
 import { toast } from 'react-toastify';
 
 
-
 interface IReplyFormProps {
     isNew: boolean,
     photoId: number,
@@ -89,19 +88,37 @@ export class ReplyForm extends Component<IReplyFormProps, IReplyFormState> {
     }
 
     handleSuggestCommentAI(event: React.MouseEvent<HTMLButtonElement>) {
+        const rawContent = this.state.comment.content || "";
+        const hints = rawContent
+            .split(",")
+            .map(h => h.trim())
+            .filter(h => h.length > 0);
+
+        if (hints.length === 0) {
+            toast("Please provide at least one hint before asking for suggestions.");
+            return;
+        }
+
         let payload: SuggestCommentRequest = {
             image_url: this.props.photoUrl,
-            hints: this.state.comment.content.split(",")
+            hints: hints
         }
-        this.aiService.suggestComment(payload).then(response => {
-            if (response)
-                this.setState((prevState, props) => ({
-                    comment: {
-                        ...prevState.comment,
-                        content: response.comments[0]
-                    } as SaveComment
-                }));
-        })
+        this.aiService.suggestComment(payload)
+            .then(response => {
+                if (response && response.comments && response.comments.length > 0) {
+                    this.setState((prevState, props) => ({
+                        comment: {
+                            ...prevState.comment,
+                            content: response.comments[0]
+                        } as SaveComment
+                    }));
+                } else {
+                    toast("Error occurred. Please try again!");
+                }
+            })
+            .catch(() => {
+                toast("Error occurred. Please try again!");
+            });
     }
 
     handleContentChange(event: React.FormEvent<HTMLTextAreaElement>) {
@@ -149,7 +166,7 @@ export class ReplyForm extends Component<IReplyFormProps, IReplyFormState> {
                             </div>
                             <div className="form-group">
                                 <button className="btn btn-primary" type="submit">Post</button>
-                                <button className="btn btn-secondary header-button ml-1" type="button" onClick={this.handleSuggestCommentAI}>
+                                <button className="btn btn-secondary header-button ml-1" type="button" title="Suggest a comment using AI" onClick={this.handleSuggestCommentAI}>
                                     <FontAwesomeIcon icon="magic" />
                                 </button>
                             </div>
