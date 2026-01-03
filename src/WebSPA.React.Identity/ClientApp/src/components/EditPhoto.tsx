@@ -263,15 +263,26 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
         let payload: DescribeImageRequest = {
             image_url: this.state.photo.filePath
         }
-        this.aiService.describeImage(payload).then(response => {
-            if (response)
-                this.setState((prevState, props) => ({
-                    photo: {
-                        ...prevState.photo,
-                        name: response.title
-                    }
-                }));
-        })
+        this.aiService.describeImage(payload)
+            .then(response => {
+                if (response) {
+                    this.setState((prevState, props) => ({
+                        photo: {
+                            ...prevState.photo,
+                            name: response.title
+                        }
+                    }));
+                }
+                else {
+                    toast.error('Failed to generate image description.');
+                }
+            })
+            .catch(error => {
+                // Log the error for debugging purposes and notify the user.
+                // eslint-disable-next-line no-console
+                console.error('Error generating image description:', error);
+                toast.error('Network error occurred while generating image description.');
+            });
     }
 
     handleAlbumChange(event: React.FormEvent<HTMLSelectElement>) {
@@ -419,7 +430,7 @@ export class EditPhoto extends Component<IEditPhotoProps & RouteComponentProps<I
                                     value={this.state.photo.name} onChange={this.handleNameChange} />
                             </div>
                             <div className="col-1 p-0">
-                                <button className="btn btn-primary" type="button" onClick={this.handleDescribeImageAI}>
+                                <button className="btn btn-primary" type="button" title="Describe image using AI" onClick={this.handleDescribeImageAI}>
                                     <FontAwesomeIcon icon="magic" />
                                 </button>
                             </div>

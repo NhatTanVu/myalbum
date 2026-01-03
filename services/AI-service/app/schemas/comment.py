@@ -1,4 +1,4 @@
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel
 from typing import List
 
 class CommentSuggestRequest(BaseModel):

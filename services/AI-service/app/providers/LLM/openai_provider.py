@@ -35,6 +35,9 @@ class OpenAIProvider(LLMProvider):
 
         try:
             result_str = response.choices[0].message.content
+            if result_str is None:
+                raise ValueError(
+                    "Failed to parse OpenAI response: content is None")
             result_json = json.loads(result_str)
             return ImageDescribeResponse(
                 title=result_json.get("title", ""),
@@ -88,6 +91,7 @@ class OpenAIProvider(LLMProvider):
             model=settings.OPENAI_MODEL,
             response_format={"type": "json_object"},
             temperature=0.6,
+            timeout=settings.OPENAI_TIMEOUT,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {
@@ -105,6 +109,9 @@ class OpenAIProvider(LLMProvider):
 
         try:
             result_str = response.choices[0].message.content
+            if result_str is None:
+                raise ValueError(
+                    "Failed to parse OpenAI response: content is None")
             result_json = json.loads(result_str)
             return CommentSuggestResponse(
                 comments=result_json.get("comments", [])
