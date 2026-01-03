@@ -9,6 +9,7 @@ export class GlobalConfiguration {
     AlbumApiUrl: string | null = null;
     CommentApiUrl: string | null = null;
     GoogleApiKey: string = "";
+    AIService_APIUrl: string | null = null;
 }
 
 export const MAX_FILE_LENGTH: number = 1024 * 1024;

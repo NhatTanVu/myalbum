@@ -244,9 +244,9 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                         <h3 className="header-container">
                             <span className="header-text" title={this.state.photo.name}>{this.state.photo.name}</span>
                             {this.state.isEditable &&
-                                    <a className="btn btn-secondary header-button" href={"/photo/edit/" + this.state.photo.id} title="Edit Photo">
-                                        <FontAwesomeIcon icon="pencil-alt" />
-                                    </a>
+                                <a className="btn btn-secondary header-button" href={"/photo/edit/" + this.state.photo.id} title="Edit Photo">
+                                    <FontAwesomeIcon icon="pencil-alt" />
+                                </a>
                             }
                         </h3>
                         <hr />
@@ -340,7 +340,7 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                             <hr />
                         </div>
                         <div>
-                            <ReplyForm isNew={true} photoId={this.photoId} onCreateComment={this.handleNewComment} ></ReplyForm>
+                            <ReplyForm isNew={true} photoId={this.photoId} photoUrl={this.state.photo.filePath} onCreateComment={this.handleNewComment}></ReplyForm>
                         </div>
                     </Col>
                 </Row>
@@ -351,10 +351,10 @@ export class ViewPhoto extends Component<IViewPhotoProps & RouteComponentProps<I
                                 <h4>All Comments</h4>
                                 <hr />
                             </div>
-                        <div>
-                            <ReplyList replies={this.state.photo.comments} userName={this.state.userName} onDeleteComment={this.handleDeleteComment} ></ReplyList>
+                            <div>
+                                <ReplyList replies={this.state.photo.comments} userName={this.state.userName} photoUrl={this.state.photo.filePath} onDeleteComment={this.handleDeleteComment} ></ReplyList>
                             </div>
-                         </Col>
+                        </Col>
                     </Row>
                 }
             </div>
