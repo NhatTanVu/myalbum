@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     OPENAI_MODEL: str = Field(default="gpt-4o-mini")
     OPENAI_TIMEOUT: int = Field(default=90)
 
+    IDENTITY_URL: str
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
