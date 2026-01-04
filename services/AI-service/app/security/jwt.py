@@ -1,6 +1,7 @@
+import logging
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from jose import jwt
+from jose import jwt, JWTError
 import httpx
 from app.config import settings
 
@@ -13,6 +14,7 @@ AUDIENCES = [
 ]
 ALGORITHMS = ["RS256", "rsa-sha256"]
 
+logger = logging.getLogger(__name__)
 security = HTTPBearer()
 
 _jwks_cache = None
@@ -62,8 +64,24 @@ async def get_current_user(
 
         return payload  # claims
 
-    except Exception:
+    except JWTError as e:
+        # ✅ Expected JWT failures (expired, invalid aud, bad sig, etc.)
+        logger.warning(
+            "JWT validation failed",
+            extra={
+                "error": str(e),
+                "issuer": AUTHORITY,
+                "audience": AUDIENCES,
+            },
+        )
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired token",
+        )
+    except Exception as e:
+        # ❗ Unexpected errors (misconfig, network, JWKS issues)
+        logger.exception("Unexpected error during JWT authentication")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Authentication service error",
         )
