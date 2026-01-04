@@ -26,7 +26,7 @@ dependencies = [
     "python-dotenv>=1.0.1",
 
     # Authentication
-    python-jose[cryptography]
+    "python-jose[cryptography]"
 ]
 
 [tool.fastapi]
