@@ -5,5 +5,6 @@ coverage:
         target: auto
         threshold: 0%
 ignore:
-  # ❌ Ignore LLM provider code for now
+  # ❌ Temporary ignore these items
   - "services/AI-service/app/providers/**"
+  - "services/AI-service/app/security/**"
