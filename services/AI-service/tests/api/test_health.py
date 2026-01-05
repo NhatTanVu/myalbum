@@ -1,4 +1,4 @@
-def test_health_status_ok(client):
+def test_health__status_ok(client):
     health_service_response = {
         "status": "ok"
     }
