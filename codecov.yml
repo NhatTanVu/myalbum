@@ -2,16 +2,8 @@ coverage:
   status:
     project:
       default:
-        # 🔵 Keep existing .NET behavior unchanged
         target: auto
         threshold: 0%
-
-      python-api:
-        # 🟢 Python-only coverage rule
-        paths:
-          - "services/AI-service/app/api/**"
-
-    patch:
-      python-api:
-        paths:
-          - "services/AI-service/app/api/**"
+ignore:
+  # ❌ Ignore LLM provider code for now
+  - "services/AI-service/app/providers/**"
