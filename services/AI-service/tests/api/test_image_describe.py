@@ -1,8 +1,8 @@
 from unittest.mock import patch
 
 
-def test_image_describe_returns_provider_response_unchanged(client):
-    provider_response = {
+def test_image_describe__returns_service_response_unchanged(client):
+    service_response = {
         "title": "Sunset Sail",
         "description": "A sailboat floating on calm water during sunset.",
         "tags": ["sailboat", "sunset", "water"]
@@ -10,7 +10,7 @@ def test_image_describe_returns_provider_response_unchanged(client):
 
     with patch(
         "app.api.image.describe_image_service",
-        return_value=provider_response
+        return_value=service_response
     ):
         response = client.post(
             "/image/describe",
@@ -20,9 +20,9 @@ def test_image_describe_returns_provider_response_unchanged(client):
         )
 
     assert response.status_code == 200
-    assert response.json() == provider_response
+    assert response.json() == service_response
 
-def test_image_describe_provider_exception_returns_500(client):
+def test_image_describe__service_exception_returns_500(client):
     with patch(
         "app.api.image.describe_image_service",
         side_effect=RuntimeError("AI provider failure")
