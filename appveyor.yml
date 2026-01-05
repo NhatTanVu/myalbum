@@ -37,4 +37,4 @@ test_script:
       set PYTHONPATH=%CD%
       pytest --cov=app --cov-report=xml
       
-  - codecov -f "%APPVEYOR_BUILD_FOLDER%\src\WebSPA_coverage.xml" -f "%APPVEYOR_BUILD_FOLDER%\services\AI-service\coverage.xml" -t a921bbb2-9b19-4e86-8c1f-00109359f2bc
+  - codecov -f "%APPVEYOR_BUILD_FOLDER%\src\WebSPA_coverage.xml" "%APPVEYOR_BUILD_FOLDER%\services\AI-service\coverage.xml" -t a921bbb2-9b19-4e86-8c1f-00109359f2bc
