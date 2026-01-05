@@ -52,6 +52,7 @@ async def get_current_user(
         )
 
         aud = payload.get("aud")
+        logger.info(f"get_current_user - aud:{aud}")
         if isinstance(aud, str):
             aud = {aud}
         elif isinstance(aud, list):
@@ -67,12 +68,11 @@ async def get_current_user(
     except JWTError as e:
         # ✅ Expected JWT failures (expired, invalid aud, bad sig, etc.)
         logger.warning(
-            "JWT validation failed",
-            extra={
-                "error": str(e),
-                "issuer": AUTHORITY,
-                "audience": AUDIENCES,
-            },
+            f"""JWT validation failed:
+                "error": {str(e)},
+                "issuer": {AUTHORITY},
+                "audience": {AUDIENCES},
+            """
         )
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
