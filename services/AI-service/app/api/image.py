@@ -7,7 +7,7 @@ router = APIRouter()
 
 
 @router.post("/describe", response_model=ImageDescribeResponse)
-async def describe_image(
+async def describe(
         payload: ImageDescribeRequest,
         user=Depends(get_current_user)):
     try:
