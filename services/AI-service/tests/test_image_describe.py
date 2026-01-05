@@ -21,3 +21,17 @@ def test_image_describe_returns_provider_response_unchanged(client):
 
     assert response.status_code == 200
     assert response.json() == provider_response
+
+def test_image_describe_provider_exception_returns_500(client):
+    with patch(
+        "app.api.image.describe_image_service",
+        side_effect=RuntimeError("AI provider failure")
+    ):
+        response = client.post(
+            "/image/describe",
+            json={
+                "image_url": "https://example.com/image.jpg"
+            }
+        )
+
+    assert response.status_code == 500
