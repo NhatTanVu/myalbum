@@ -29,7 +29,7 @@ build_script:
       python -c "import app.main; print('FastAPI AI service import OK')"
 test_script:
   # --- .NET tests + coverage ---
-  - OpenCover.Console.exe -register:NhatTanVu -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test src/MyAlbum.Single.sln" -filter:"+[WebSPA]MyAlbum.Persistence.*Repository +[WebSPA]MyAlbum.Core.*Storage +[WebSPA]MyAlbum.Core.*Service +[WebSPA]MyAlbum.WebSPA.Controllers.*Controller -[Tests*]* -[WebSPA]*OidcConfigurationController" -output:".\WebSPA_coverage.xml" -oldstyle
+  - OpenCover.Console.exe -register:NhatTanVu -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test %APPVEYOR_BUILD_FOLDER%\src\MyAlbum.Single.sln" -filter:"+[WebSPA]MyAlbum.Persistence.*Repository +[WebSPA]MyAlbum.Core.*Storage +[WebSPA]MyAlbum.Core.*Service +[WebSPA]MyAlbum.WebSPA.Controllers.*Controller -[Tests*]* -[WebSPA]*OidcConfigurationController" -output:"%APPVEYOR_BUILD_FOLDER%\src\WebSPA_coverage.xml" -oldstyle
 
   # --- Python tests + coverage ---
   - cmd: |
@@ -37,5 +37,4 @@ test_script:
       set PYTHONPATH=%CD%
       pytest --cov=app --cov-report=xml
       
-  - codecov -f "%APPVEYOR_BUILD_FOLDER%\src\WebSPA_coverage.xml" -t a921bbb2-9b19-4e86-8c1f-00109359f2bc      
-  - codecov -f "%APPVEYOR_BUILD_FOLDER%\services\AI-service\coverage.xml" -t a921bbb2-9b19-4e86-8c1f-00109359f2bc
+  - codecov -f "%APPVEYOR_BUILD_FOLDER%\src\WebSPA_coverage.xml" -f "%APPVEYOR_BUILD_FOLDER%\services\AI-service\coverage.xml" -t a921bbb2-9b19-4e86-8c1f-00109359f2bc
