@@ -13,11 +13,11 @@ class Settings(BaseSettings):
     LLM_PROVIDER: str = Field(default="openai")
 
     # OpenAI
-    OPENAI_API_KEY: str
+    OPENAI_API_KEY: str = Field(default="")
     OPENAI_MODEL: str = Field(default="gpt-4o-mini")
     OPENAI_TIMEOUT: int = Field(default=90)
 
-    IDENTITY_URL: str
+    IDENTITY_URL: str = Field(default="http://localhost:5000")
 
     model_config = SettingsConfigDict(
         env_file=".env",
