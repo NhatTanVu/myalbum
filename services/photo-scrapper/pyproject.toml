@@ -1,0 +1,11 @@
+[project]
+name = "photo-scrapper"
+version = "0.1.0"
+dependencies = [
+  "dagster",
+  "dagster-webserver",
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"

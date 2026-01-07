@@ -24,3 +24,6 @@ env/
 # Python project Environment variables & Others
 .env
 *egg-info
+
+# Dagster files
+.tmp_dagster*/
