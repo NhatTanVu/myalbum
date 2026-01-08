@@ -1,6 +1,6 @@
 from dagster import Definitions
-from photo_scrapper.assets import hello_world
+from photo_scrapper.assets import enqueue_photo_ingestion_tasks
 
 defs = Definitions(
-    assets=[hello_world]
+    assets=[enqueue_photo_ingestion_tasks]
 )

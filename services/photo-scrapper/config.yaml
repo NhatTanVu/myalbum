@@ -1,0 +1,13 @@
+categories:
+  - aeroplane
+  - bicycle
+  - bird
+
+photos_per_category: 25
+criteria: popular
+
+service_bus:
+  queue_name: photo-ingestion
+
+providers: 
+  - pexels   # supported values: pexels (now), flickr (future)

@@ -27,3 +27,9 @@ env/
 
 # Dagster files
 .tmp_dagster*/
+dagster_home/
+
+# .NET build & environment files
+bin/
+obj/
+appsettings.*.json

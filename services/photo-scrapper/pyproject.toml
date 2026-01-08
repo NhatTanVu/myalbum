@@ -4,6 +4,9 @@ version = "0.1.0"
 dependencies = [
   "dagster",
   "dagster-webserver",
+  "pyyaml",
+  "azure-servicebus",
+  "python-dotenv"
 ]
 
 [build-system]
