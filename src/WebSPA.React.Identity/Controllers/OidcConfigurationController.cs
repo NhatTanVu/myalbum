@@ -42,7 +42,7 @@ namespace MyAlbum.Services.Indentity.API.Controllers
         public IActionResult GetConfiguration()
         {
             var parameters = new Dictionary<string, string>();
-            parameters.Add("IssuerUri", config.GetValue<string>("IssuerUri")); 
+            parameters.Add("IssuerUri", config.GetValue<string>("IssuerUri"));
             parameters.Add("AlbumApiUrl", config.GetValue<string>("AlbumApiUrl"));
             parameters.Add("CommentApiUrl", config.GetValue<string>("CommentApiUrl"));
             parameters.Add("PhotoApiUrl", config.GetValue<string>("PhotoApiUrl"));
@@ -64,7 +64,7 @@ namespace MyAlbum.Services.Indentity.API.Controllers
             return string.Format("{0}://{1}", request.Scheme, request.Host);
         }
 
-        private string GenerateJSONWebToken(string userName, int expireMinutes = 20)
+        private dynamic GenerateJSONWebToken(string userName, int expireMinutes = 20)
         {
             string filePath = config.GetSection("IdentityServer").GetSection("Key").GetValue<string>("FilePath");
             string filePassword = config.GetSection("IdentityServer").GetSection("Key").GetValue<string>("Password");
@@ -73,14 +73,19 @@ namespace MyAlbum.Services.Indentity.API.Controllers
             var now = DateTime.UtcNow;
             var tokenHandler = new JwtSecurityTokenHandler();
             var currentUrl = GetHostUrl(this.httpContextAccessor.HttpContext.Request);
+            var expiredAt = now.AddMinutes(Convert.ToInt32(expireMinutes));
             var newToken = new JwtSecurityToken(currentUrl, "MyAlbum.DeveloperAPI",
                 new List<Claim>() {
                     new Claim(System.Security.Claims.ClaimTypes.Name, userName)
-                }, now, now.AddMinutes(Convert.ToInt32(expireMinutes)),
+                }, now, expiredAt,
                 new SigningCredentials(privateKey, SecurityAlgorithms.RsaSha256Signature));
 
             string token = tokenHandler.WriteToken(newToken);
-            return token;
+            return new
+            {
+                Token = token,
+                ExpiredAt = expiredAt
+            };
         }
 
         [HttpPost("api/JWT/Generate")]
@@ -90,12 +95,12 @@ namespace MyAlbum.Services.Indentity.API.Controllers
         {
             if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
                 return Unauthorized();
-                
+
             var result = await this.signInManager.PasswordSignInAsync(UserName, Password, isPersistent: false, lockoutOnFailure: false);
             if (result.Succeeded)
             {
                 var tokenString = GenerateJSONWebToken(UserName);
-                var response = Ok(new { token = tokenString });
+                var response = Ok(tokenString);
 
                 return response;
             }

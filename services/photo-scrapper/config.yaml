@@ -3,7 +3,7 @@ categories:
   - bicycle
   - bird
 
-photos_per_category: 25
+photos_per_category: 1
 criteria: popular
 
 service_bus:

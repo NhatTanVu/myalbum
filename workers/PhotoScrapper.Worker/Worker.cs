@@ -1,5 +1,7 @@
-using System.Reflection;
+using System.Text.Json;
 using Azure.Messaging.ServiceBus;
+using PhotoScrapper.Worker.Messaging;
+using PhotoScrapper.Worker.Providers.Factory;
 
 namespace PhotoScrapper.Worker;
 
@@ -8,11 +10,14 @@ public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
     private readonly IConfiguration _config;
+    private readonly IServiceProvider _serviceProvider;
 
-    public Worker(ILogger<Worker> logger, IConfiguration config)
+    public Worker(ILogger<Worker> logger, IConfiguration config,
+       IServiceProvider serviceProvider)
     {
         _logger = logger;
         _config = config;
+        _serviceProvider = serviceProvider;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -38,12 +43,31 @@ public class Worker : BackgroundService
             string body = args.Message.Body.ToString();
             _logger.LogInformation("Received message: {Body}", body);
 
+            var ingesionMessage = JsonSerializer.Deserialize<IngestionMessage>(body);
+
+            if (ingesionMessage is null ||
+                string.IsNullOrWhiteSpace(ingesionMessage.Provider) ||
+                string.IsNullOrWhiteSpace(ingesionMessage.Category) ||
+                string.IsNullOrWhiteSpace(ingesionMessage.Criteria))
+            {
+                _logger.LogWarning("Invalid ingestion message payload");
+                return;
+            }
+
+            var factory = _serviceProvider.GetRequiredService<PhotoProviderFactory>();
+            var provider = factory.Create(ingesionMessage.Provider);
+            await provider.ProcessPhoto(ingesionMessage);
+            _logger.LogInformation("Processed message: {Body}", body);
+
             // "Delete" the message from the queue
             await args.CompleteMessageAsync(args.Message);
         };
 
         processor.ProcessErrorAsync += args =>
         {
+            if (stoppingToken.IsCancellationRequested)
+                return Task.CompletedTask;
+
             _logger.LogError(args.Exception, "Service Bus error");
             return Task.CompletedTask;
         };
