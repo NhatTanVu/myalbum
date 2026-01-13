@@ -1,5 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-using System.IO.Enumeration;
+using System.Net;
 using System.Text.Json;
 using PhotoScrapper.Worker.Integration;
 using PhotoScrapper.Worker.Messaging;
@@ -11,17 +10,47 @@ namespace PhotoScrapper.Worker.Providers;
 public class PexelsProvider : IPhotoProvider
 {
     private readonly ILogger<PexelsProvider> _logger;
+    private readonly ILoggerFactory _loggerFactory;
     private readonly PexelsApiClient _pexelsApiClient;
     private readonly PhotoApiClient _photoApiClient;
     private static int _multipartBodyLengthLimit;
 
-    public PexelsProvider(ILogger<PexelsProvider> logger, IConfiguration config)
+    public PexelsProvider(ILogger<PexelsProvider> logger,
+        ILoggerFactory loggerFactory,
+        IConfiguration config)
     {
         _logger = logger;
+        _loggerFactory = loggerFactory;
         _pexelsApiClient = new PexelsApiClient(config["Pexels:ApiKey"]);
-        _photoApiClient = new PhotoApiClient(config["PhotoApi:Uri"],
+        var photoApiLogger = _loggerFactory.CreateLogger<PhotoApiClient>();
+        _photoApiClient = new PhotoApiClient(photoApiLogger, config["PhotoApi:Uri"],
             new Security.JwtTokenClient(config));
         _multipartBodyLengthLimit = int.Parse(config["PhotoApi:MultipartBodyLengthLimit"]);
+    }
+
+    private async Task<int> DoProcessPhoto(IngestionMessage message, int photosPerCategory)
+    {
+        var jsonElements = await _pexelsApiClient.SearchAsync(message.Category, photosPerCategory);
+        Photo[] photos = await Task.WhenAll(jsonElements.Select(MapToPhoto));
+        int numOfSavedPhotos = 0;
+        foreach (var photo in photos)
+        {
+            try
+            {
+                await _photoApiClient.SavePhotoAsync(photo);
+                numOfSavedPhotos++;
+            }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode == HttpStatusCode.Conflict)
+                {
+                    continue;
+                }
+                throw;
+            }
+        }
+
+        return numOfSavedPhotos;
     }
 
     public async Task ProcessPhoto(IngestionMessage message)
@@ -33,12 +62,13 @@ public class PexelsProvider : IPhotoProvider
             message.Criteria
         );
 
-        var jsonElements = await _pexelsApiClient.SearchAsync(message.Category, message.PhotosPerCategory);
-        Photo[] photos = await Task.WhenAll(jsonElements.Select(MapToPhoto));
-        foreach (var photo in photos)
+        int totalProcessedPhotos = 0, numOfRequestedPhotos = 0;
+        do
         {
-            await _photoApiClient.SavePhotoAsync(photo);
-        }
+            numOfRequestedPhotos += message.PhotosPerCategory - totalProcessedPhotos;
+            var numOfProcessedPhotos = await DoProcessPhoto(message, numOfRequestedPhotos);
+            totalProcessedPhotos += numOfProcessedPhotos;
+        } while (totalProcessedPhotos < message.PhotosPerCategory);
     }
 
     private static string GetFileName(string sourceUrl, string externalId)
@@ -84,6 +114,7 @@ public class PexelsProvider : IPhotoProvider
 
         return new Photo(
             ExternalId: id,
+            ExternalProvider: "pexels",
             SourceUrl: url!,
             FileToUpload: imageBytes,
             Name: alt,

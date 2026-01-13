@@ -29,6 +29,11 @@ namespace MyAlbum.Core.Models
 
         public DateTime? ModifiedDate { get; set; }
 
+        public string ExternalProvider { get; set; }   // e.g. "pexels"
+        public string ExternalId { get; set; }         // e.g. "5446316"
+        public string ExternalUrl { get; set; }        // optional
+        public string ExternalHash { get; set; }       // optional (SHA-256)
+
         public Photo()
         {
             Comments = new Collection<Comment>();
@@ -50,7 +55,7 @@ namespace MyAlbum.Core.Models
                 this.LocLat == other.LocLat &&
                 this.CenterLng == other.CenterLng &&
                 this.CenterLat == other.CenterLat &&
-                this.MapZoom  == other.MapZoom
+                this.MapZoom == other.MapZoom
             );
         }
 

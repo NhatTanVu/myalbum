@@ -2,6 +2,23 @@ categories:
   - aeroplane
   - bicycle
   - bird
+  - boat
+  - bottle
+  - bus
+  - car
+  - cat
+  - chair
+  - cow
+  - diningtable
+  - dog
+  - horse
+  - motorbike
+  - person
+  - pottedplant
+  - sheep
+  - sofa
+  - train
+  - tvmonitor
 
 photos_per_category: 1
 criteria: popular
