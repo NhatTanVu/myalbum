@@ -101,12 +101,15 @@ namespace MyAlbum.Services.Photo.API.Infrastructure.Repositories
                             stream.Position = stream.Seek(0, SeekOrigin.Begin);
                         }
 
-                        SixLabors.ImageSharp.Image<SixLabors.ImageSharp.PixelFormats.Rgba32> imageSharp = imageDecoder.Decode<SixLabors.ImageSharp.PixelFormats.Rgba32>(SixLabors.ImageSharp.Configuration.Default, stream);
-
-                        if (imageSharp != null)
+                        try
                         {
-                            return (imageSharp.Height, imageSharp.Width);
+                            SixLabors.ImageSharp.Image<SixLabors.ImageSharp.PixelFormats.Rgba32> imageSharp = imageDecoder.Decode<SixLabors.ImageSharp.PixelFormats.Rgba32>(SixLabors.ImageSharp.Configuration.Default, stream);
+                            if (imageSharp != null)
+                            {
+                                return (imageSharp.Height, imageSharp.Width);
+                            }
                         }
+                        catch { }
                     }
                 }
             }

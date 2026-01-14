@@ -16,7 +16,7 @@ def enqueue_photo_ingestion_tasks():
     """
     log = get_dagster_logger()
 
-    with open("config.yaml") as f:
+    with open("photo_scrapper/config.yaml") as f:
         config = yaml.safe_load(f)
 
     categories = config["categories"]

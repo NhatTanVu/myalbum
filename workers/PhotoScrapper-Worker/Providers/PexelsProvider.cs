@@ -28,10 +28,11 @@ public class PexelsProvider : IPhotoProvider
         _multipartBodyLengthLimit = int.Parse(config["PhotoApi:MultipartBodyLengthLimit"]);
     }
 
-    private async Task<int> DoProcessPhoto(IngestionMessage message, int photosPerCategory)
+    private async Task<(int, int)> DoProcessPhoto(IngestionMessage message, int photosPerCategory)
     {
         var jsonElements = await _pexelsApiClient.SearchAsync(message.Category, photosPerCategory);
         Photo[] photos = await Task.WhenAll(jsonElements.Select(MapToPhoto));
+        int numOfSeachResult = photos.Length;
         int numOfSavedPhotos = 0;
         foreach (var photo in photos)
         {
@@ -50,7 +51,7 @@ public class PexelsProvider : IPhotoProvider
             }
         }
 
-        return numOfSavedPhotos;
+        return (numOfSavedPhotos, numOfSeachResult);
     }
 
     public async Task ProcessPhoto(IngestionMessage message)
@@ -63,12 +64,16 @@ public class PexelsProvider : IPhotoProvider
         );
 
         int totalProcessedPhotos = 0, numOfRequestedPhotos = 0;
+        int lastNumOfSeachResult, numOfSeachResult = 0;
         do
         {
+            lastNumOfSeachResult = numOfSeachResult;
             numOfRequestedPhotos += message.PhotosPerCategory - totalProcessedPhotos;
-            var numOfProcessedPhotos = await DoProcessPhoto(message, numOfRequestedPhotos);
-            totalProcessedPhotos += numOfProcessedPhotos;
-        } while (totalProcessedPhotos < message.PhotosPerCategory);
+            var result = await DoProcessPhoto(message, numOfRequestedPhotos);
+            totalProcessedPhotos += result.Item1;
+            numOfSeachResult = result.Item2;
+        } while (totalProcessedPhotos < message.PhotosPerCategory &&
+            numOfSeachResult > lastNumOfSeachResult);
     }
 
     private static string GetFileName(string sourceUrl, string externalId)

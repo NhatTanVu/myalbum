@@ -152,9 +152,10 @@ namespace MyAlbum.Services.Photo.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            else
+            {
+                app.UseHttpsRedirection();
+            }
 
             app.UseRouting();
             app.UseCors("CorsPolicy");
@@ -168,6 +169,7 @@ namespace MyAlbum.Services.Photo.API
             });
 
             app.UseHttpContext();
+            app.UseStaticFiles();
         }
     }
 

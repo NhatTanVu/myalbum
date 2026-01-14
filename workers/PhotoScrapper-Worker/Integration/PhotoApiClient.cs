@@ -27,6 +27,7 @@ public class PhotoApiClient
         _http.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", token);
 
+        _logger.LogInformation($"_photoApiUri={_photoApiUri}");
         using var request = new HttpRequestMessage(
             HttpMethod.Post,
             _photoApiUri);
