@@ -34,12 +34,7 @@ jobs:
           az containerapp update \
             --name ${{ secrets.AZURE_DAGSTER_APP }} \
             --resource-group ${{ secrets.AZURE_RG }} \
-            --image $IMAGE \
-            --ingress external \
-            --target-port 3000 \
-            --min-replicas 1 \
-            --cpu 0.5 \
-            --memory 1Gi
+            --image $IMAGE
 
       - name: Show Dagster URL
         run: |
