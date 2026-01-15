@@ -1,0 +1,29 @@
+services:
+  dagster-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dagster-webserver
+    ports:
+      - "3000:3000"
+    environment:
+      DAGSTER_HOME: /tmp/dagster
+    volumes:
+      - dagster-data:/tmp/dagster
+
+  dagster-daemon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dagster-daemon
+    command: ["dagster-daemon", "run"]
+    environment:
+      DAGSTER_HOME: /tmp/dagster
+      SERVICE_BUS_CONNECTION_STRING: ${SERVICE_BUS_CONNECTION_STRING}
+    volumes:
+      - dagster-data:/tmp/dagster
+    depends_on:
+      - dagster-web
+
+volumes:
+  dagster-data:

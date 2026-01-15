@@ -32,6 +32,17 @@ namespace MyAlbum.Services.Photo.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            if (string.IsNullOrEmpty(this.Environment.WebRootPath))
+            {
+                // Force web root
+                this.Environment.WebRootPath = Path.Combine(this.Environment.ContentRootPath, "wwwroot");
+            }
+
+            if (!Directory.Exists(this.Environment.WebRootPath))
+            {
+                Directory.CreateDirectory(this.Environment.WebRootPath);
+            }
+
             services.AddAutoMapper(typeof(Startup));
             services.AddDbContext<MyAlbumDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default"),
                 sqlServerOptionsAction: sqlOptions =>
@@ -49,7 +60,7 @@ namespace MyAlbum.Services.Photo.API
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPhotoUploadService, PhotoUploadService>();
             services.AddScoped<IPhotoStorage, FileSystemPhotoStorage>();
-            services.AddScoped<IObjectDetectionService, ObjectDetectionService>(s => new ObjectDetectionService(this.Environment.WebRootPath));
+            services.AddScoped<IObjectDetectionService, ObjectDetectionService>(s => new ObjectDetectionService(this.Environment.ContentRootPath));
 
             services.AddControllers().AddNewtonsoftJson(options => {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
@@ -152,9 +163,10 @@ namespace MyAlbum.Services.Photo.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            else
+            {
+                app.UseHttpsRedirection();
+            }
 
             app.UseRouting();
             app.UseCors("CorsPolicy");
@@ -168,6 +180,7 @@ namespace MyAlbum.Services.Photo.API
             });
 
             app.UseHttpContext();
+            app.UseStaticFiles();
         }
     }
 

@@ -24,3 +24,13 @@ env/
 # Python project Environment variables & Others
 .env
 *egg-info
+
+# Dagster files
+.tmp_dagster*/
+dagster_home/
+
+# .NET build & environment files
+bin/
+obj/
+appsettings.*.json
+migrate.sql

@@ -52,6 +52,28 @@ namespace MyAlbum.Persistence
                 .Property(b => b.CreatedDate)
                 .HasDefaultValueSql("getutcdate()");
 
+            modelBuilder.Entity<Photo>(entity =>
+            {
+                entity.Property(p => p.ExternalProvider)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsRequired(false);
+
+                entity.Property(p => p.ExternalId)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsRequired(false);
+
+                entity.HasIndex(p => new
+                {
+                    p.ExternalProvider,
+                    p.ExternalId
+                })
+                .IsUnique()
+                .HasFilter("[ExternalProvider] IS NOT NULL AND [ExternalId] IS NOT NULL");
+            });
+
+
             modelBuilder.Entity<User>()
                 .Property(b => b.CreatedDate)
                 .HasDefaultValueSql("getutcdate()");

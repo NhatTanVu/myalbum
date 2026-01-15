@@ -1,0 +1,21 @@
+[tool.dagster]
+module_name = "photo_scrapper.definitions"
+
+[tool.poetry]
+name = "dagster-scheduler"
+version = "0.1.0"
+description = "Dagster-based scheduler"
+authors = ["Nhat Tan Vu"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.10"
+dagster = "^1.6"
+dagster-webserver = "^1.6"
+pyyaml = "^6.0"
+azure-servicebus = "^7.12"
+python-dotenv = "^1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

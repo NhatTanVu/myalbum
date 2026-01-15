@@ -13,14 +13,14 @@ namespace MyAlbum.Services.Photo.API.Services.ObjectDetection
 {
     public class ObjectDetectionService : IObjectDetectionService
     {
-        private readonly string webRootPath;
+        private readonly string contentRootPath;
         private readonly string assetsPath;
         private readonly string modelFilePath;
 
-        public ObjectDetectionService(string webRootPath)
+        public ObjectDetectionService(string contentRootPath)
         {
-            this.webRootPath = webRootPath;
-            this.assetsPath = Path.Combine(Directory.GetParent(this.webRootPath).FullName, "Services", "ObjectDetection", "assets").Replace(@"\", @"/");
+            this.contentRootPath = contentRootPath;
+            this.assetsPath = Path.Combine(this.contentRootPath, "Services", "ObjectDetection", "assets").Replace(@"\", @"/");
             this.modelFilePath = Path.Combine(assetsPath, "Model", "tiny_yolov2", "Model.onnx").Replace(@"\", @"/");
         }
 

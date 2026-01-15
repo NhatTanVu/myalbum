@@ -1,0 +1,30 @@
+categories:
+  - aeroplane
+  - bicycle
+  - bird
+  - boat
+  - bottle
+  - bus
+  - car
+  - cat
+  - chair
+  - cow
+  - diningtable
+  - dog
+  - horse
+  - motorbike
+  - person
+  - pottedplant
+  - sheep
+  - sofa
+  - train
+  - tvmonitor
+
+photos_per_category: 1
+criteria: popular
+
+service_bus:
+  queue_name: photo-ingestion
+
+providers: 
+  - pexels   # supported values: pexels (now), flickr (future)

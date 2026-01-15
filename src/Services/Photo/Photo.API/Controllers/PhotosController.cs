@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System;
 using Microsoft.Extensions.Configuration;
+using MyAlbum.Services.Photo.API.Core.Exceptions;
 
 namespace MyAlbum.Services.Photo.API.Controllers
 {
@@ -49,7 +50,7 @@ namespace MyAlbum.Services.Photo.API.Controllers
             this.commentRepository = commentRepository;
             this.albumRepository = albumRepository;
             this.mapper = mapper;
-            
+
             var appBaseUrl = MyHttpContext.AppBaseUrl;
             this.uploadsFolderPath = Path.Combine(host.WebRootPath, "uploads");
             this.uploadsFolderUrl = appBaseUrl + "/uploads";
@@ -79,7 +80,7 @@ namespace MyAlbum.Services.Photo.API.Controllers
             {
                 return this.outputFolderUrl;
             }
-        }      
+        }
 
         public string OutputFolderPath
         {
@@ -181,11 +182,22 @@ namespace MyAlbum.Services.Photo.API.Controllers
                     photo.Album = null;
 
                 photo.Author = this.userRepository.GetOrAdd(currentUser);
-
                 this.photoRepository.Add(photo);
-                await this.unitOfWork.CompleteAsync();
-
-                return Ok(mapper.Map<Models.Photo, PhotoResource>(photo));
+                try
+                {
+                    await this.unitOfWork.CompleteAsync();
+                    return Ok(mapper.Map<Models.Photo, PhotoResource>(photo));
+                }
+                catch (DuplicateExternalPhotoException ex)
+                {
+                    this.photoUploadService.DeletePhoto(photo.FilePath, this.uploadsFolderPath, this.outputFolderPath);
+                    return Conflict(new
+                    {
+                        error = "duplicate_external_photo",
+                        provider = ex.Provider,
+                        externalId = ex.ExternalId
+                    });
+                }
             }
             else
                 return BadRequest();
@@ -237,7 +249,7 @@ namespace MyAlbum.Services.Photo.API.Controllers
                 var currentCategoriesIds = currentCategories.Select(cat => cat.CategoryId);
                 var strSelectedCategories = Request.Form.ToDictionary(x => x.Key, x => x.Value.ToString()).ContainsKey("PhotoCategories") ? Request.Form.ToDictionary(x => x.Key, x => x.Value.ToString())["PhotoCategories"] : "[]";
                 var selectedCategoryResources = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<CategoryResource>>(strSelectedCategories) ?? new List<CategoryResource>();
-                var selectedCategoryIds =  selectedCategoryResources.Select(cat => cat.Id);
+                var selectedCategoryIds = selectedCategoryResources.Select(cat => cat.Id);
                 var deletedCategoryIds = photo.PhotoCategories.Where(cat => !selectedCategoryIds.Contains(cat.CategoryId)).Select(cat => cat.CategoryId);
                 var newCategoryResources = selectedCategoryResources.Where(selectedCat => !currentCategoriesIds.Contains(selectedCat.Id));
                 var newCategories = mapper.Map<IEnumerable<CategoryResource>, IEnumerable<Models.PhotoCategory>>(newCategoryResources).ToList();
@@ -277,7 +289,7 @@ namespace MyAlbum.Services.Photo.API.Controllers
         [ProducesResponseType((int)System.Net.HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)System.Net.HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)System.Net.HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)System.Net.HttpStatusCode.OK)]  
+        [ProducesResponseType((int)System.Net.HttpStatusCode.OK)]
         public async Task<IActionResult> DeletePhoto([FromRoute] int id)
         {
             Models.Photo photo = await photoRepository.GetAsync(id);

@@ -1,0 +1,17 @@
+services:
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: worker
+    environment:
+      DOTNET_ENVIRONMENT: ${DOTNET_ENVIRONMENT}
+      ServiceBus__ConnectionString: ${ServiceBus__ConnectionString}
+      ServiceBus__QueueName: ${ServiceBus__QueueName}
+      Pexels__ApiKey: ${Pexels__ApiKey}
+      PhotoApi__Uri: ${PhotoApi__Uri}
+      PhotoApi__MultipartBodyLengthLimit: ${PhotoApi__MultipartBodyLengthLimit}
+      JwtAuth__IssuerUri: ${JwtAuth__IssuerUri}
+      JwtAuth__UserName: ${JwtAuth__UserName}
+      JwtAuth__Password: ${JwtAuth__Password}
+    restart: unless-stopped
