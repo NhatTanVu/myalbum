@@ -1,4 +1,4 @@
-name: Deploy AI Service to Azure
+name: Deploy AI Service to Azure App Service
 
 on:
   push:

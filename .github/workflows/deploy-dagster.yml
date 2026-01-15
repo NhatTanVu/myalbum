@@ -2,7 +2,8 @@ name: Deploy Dagster to Azure Container Apps
 
 on:
   push:
-    branches: ["main"]
+    branches: 
+      - master
     paths:
       - "services/Dagster-scheduler"
       - ".github/workflows/deploy-dagster.yml"
