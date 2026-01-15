@@ -1,0 +1,48 @@
+name: Deploy Dagster to Azure Container Apps
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "services/Dagster-scheduler"
+      - ".github/workflows/deploy-dagster.yml"
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure login (Service Principal)
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Login to ACR
+        run: az acr login --name ${{ secrets.AZURE_ACR_NAME }}
+
+      - name: Build & push Dagster image
+        run: |
+          IMAGE=${{ secrets.AZURE_ACR_NAME }}.azurecr.io/dagster:${{ github.sha }}
+          docker build -t $IMAGE ./services/Dagster-scheduler
+          docker push $IMAGE
+          echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+
+      - name: Deploy to Azure Container Apps
+        run: |
+          az containerapp update \
+            --name ${{ secrets.AZURE_DAGSTER_APP }} \
+            --resource-group ${{ secrets.AZURE_RG }} \
+            --image $IMAGE \
+            --ingress external \
+            --target-port 3000 \
+            --min-replicas 1 \
+            --cpu 0.5 \
+            --memory 1Gi
+
+      - name: Show Dagster URL
+        run: |
+          az containerapp show \
+            --name ${{ secrets.AZURE_DAGSTER_APP }} \
+            --resource-group ${{ secrets.AZURE_RG }} \
+            --query "properties.configuration.ingress.fqdn" -o tsv

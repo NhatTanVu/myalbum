@@ -33,3 +33,4 @@ dagster_home/
 bin/
 obj/
 appsettings.*.json
+migrate.sql
