@@ -5,7 +5,7 @@ on:
     branches: 
       - master
     paths:
-      - "services/Dagster-scheduler"
+      - "services/Dagster-scheduler/**"
       - ".github/workflows/deploy-dagster.yml"
 jobs:
   deploy:
