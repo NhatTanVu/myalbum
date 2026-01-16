@@ -189,7 +189,8 @@ export class AuthorizeService {
         }
 
         let settings = await response.json();
-        settings.automaticSilentRenew = true;
+        settings.automaticSilentRenew = false;
+        settings.monitorSession = false;
         settings.includeIdTokenInSilentRenew = true;
         settings.userStore = new WebStorageStateStore({
             prefix: ApplicationName
