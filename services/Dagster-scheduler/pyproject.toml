@@ -9,12 +9,14 @@ authors = ["Nhat Tan Vu"]
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.10,<3.15"
 dagster = "^1.6"
 dagster-webserver = "^1.6"
 pyyaml = "^6.0"
 azure-servicebus = "^7.12"
 python-dotenv = "^1.0"
+dagster-postgres = "^0.28.11"
+psycopg2-binary = "^2.9.11"
 
 [build-system]
 requires = ["poetry-core"]
