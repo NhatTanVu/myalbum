@@ -1,0 +1,44 @@
+name: Deploy Photo Scrapper Worker to Azure Container Apps
+
+on:
+  push:
+    branches: 
+      - master
+    paths:
+      - "workers/PhotoScrapper-Worker/**"
+      - ".github/workflows/deploy-photoscrapper-worker.yml"
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure login (Service Principal)
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Login to ACR
+        run: az acr login --name ${{ secrets.AZURE_ACR_NAME }}
+   
+      - name: Build & push image
+        run: |
+          IMAGE=${{ secrets.AZURE_ACR_NAME }}.azurecr.io/photoscrapper_worker:${{ github.sha }}
+          docker build -t $IMAGE ./workers/PhotoScrapper-Worker
+          docker push $IMAGE
+          echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+
+      - name: Create or update Container App
+        run: |
+          az containerapp up \
+            --name photoscrapper_worker \
+            --resource-group ${{ secrets.AZURE_RG }} \
+            --environment myalbum \
+            --image $IMAGE \
+            --ingress disabled \
+            --min-replicas 1 \
+            --max-replicas 1 \
+            --cpu 0.25 \
+            --memory 0.5Gi
