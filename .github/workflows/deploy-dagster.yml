@@ -1,4 +1,4 @@
-name: Deploy Dagster to Azure Container Apps
+name: Deploy Dagster to Azure Container App
 
 on:
   push:
