@@ -32,13 +32,7 @@ jobs:
 
       - name: Create or update Container App
         run: |
-          az containerapp up \
-            --name photoscrapper_worker \
+          az containerapp update \
+            --name photoscrapper-worker \
             --resource-group ${{ secrets.AZURE_RG }} \
-            --environment myalbum \
-            --image $IMAGE \
-            --ingress internal \
-            --min-replicas 1 \
-            --max-replicas 1 \
-            --cpu 0.25 \
-            --memory 0.5Gi
+            --image $IMAGE
