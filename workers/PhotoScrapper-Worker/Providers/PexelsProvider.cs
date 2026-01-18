@@ -43,7 +43,7 @@ public class PexelsProvider : IPhotoProvider
             }
             catch (HttpRequestException ex)
             {
-                if (ex.StatusCode == HttpStatusCode.Conflict)
+                if (ex.StatusCode == HttpStatusCode.Conflict || ex.StatusCode == HttpStatusCode.BadRequest)
                 {
                     continue;
                 }

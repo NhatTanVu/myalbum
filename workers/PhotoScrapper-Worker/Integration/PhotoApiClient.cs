@@ -55,20 +55,16 @@ public class PhotoApiClient
                 photo.ExternalProvider,
                 photo.ExternalId);
         }
-
-        try
-        {
-            response.EnsureSuccessStatusCode();
-        }
-        catch
+        else if (response.StatusCode == HttpStatusCode.BadRequest)
         {
             _logger.LogInformation(
-                "Error in EnsureSuccessStatusCode(): {Name}:{ExternalId}:{ExternalProvider}:{SourceUrl}",
+                "Bad Request detected: {Name}:{ExternalId}:{ExternalProvider}:{SourceUrl}",
                 photo.Name,
                 photo.ExternalId,
                 photo.ExternalProvider,
                 photo.SourceUrl);
-            throw;
         }
+
+        response.EnsureSuccessStatusCode();
     }
 }
