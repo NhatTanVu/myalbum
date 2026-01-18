@@ -141,7 +141,7 @@ The AI service enhances user experience by automating repetitive and creative ta
 * **Comments API**: https://my-album-comment-api.azurewebsites.net/swagger/index.html
 * **AI Service API**: https://my-album-ai.azurewebsites.net/docs
 
-## 🛠 Technology Stack
+## 🛠️ Technology Stack
 
 ### Frontend
 - React
@@ -158,73 +158,55 @@ The AI service enhances user experience by automating repetitive and creative ta
 ### Infrastructure
 - Azure App Service
 - GitHub Actions (CI/CD)
- 
-# Run in Microsoft Visual Studio Community 2019
-1. Setup DB by running 3 scripts in "**src/WebSPA/sql**"
-2. Open "**src/MyAlbum.sln**"
-3. Change **Default** connection string in either:
-   1. **React** with: "**src/WebSPA.React.Identity/appsettings.Development.json**"
-   2. **Angular** with: "**src/WebSPA.Identity/appsettings.Development.json**"
-4. Set Startup Projects using menu "**Debug->Set Startup Projects...**" for Debugging in either:
-   1. **React** with projects: **Web Apps/WebSPA.React.Identity** and 3 projects in Services folder
-   2. **Angular** with projects: **Web Apps/WebSPA.Identity** and 3 projects in Services folder
-5. Press F5 for Debugging
 
-# Run in Docker
-0. [Install](https://docs.docker.com/docker-for-windows/install/) Docker.
-1. Open "**src/Docker**" folder and run: 
+# 🚀 Scheduled Photo Ingestion Feature
+
+## 📌 Description
+MyAlbum now supports a Scheduled Photo Ingestion feature that automatically retrieves photos from external photo providers (like Pexels) based on configured categories and criteria. A scheduler enqueues ingestion tasks daily, a message queue buffers tasks, and a background worker retrieves and stores photos into the MyAlbum database without duplication. This enables automated enrichment of MyAlbum content and decouples scraping logic from the core API.
+
+## 🧠 Architecture
 ```
-docker-compose down
-docker-compose build
-docker-compose up
+ +------------------+       +----------------------+       +------------------+
+ |   Dagster        |       | Azure Service Bus    |       |  C# Worker       |
+ | (Scheduler/      |  -->  | (Task Queue / DLQ)   |  -->  | (.NET, Queue     |
+ |  Orchestrator)   |       |                      |       |  Processing)     |
+ +------------------+       +----------------------+       +------------------+
+                                                              │         │
+                                                              ▼         │
+                                           ┌───────────────────────┐    │
+                                           │ WebSPA.React.Identity |    │
+                                           │ (Generate JWT Token)  |    │
+                                           └───────────────────────┘    │
+                                                                        │ JWT
+                                                                        ▼
+                                                         ┌──────────────────────┐
+                                                         │    Microservices     │
+                                                         │                      │
+                                                         │ ┌──────────────────┐ │
+                                                         │ │ Photos Service   | |
+                                                         | |  (C#, .NET Core) | |
+                                                         │ └──────────────────┘ |
+                                                         └──────────────────────┘
 ```
-2. Open "**src/Docker**" folder and [install](https://www.thewindowsclub.com/manage-trusted-root-certificates-windows) this SSL certificate to Local Computer's "**Trusted Root Certification Authorities**" folder:
-```
-File name: my-album.pfx
-Password: 2u)TAa
-```
-3. Verify by browsing https://localhost:5002/swagger/ successfully.
-4. Browse the website at http://localhost:5000/
 
-# Deploy to Azure
-1. Create 1 Azure App Service and 1 Azure SQL database
-2. Add 2 app settings: "**ASPNETCORE_ENVIRONMENT**" and "**ConnectionStrings:Default**" to Azure App Service:
-<kbd>![App Settings](https://raw.githubusercontent.com/NhatTanVu/vega/master/_screenshots/Add%20App%20Settings.PNG)</kbd>
-3. [Deploy](https://docs.microsoft.com/en-us/aspnet/core/tutorials/publish-to-azure-webapp-using-vscode?view=aspnetcore-3.1) to Azure
+## 🛠️ Tech Stack
+| Component | Technology |
+|------|----------------|
+| Scheduling & Orchestration | Python, Dagster |
+| Task Queue | Azure Service Bus |
+| Worker / Processing | C# (.NET 10) Worker |
+| Photo Provider APIs | Pexels (extendable to Flickr, etc.) |
+| Photo API | MyAlbum Photo API (ASP.NET Core) |
+| Storage | MyAlbum Database |
+| Deployment (Dev) | Docker / Docker Compose |
+| Deployment (Cloud) | Azure Container Apps / Azure Services |
 
-# Screenshots
-1. **[Photo] Explore**\
-<kbd>![Explore Photos](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/explore.JPG?raw=true)</kbd>
+# Screencasts
+1. **Explore photos and albums**
 
-2. **[Photo] World Map**\
-<kbd>![World Map](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/world_map.jpg?raw=true)</kbd>
+2. **AI features**
 
-3. **[Album] Explore**\
-<kbd>![Explore Albums](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/explore_album.jpg?raw=true)</kbd>
-
-4. **[Album] View**\
-<kbd>![View Album](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/view_album.jpg?raw=true)</kbd>
-
-5. **[Photo] Add**\
-<kbd>![Add Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/add_photo.jpg?raw=true)</kbd>
-
-6. **[Photo] Edit**\
-<kbd>![Edit Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/edit_photo.jpg?raw=true)</kbd>
-
-7. **[Photo] View**\
-<kbd>![View Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/view_photo.JPG?raw=true)</kbd>
-
-8. **[Photo] View >> Object Detection** (click on the photo)\
-<kbd>![View Photo >> Object Detection](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/view_photo_object_detection.JPG?raw=true)</kbd>
-
-9. **[Photo] View >> Add Comment**
-<kbd>![View Photo >> Add Comment](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/add_comment.JPG?raw=true)</kbd>
-
-10. **[Photo] View >> Notify Comment (real-time)**\
-<kbd>![View Photo >> Update New Comment (real-time)](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/notify_comment.jpg?raw=true)</kbd>
-
-11. **[Photo] View >> Reply Comment**\
-<kbd>![View Photo >> Add & View Reply](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/reply_comment.jpg?raw=true)</kbd>
+3. **Scheduled Photo Ingestion**
 
 # Supporters :clap:
 Thanks to everyone who has supported this project through ideas, feedback, and testing ❤️
