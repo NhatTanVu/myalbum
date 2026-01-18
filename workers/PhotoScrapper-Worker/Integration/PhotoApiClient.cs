@@ -65,6 +65,20 @@ public class PhotoApiClient
                 photo.SourceUrl);
         }
 
-        response.EnsureSuccessStatusCode();
+        try
+        {
+            response.EnsureSuccessStatusCode();
+        }
+        catch
+        {
+            _logger.LogInformation(
+                "HTTP {StatusCode} detected: {Name}:{ExternalId}:{ExternalProvider}:{SourceUrl}",
+                response.StatusCode,
+                photo.Name,
+                photo.ExternalId,
+                photo.ExternalProvider,
+                photo.SourceUrl);
+            throw;
+        }
     }
 }
