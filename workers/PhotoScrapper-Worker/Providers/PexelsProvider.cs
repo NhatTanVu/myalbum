@@ -28,7 +28,7 @@ public class PexelsProvider : IPhotoProvider
         _multipartBodyLengthLimit = int.Parse(config["PhotoApi:MultipartBodyLengthLimit"]);
     }
 
-    private async Task<(int, int)> DoProcessPhoto(IngestionMessage message, int photosPerCategory)
+    private async Task<(int, int)> DoProcessPhoto(IngestionMessage message, int photosPerCategory, int numOfRemainingPhotos)
     {
         var jsonElements = await _pexelsApiClient.SearchAsync(message.Category, photosPerCategory);
         Photo[] photos = await Task.WhenAll(jsonElements.Select(MapToPhoto));
@@ -49,6 +49,8 @@ public class PexelsProvider : IPhotoProvider
                 }
                 throw;
             }
+            if (numOfSavedPhotos >= numOfRemainingPhotos)
+                break;
         }
 
         return (numOfSavedPhotos, numOfSeachResult);
@@ -68,8 +70,9 @@ public class PexelsProvider : IPhotoProvider
         do
         {
             lastNumOfSeachResult = numOfSeachResult;
-            numOfRequestedPhotos += message.PhotosPerCategory - totalProcessedPhotos;
-            var result = await DoProcessPhoto(message, numOfRequestedPhotos);
+            int numOfRemainingPhotos = message.PhotosPerCategory - totalProcessedPhotos;
+            numOfRequestedPhotos += numOfRemainingPhotos;
+            var result = await DoProcessPhoto(message, numOfRequestedPhotos, numOfRemainingPhotos);
             totalProcessedPhotos += result.Item1;
             numOfSeachResult = result.Item2;
         } while (totalProcessedPhotos < message.PhotosPerCategory &&
