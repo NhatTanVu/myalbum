@@ -206,7 +206,7 @@ MyAlbum now supports a Scheduled Photo Ingestion feature that automatically retr
 [![My Album - Explore](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/explore_album.jpg?raw=true)](https://www.youtube.com/watch?v=z1c7Vs1JODE)
 2. **AI features**
    1. Auto-generate image title (after Login and Select Edit Photo)
-      <kbd>![Edit Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/edit_photo.jpg?raw=true)</kbd>
+      <kbd>![Edit Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/edit_photo.png?raw=true)</kbd>
    2. Suggest friendly comments (after Login and add hint to New Comment textbox)
       <kbd>![New Comment](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/new_comment_AI.jpg?raw=true)</kbd>
 # Supporters :clap:
