@@ -56,6 +56,19 @@ public class PhotoApiClient
                 photo.ExternalId);
         }
 
-        response.EnsureSuccessStatusCode();
+        try
+        {
+            response.EnsureSuccessStatusCode();
+        }
+        catch
+        {
+            _logger.LogInformation(
+                "Error in EnsureSuccessStatusCode(): {Name}:{ExternalId}:{ExternalProvider}:{SourceUrl}",
+                photo.Name,
+                photo.ExternalId,
+                photo.ExternalProvider,
+                photo.SourceUrl);
+            throw;
+        }
     }
 }
