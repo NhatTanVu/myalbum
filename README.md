@@ -202,7 +202,7 @@ MyAlbum now supports a Scheduled Photo Ingestion feature that automatically retr
 | Deployment (Cloud) | Azure Container Apps / Azure Services |
 
 # 🎥 Screenshots
-1. **Explore photos and albums**\ (Click on the thumbnail to view the video)
+1. **Explore photos and albums** (Click on the thumbnail to view the video)
 [![My Album - Explore](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/explore_album.jpg?raw=true)](https://www.youtube.com/watch?v=z1c7Vs1JODE)
 2. **AI features**
    1. Auto-generate image title (after Login and Select Edit Photo)
