@@ -201,13 +201,14 @@ MyAlbum now supports a Scheduled Photo Ingestion feature that automatically retr
 | Deployment (Dev) | Docker / Docker Compose |
 | Deployment (Cloud) | Azure Container Apps / Azure Services |
 
-# 🎥 Screencasts (Click on the thumbnail to view the video)
-1. **Explore photos and albums**\
+# 🎥 Screenshots
+1. **Explore photos and albums**\ (Click on the thumbnail to view the video)
 [![My Album - Explore](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/explore_album.jpg?raw=true)](https://www.youtube.com/watch?v=z1c7Vs1JODE)
 2. **AI features**
-
-3. **Scheduled Photo Ingestion**
-
+   1. Auto-generate image title (after Login and Select Edit Photo)
+      <kbd>![Edit Photo](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/edit_photo.jpg?raw=true)</kbd>
+   2. Suggest friendly comments (after Login and add hint to New Comment textbox)
+      <kbd>![New Comment](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/new_comment_AI.jpg?raw=true)</kbd>
 # Supporters :clap:
 Thanks to everyone who has supported this project through ideas, feedback, and testing ❤️
 [![Stargazers repo roster for @NhatTanVu/myalbum](http://reporoster.com/stars/NhatTanVu/myalbum)](https://github.com/NhatTanVu/myalbum/stargazers)
