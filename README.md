@@ -159,7 +159,7 @@ The AI service enhances user experience by automating repetitive and creative ta
 - Azure App Service
 - GitHub Actions (CI/CD)
 
-# 🚀 Scheduled Photo Ingestion Feature
+# 🚀 Scheduled Photo Ingestion
 
 ## 📌 Description
 MyAlbum now supports a Scheduled Photo Ingestion feature that automatically retrieves photos from external photo providers (like Pexels) based on configured categories and criteria. A scheduler enqueues ingestion tasks daily, a message queue buffers tasks, and a background worker retrieves and stores photos into the MyAlbum database without duplication. This enables automated enrichment of MyAlbum content and decouples scraping logic from the core API.
@@ -201,9 +201,9 @@ MyAlbum now supports a Scheduled Photo Ingestion feature that automatically retr
 | Deployment (Dev) | Docker / Docker Compose |
 | Deployment (Cloud) | Azure Container Apps / Azure Services |
 
-# Screencasts
-1. **Explore photos and albums**
-
+# 🎥 Screencasts (Click on the thumbnail to view the video)
+1. **Explore photos and albums**\
+[![My Album - Explore](https://raw.githubusercontent.com/NhatTanVu/myalbum/master/screenshots/explore_album.jpg?raw=true)](https://www.youtube.com/watch?v=z1c7Vs1JODE)
 2. **AI features**
 
 3. **Scheduled Photo Ingestion**
