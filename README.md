@@ -16,17 +16,15 @@ Users can:
 
 The system is built using a **microservices architecture**, designed to be scalable, extensible, and production-ready.
 
-# 🚦Status (Active Development)
+# 🚦Status
 [![Codecov](https://codecov.io/gh/NhatTanVu/myalbum/branch/master/graph/badge.svg)](https://codecov.io/gh/NhatTanVu/myalbum)
 [![AppVeyor](http://ci.appveyor.com/api/projects/status/4b7m4xj6fu82xtgn/branch/master?svg=true)](https://ci.appveyor.com/project/NhatTanVu/myalbum/branch/master)
-
-> ⚠️ **This project is under active development**
 
 - Core album and photo features are functional
 - AI service is live and evolving
 - Architecture is stable, but APIs and UI may continue to change
 
-✅ **Current focus**
+✅ **Next focus**
 - Improving AI-assisted features
 - Strengthening CI/CD and deployment reliability
 - Enhancing user experience and performance
