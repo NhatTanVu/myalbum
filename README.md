@@ -131,13 +131,13 @@ The AI service enhances user experience by automating repetitive and creative ta
 # 🌐 Website
 * **URL**: 
    1. https://my-album.azurewebsites.net/ (Angular 8.0)
-   2. https://my-album-react.azurewebsites.net/ (React 16.12)
+   2. https://my-album-react.azurewebsites.net/ (React 16.12) (Inactive)
 * **Email**: guest@gmail.com (for add/edit photo, album, comment and reply)
 * **Password**: 2u)TAa
 * **Albums API**: https://my-album-album-api.azurewebsites.net/swagger/index.html
 * **Photos API**: https://my-album-photo-api.azurewebsites.net/swagger/index.html
 * **Comments API**: https://my-album-comment-api.azurewebsites.net/swagger/index.html
-* **AI Service API**: https://my-album-ai.azurewebsites.net/docs
+* **AI Service API**: https://my-album-ai.azurewebsites.net/docs (Inactive)
 
 ## 🛠️ Technology Stack
 
